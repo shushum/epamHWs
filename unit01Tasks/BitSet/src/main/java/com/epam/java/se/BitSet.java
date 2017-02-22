@@ -47,7 +47,7 @@ public class BitSet {
         if((requiredCapacity+1) < getCapacity()){
             return;
         }
-        final int newCapacity = Math.max((requiredCapacity+1),getCapacity()*3/2 + 1);
+        final int newCapacity = Math.max((requiredCapacity+1),(getCapacity()*3)/2 + 1);
         data = Arrays.copyOf(data, newCapacity);
     }
 

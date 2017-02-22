@@ -103,7 +103,7 @@ public class BitSetTest {
             if (i == 0 || i == 7 || i == 45 || i == 63 || i == 64 || i == 129) {
                 assertTrue(set.contains(i));
             } else {
-                assertFalse("At index " + i, set.contains(i));
+                assertFalse(set.contains(i));
             }
         }
 
@@ -123,7 +123,7 @@ public class BitSetTest {
             if (i == 7 || i == 70 || i == 140) {
                 assertTrue(unionSet.contains(i));
             } else {
-                assertFalse("At index " + i, unionSet.contains(i));
+                assertFalse(unionSet.contains(i));
             }
         }
     }
@@ -141,7 +141,7 @@ public class BitSetTest {
             if (i == 7 || i == 70) {
                 assertTrue(unionSet.contains(i));
             } else {
-                assertFalse("At index " + i, unionSet.contains(i));
+                assertFalse(unionSet.contains(i));
             }
         }
     }
@@ -160,7 +160,7 @@ public class BitSetTest {
             if (i == 7 || i == 140) {
                 assertTrue(unionSet.contains(i));
             } else {
-                assertFalse("At index " + i, unionSet.contains(i));
+                assertFalse(unionSet.contains(i));
             }
         }
     }
@@ -173,39 +173,70 @@ public class BitSetTest {
         final BitSet unionSet = set.union(otherSet);
 
         for (int i = 0; i < 70; i++) {
-            assertFalse("At index " + i, unionSet.contains(i));
+            assertFalse(unionSet.contains(i));
         }
     }
 
     @Test
-    public void intersection() throws Exception {
+    public void intersectionWithLegalArguments() throws Exception {
         final BitSet set = new BitSet();
-        final BitSet invertSet = new BitSet();
-
         set.add(7);
+        set.add(70);
+        final BitSet otherSet = new BitSet();
+        otherSet.add(7);
+        otherSet.add(140);
 
-        for (int i = 0; i < 128; i++) {
-            invertSet.add(i);
-        }
-        invertSet.remove(7);
+        final BitSet intersectionSet = set.intersection(otherSet);
 
-        BitSet sameSet = set.intersection(set);
-        BitSet emptySet = set.intersection(invertSet);
-        BitSet viceVersaSet = invertSet.intersection(set);
-
-        for (int i = 0; i < 64; i++) {
+        for (int i = 0; i < 150; i++) {
             if (i == 7) {
-                assertTrue(sameSet.contains(i));
+                assertTrue(intersectionSet.contains(i));
             } else {
-                assertFalse("At index " + i, sameSet.contains(i));
+                assertFalse(intersectionSet.contains(i));
             }
         }
+    }
 
-        for (int i = 0; i < 128; i++) {
-            assertFalse("At index " + i, emptySet.contains(i));
-            assertFalse("At index " + i, viceVersaSet.contains(i));
+    @Test
+    public void intersectionWithEmptySetArguments() throws Exception {
+        final BitSet set = new BitSet();
+        set.add(7);
+        set.add(70);
+        final BitSet otherSet = new BitSet();
+
+        final BitSet intersectionSet = set.intersection(otherSet);
+
+        for (int i = 0; i < 150; i++) {
+            assertFalse(intersectionSet.contains(i));
         }
     }
+
+    @Test
+    public void intersectionWithEmptyCurrentSet() throws Exception {
+        final BitSet set = new BitSet();
+        final BitSet otherSet = new BitSet();
+        otherSet.add(7);
+        otherSet.add(140);
+
+        final BitSet intersectionSet = set.intersection(otherSet);
+
+        for (int i = 0; i < 150; i++) {
+            assertFalse(intersectionSet.contains(i));
+        }
+    }
+
+    @Test
+    public void intersectionWithBothEmptySets() throws Exception {
+        final BitSet set = new BitSet();
+        final BitSet otherSet = new BitSet();
+
+        final BitSet intersectionSet = set.intersection(otherSet);
+
+        for (int i = 0; i < 150; i++) {
+            assertFalse(intersectionSet.contains(i));
+        }
+    }
+
 
     @Test
     public void difference() throws Exception {
