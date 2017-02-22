@@ -61,7 +61,26 @@ public class BitSetTest {
         assertTrue(set.contains(Integer.MAX_VALUE));
         set.remove(Integer.MAX_VALUE);
         assertFalse(set.contains(Integer.MAX_VALUE));
+    }
 
+    @Test
+    public void doubleAddOnesRemoved() throws Exception {
+        final BitSet set = new BitSet();
+
+        set.add(100);
+        set.add(100);
+        assertTrue(set.contains(100));
+        set.remove(100);
+        assertFalse(set.contains(100));
+    }
+
+    @Test
+    public void removeNotAddedValue() throws Exception {
+        final BitSet set = new BitSet();
+
+        assertFalse(set.contains(100));
+        set.remove(100);
+        assertFalse(set.contains(100));
     }
 
     @Test
@@ -73,17 +92,12 @@ public class BitSetTest {
         }
 
         set.add(-1);
-        set.add(-1);
         set.add(0);
-        set.add(0);
-        set.add(64);
         set.add(64);
         set.add(63);
         set.add(7);
         set.add(45);
         set.add(129);
-
-        assertFalse(set.contains(13));
 
         for (int i = -1; i < 130; i++) {
             if (i == 0 || i == 7 || i == 45 || i == 63 || i == 64 || i == 129) {
