@@ -110,32 +110,70 @@ public class BitSetTest {
     }
 
     @Test
-    public void union() throws Exception {
+    public void unionWithLegalArguments() throws Exception {
         final BitSet set = new BitSet();
-        final BitSet invertSet = new BitSet();
-
         set.add(7);
+        set.add(70);
+        final BitSet otherSet = new BitSet();
+        otherSet.add(140);
 
-        for (int i=0;i<128;i++){
-            invertSet.add(i);
-        }
-        invertSet.remove(7);
+        final BitSet unionSet = set.union(otherSet);
 
-        BitSet sameSet = set.union(set);
-        BitSet fullSet = set.union(invertSet);
-        BitSet viceVersaSet = invertSet.union(set);
-
-        for (int i=0;i<64;i++){
-            if (i==7) {
-                assertTrue(sameSet.contains(i));
+        for (int i = 0; i < 150; i++) {
+            if (i == 7 || i == 70 || i == 140) {
+                assertTrue(unionSet.contains(i));
             } else {
-            assertFalse("At index "+i, sameSet.contains(i));
+                assertFalse("At index " + i, unionSet.contains(i));
             }
         }
+    }
 
-        for (int i=0; i<128; i++){
-            assertTrue(fullSet.contains(i));
-            assertTrue(viceVersaSet.contains(i));
+    @Test
+    public void unionWithEmptySetArguments() throws Exception {
+        final BitSet set = new BitSet();
+        set.add(7);
+        set.add(70);
+        final BitSet otherSet = new BitSet();
+
+        final BitSet unionSet = set.union(otherSet);
+
+        for (int i = 0; i < 80; i++) {
+            if (i == 7 || i == 70) {
+                assertTrue(unionSet.contains(i));
+            } else {
+                assertFalse("At index " + i, unionSet.contains(i));
+            }
+        }
+    }
+
+    @Test
+    public void unionWithEmptyCurrentSet() throws Exception {
+        final BitSet set = new BitSet();
+
+        final BitSet otherSet = new BitSet();
+        otherSet.add(7);
+        otherSet.add(140);
+
+        final BitSet unionSet = set.union(otherSet);
+
+        for (int i = 0; i < 150; i++) {
+            if (i == 7 || i == 140) {
+                assertTrue(unionSet.contains(i));
+            } else {
+                assertFalse("At index " + i, unionSet.contains(i));
+            }
+        }
+    }
+
+    @Test
+    public void unionBothEmptySets() throws Exception {
+        final BitSet set = new BitSet();
+        final BitSet otherSet = new BitSet();
+
+        final BitSet unionSet = set.union(otherSet);
+
+        for (int i = 0; i < 70; i++) {
+            assertFalse("At index " + i, unionSet.contains(i));
         }
     }
 
@@ -146,7 +184,7 @@ public class BitSetTest {
 
         set.add(7);
 
-        for (int i=0;i<128;i++){
+        for (int i = 0; i < 128; i++) {
             invertSet.add(i);
         }
         invertSet.remove(7);
@@ -155,15 +193,15 @@ public class BitSetTest {
         BitSet emptySet = set.intersection(invertSet);
         BitSet viceVersaSet = invertSet.intersection(set);
 
-        for (int i=0;i<64;i++){
+        for (int i = 0; i < 64; i++) {
             if (i == 7) {
                 assertTrue(sameSet.contains(i));
             } else {
-                assertFalse("At index "+i, sameSet.contains(i));
+                assertFalse("At index " + i, sameSet.contains(i));
             }
         }
 
-        for (int i=0; i<128; i++){
+        for (int i = 0; i < 128; i++) {
             assertFalse("At index " + i, emptySet.contains(i));
             assertFalse("At index " + i, viceVersaSet.contains(i));
         }
@@ -175,18 +213,18 @@ public class BitSetTest {
         BitSet sameSet = new BitSet();
         sameSet.add(7);
         BitSet zeroSet = sameSet.difference(sameSet);
-        for(int i = 0; i<64; i++){
+        for (int i = 0; i < 64; i++) {
             assertFalse(zeroSet.contains(i));
         }
         sameSet.add(15);
         sameSet.add(63);
         sameSet.add(-1);
 
-        long[] cheese = {-1,-1};
+        long[] cheese = {-1, -1};
         BitSet fullSet = new BitSet(cheese);
         BitSet set = fullSet.difference(sameSet);
-        for(int i = 0; i<128; i++){
-            if (i==7 || i==15 || i==63){
+        for (int i = 0; i < 128; i++) {
+            if (i == 7 || i == 15 || i == 63) {
                 assertFalse(set.contains(i));
             } else {
                 assertTrue(set.contains(i));
