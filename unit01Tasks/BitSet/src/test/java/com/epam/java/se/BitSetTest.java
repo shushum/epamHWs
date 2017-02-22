@@ -10,43 +10,57 @@ import static org.junit.Assert.*;
  */
 public class BitSetTest {
     @Test
-    public void add() throws Exception {
+    public void addValue() throws Exception {
         final BitSet set = new BitSet();
-
-        assertFalse(set.contains(0));
         set.add(0);
         assertTrue(set.contains(0));
-
-        assertFalse(set.contains(63));
-        set.add(63);
-        set.add(63);
-        assertTrue(set.contains(63));
-
-        set.add(-1);
-        assertFalse(set.contains(-1));
-        set.add(64);
-        assertTrue("64",set.contains(64));
-        set.add(130);
-        assertTrue("64",set.contains(130));
+        set.add(100);
+        assertTrue(set.contains(100));
+        set.add(Integer.MAX_VALUE);
+        assertTrue(set.contains(Integer.MAX_VALUE));
     }
 
     @Test
-    public void remove() throws Exception {
+    public void doubleAddValue() throws Exception {
         final BitSet set = new BitSet();
-
-        assertFalse(set.contains(0));
+        set.add(0);
         set.add(0);
         assertTrue(set.contains(0));
+    }
+
+    @Test
+    public void addNegativeValue() throws Exception {
+        final BitSet set = new BitSet();
+        set.add(-1);
+        assertFalse(set.contains(-1));
+    }
+
+    @Test
+    public void doesNotContainNotAddedValue() throws Exception {
+        final BitSet set = new BitSet();
+        assertFalse(set.contains(0));
+        assertFalse(set.contains(100));
+        assertFalse(set.contains(200));
+    }
+
+    @Test
+    public void removeAddedValue() throws Exception {
+        final BitSet set = new BitSet();
+
         set.add(0);
+        assertTrue(set.contains(0));
         set.remove(0);
         assertFalse(set.contains(0));
 
-        set.remove(0);
-        assertFalse(set.contains(0));
+        set.add(100);
+        assertTrue(set.contains(100));
+        set.remove(100);
+        assertFalse(set.contains(100));
 
-        set.add(130);
-        set.remove(131);
-        assertFalse(set.contains(131));
+        set.add(Integer.MAX_VALUE);
+        assertTrue(set.contains(Integer.MAX_VALUE));
+        set.remove(Integer.MAX_VALUE);
+        assertFalse(set.contains(Integer.MAX_VALUE));
 
     }
 
