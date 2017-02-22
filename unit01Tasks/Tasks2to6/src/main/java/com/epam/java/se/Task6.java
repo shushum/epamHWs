@@ -5,10 +5,23 @@ import java.util.Arrays;
 public class Task6 {
 }
 
+/**
+ * Class designed to store and work with Notes.
+ */
 class Notebook{
+    /**
+     * Array for storing Notes.
+     */
     private Note[] notes;
+
+    /**
+     * Amount of Notes in this Notebook.
+     */
     private int size;
 
+    /**
+     * Creates default Notebook with no notes.
+     */
     public Notebook() {
         notes = new Note[10];
         size = 0;
