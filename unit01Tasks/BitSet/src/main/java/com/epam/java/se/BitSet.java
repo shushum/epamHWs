@@ -1,6 +1,7 @@
 package com.epam.java.se;
 
 
+import java.util.Arrays;
 
 /**
  * This class stores a Set of non-negative integer values.
@@ -37,17 +38,23 @@ public class BitSet {
             return;
         }
 
-        final int elementToAdd = value / 64;
-        final int newValueToAdd = value % 64;
-
-        if (value > this.data.length * 64 - 1) {
-            long[] newData = new long[elementToAdd + 1];
-            System.arraycopy(this.data,0,newData,0,this.data.length);
-            this.data = newData;
-        }
-
-        this.data[elementToAdd] |= 1L << newValueToAdd;
+        final int arrayElementToAddInto = value / 64;
+        ensureCapacity(arrayElementToAddInto);
+        data[arrayElementToAddInto] |= 1L << value;
     }
+
+    private void ensureCapacity(int requiredCapacity) {
+        if((requiredCapacity+1) < getCapacity()){
+            return;
+        }
+        final int newCapacity = Math.max((requiredCapacity+1),getCapacity()*3/2 + 1);
+        data = Arrays.copyOf(data, newCapacity);
+    }
+
+    private int getCapacity(){
+        return data.length;
+    }
+
 
     /**
      * Removes specified value from the proceeded BitSet.
