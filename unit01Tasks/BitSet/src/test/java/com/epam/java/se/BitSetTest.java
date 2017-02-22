@@ -307,35 +307,38 @@ public class BitSetTest {
     }
 
     @Test
-    public void isSubsetOf() throws Exception {
-        BitSet refSet = new BitSet();
-        refSet.add(1);
-        refSet.add(54);
-        refSet.add(7);
-        assertTrue(refSet.isSubsetOf(refSet));
+    public void isSubsetOfWithLegalArguments() throws Exception {
+        BitSet set = new BitSet();
+        set.add(7);
+        set.add(70);
+        BitSet anotherSet = new BitSet();
+        anotherSet.add(7);
+        anotherSet.add(70);
+        anotherSet.add(140);
 
-        BitSet checkSet = new BitSet();
-        refSet.add(54);
-        refSet.add(7);
-        assertFalse(refSet.isSubsetOf(checkSet));
-        assertTrue(checkSet.isSubsetOf(refSet));
+        assertFalse(anotherSet.isSubsetOf(set));
+        assertTrue(set.isSubsetOf(anotherSet));
+        assertTrue(set.isSubsetOf(set));
+    }
 
-        BitSet unionCheckSet = new BitSet();
-        refSet.add(200);
-        refSet.add(18);
-        refSet.add(137);
+    @Test
+    public void isSubsetOfEmptySetAndVV() throws Exception {
+        BitSet set = new BitSet();
+        set.add(7);
+        set.add(70);
+        BitSet anotherSet = new BitSet();
 
-        BitSet unionSet = refSet.union(unionCheckSet);
-        assertTrue(unionCheckSet.isSubsetOf(unionSet));
-        assertTrue(refSet.isSubsetOf(unionSet));
-        assertTrue(checkSet.isSubsetOf(unionSet));
+        assertTrue(anotherSet.isSubsetOf(set));
+        assertFalse(set.isSubsetOf(anotherSet));
+    }
 
-        BitSet finalCheckSet = new BitSet();
-        assertTrue(finalCheckSet.isSubsetOf(unionCheckSet));
-        finalCheckSet.add(96);
-        assertFalse(finalCheckSet.isSubsetOf(unionCheckSet));
+    @Test
+    public void isSubsetOfBothEmptySets() throws Exception {
+        BitSet set = new BitSet();
+        BitSet anotherSet = new BitSet();
 
-
+        assertTrue(anotherSet.isSubsetOf(set));
+        assertTrue(set.isSubsetOf(anotherSet));
     }
 
 }
