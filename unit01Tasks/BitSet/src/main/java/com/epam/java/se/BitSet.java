@@ -62,14 +62,12 @@ public class BitSet {
      * @param value the value to remove
      */
     public void remove(int value){
-        if (value < 0|| value > this.data.length * 64 - 1 ){
+        if (canNotStore(value)){
             return;
         }
 
         final int elementToRemove = value / 64;
-        final int newValueToRemove = value % 64;
-
-        this.data[elementToRemove] &= ~(1L << newValueToRemove);
+        data[elementToRemove] &= ~(1L << value);
     }
 
     /**
@@ -79,15 +77,21 @@ public class BitSet {
      * @return the result of presence check
      */
     public boolean contains(int value){
-        if (value < 0 || value > this.data.length * 64 - 1 ){
+        if (canNotStore(value)){
             return false;
         }
 
         final int elementToCheck = value / 64;
-        final int newValueToCheck = value % 64;
-        final long mask = 1L << newValueToCheck;
-        final long res = this.data[elementToCheck] & mask;
+        final long mask = 1L << value;
+        final long res = data[elementToCheck] & mask;
         return res != 0;
+    }
+
+    private boolean canNotStore(int value){
+        if (value < 0 || value > getCapacity() * 64 - 1 ){
+            return true;
+        }
+        return false;
     }
 
     /**
