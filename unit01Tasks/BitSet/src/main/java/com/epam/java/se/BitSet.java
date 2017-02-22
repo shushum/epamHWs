@@ -1,13 +1,27 @@
 package com.epam.java.se;
 
 
+
+/**
+ * This class stores a Set of non-negative integer values.
+ */
 public class BitSet {
+    /**
+     * Set of non-negative integer values.
+     */
     private long[] data;
 
+    /**
+     * Creates a default Set of non-negative integer values.
+     */
     public BitSet() {
         data = new long[1];
     }
 
+    /**
+     * Creates a specified Set of non-negative integer values.
+     * @param values
+     */
     public BitSet(long[] values) {
         data = new long[values.length];
         System.arraycopy(values, 0, data, 0, values.length);
@@ -15,8 +29,6 @@ public class BitSet {
 
     /**
      * Adds a new value to the proceeded BitSet.
-     *
-     * Adds a new value to the proceeded BitSet. The negative elements could not be added
      *
      * @param value the value to add
      */
@@ -40,7 +52,6 @@ public class BitSet {
     /**
      * Removes specified value from the proceeded BitSet.
      *
-     * Removes specified value from the proceeded BitSet
      * @param value the value to remove
      */
     public void remove(int value){
@@ -57,7 +68,6 @@ public class BitSet {
     /**
      * Checks the presence of specified value in the proceeded BitSet.
      *
-     * Checks the presence of specified value in the proceeded BitSet
      * @param value the value to check
      * @return the result of presence check
      */
@@ -76,7 +86,6 @@ public class BitSet {
     /**
      * Creates a new BitSet, based on union of proceeded and other BitSets.
      *
-     * Creates a new BitSet, based on union of proceeded and other BitSets
      * @param other BitSet to unite proceeded with
      * @return the result of the union
      */
@@ -104,7 +113,6 @@ public class BitSet {
     /**
      * Creates a new BitSet, based on intersection of proceeded and other BitSets.
      *
-     * Creates a new BitSet, based on intersection of proceeded and other BitSets
      * @param other BitSet to intersect proceeded with
      * @return the result of the intersection
      */
@@ -138,7 +146,6 @@ public class BitSet {
     /**
      * Creates a new BitSet, based on difference between proceeded and other BitSets.
      *
-     * Creates a new BitSet, based on difference between proceeded and other BitSets
      * It uses the "exclusive or" to calculate the difference
      * @param other BitSet to differ proceeded with
      * @return the result of the difference
@@ -171,9 +178,8 @@ public class BitSet {
     }
 
     /**
-     * Checks if proceeded BitSet is the subset of an other BitSet.
+     * Checks if proceeded BitSet is the subset of another BitSet.
      *
-     * Checks if current BitSet is the subset of an other BitSet
      * @param other BitSet to be checked on being superset for proceeded BitSet
      * @return the result of subset check
      */
