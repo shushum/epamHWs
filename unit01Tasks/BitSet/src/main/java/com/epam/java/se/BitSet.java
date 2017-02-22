@@ -25,16 +25,16 @@ public class BitSet {
             return;
         }
 
-        final int ElementToAdd = value / 64;
+        final int elementToAdd = value / 64;
         final int newValueToAdd = value % 64;
 
         if (value > this.data.length * 64 - 1) {
-            long[] newData = new long[ElementToAdd + 1];
+            long[] newData = new long[elementToAdd + 1];
             System.arraycopy(this.data,0,newData,0,this.data.length);
             this.data = newData;
         }
 
-        this.data[ElementToAdd] |= 1L << newValueToAdd;
+        this.data[elementToAdd] |= 1L << newValueToAdd;
     }
 
     /**
@@ -48,10 +48,10 @@ public class BitSet {
             return;
         }
 
-        final int ElementToRemove = value / 64;
+        final int elementToRemove = value / 64;
         final int newValueToRemove = value % 64;
 
-        this.data[ElementToRemove] &= ~(1L << newValueToRemove);
+        this.data[elementToRemove] &= ~(1L << newValueToRemove);
     }
 
     /**
@@ -66,10 +66,10 @@ public class BitSet {
             return false;
         }
 
-        final int ElementToCheck = value / 64;
+        final int elementToCheck = value / 64;
         final int newValueToCheck = value % 64;
         final long mask = 1L << newValueToCheck;
-        final long res = this.data[ElementToCheck] & mask;
+        final long res = this.data[elementToCheck] & mask;
         return res != 0;
     }
 
