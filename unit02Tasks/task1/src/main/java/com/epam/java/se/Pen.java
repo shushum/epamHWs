@@ -19,24 +19,43 @@ public class Pen {
     }
 
     @Override
-    public boolean equals(Object obj){
-        if (this == obj) {return true;}
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
 
-        if (null == obj) {return false;}
+        if (null == obj) {
+            return false;
+        }
 
-        if (this.getClass() != obj.getClass()) {return false;}
+        if (this.getClass() != obj.getClass()) {
+            return false;
+        }
 
         Pen pen = (Pen) obj;
 
-        if (price != pen.price) {return false;}
+        if (price != pen.price) {
+            return false;
+        }
 
-        if (companyName != null ? !companyName.equals(pen.companyName) : pen.companyName != null) {return false;}
+        if (companyName != null ? !companyName.equals(pen.companyName) : pen.companyName != null) {
+            return false;
+        }
 
-        if (inkColour != null ? !(inkColour == pen.inkColour) : pen.inkColour != null) {return false;}
+        if (inkColour != null ? !(inkColour == pen.inkColour) : pen.inkColour != null) {
+            return false;
+        }
 
         return penType != null ? penType == pen.penType : pen.penType == null;
-
     }
+
+    @Override
+    public int hashCode() {
+        return price * 31 + (companyName != null ? companyName.hashCode() : 0) +
+                inkColour.ordinal() + penType.ordinal();
+    }
+
+    
 
 
 }
