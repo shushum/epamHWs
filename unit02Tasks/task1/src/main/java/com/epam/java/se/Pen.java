@@ -1,5 +1,7 @@
 package com.epam.java.se;
 
+import java.util.Objects;
+
 /**
  * Created by Yegor on 23.02.2017.
  */
@@ -16,7 +18,25 @@ public class Pen {
         this.penType = penType;
     }
 
+    @Override
+    public boolean equals(Object obj){
+        if (this == obj) {return true;}
 
+        if (null == obj) {return false;}
+
+        if (this.getClass() != obj.getClass()) {return false;}
+
+        Pen pen = (Pen) obj;
+
+        if (price != pen.price) {return false;}
+
+        if (companyName != null ? !companyName.equals(pen.companyName) : pen.companyName != null) {return false;}
+
+        if (inkColour != null ? !(inkColour == pen.inkColour) : pen.inkColour != null) {return false;}
+
+        return penType != null ? penType == pen.penType : pen.penType == null;
+
+    }
 
 
 }
