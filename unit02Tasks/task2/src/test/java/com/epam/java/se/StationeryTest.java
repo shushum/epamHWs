@@ -21,5 +21,14 @@ public class StationeryTest {
         assertTrue(preciousStat.equals(preciousStat));
     }
 
+    @Test
+    public void toStringTest() throws Exception {
+        Stationery stat = new Stationery();
+        System.out.println(stat.toString());
+
+        Stationery preciousStat = new Stationery(10);
+        System.out.println(preciousStat.toString());
+    }
+
 
 }
