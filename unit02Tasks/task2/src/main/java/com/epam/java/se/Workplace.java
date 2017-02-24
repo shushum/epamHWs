@@ -30,18 +30,18 @@ public class Workplace {
             return message;
         } else {
             StringBuilder message = new StringBuilder();
-            message.append("Owner name: " + owner + "| Stationary:\n");
-            for (int i = 0; i < stationery.length; i++){
-                message.append(stationery[i].toString()+"\n");
+            message.append("Owner name: " + owner + "|Stationary:\n");
+            for (int i = 0; i < stationery.length; i++) {
+                message.append("\t\t\t\t\t" + stationery[i].toString() + "\n");
             }
-            message.append("Total cost: " + totalCost());
+            message.append("\t\t\t\t\t" + "Total cost: " + totalCost());
             return message.toString();
         }
     }
 
     private int totalCost() {
         int totalCost = 0;
-        for (int i=0; i<stationery.length; i++){
+        for (int i = 0; i < stationery.length; i++) {
             totalCost += stationery[i].getPrice();
         }
         return totalCost;
