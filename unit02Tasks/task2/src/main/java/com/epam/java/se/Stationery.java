@@ -55,7 +55,7 @@ public class Stationery {
     public String toString(){
         StringBuilder result = new StringBuilder();
         result.append(this.getClass().getSimpleName() + "@ ");
-        result.append("ID: " + this.id);
+        result.append("ID:" + this.id);
         result.append(", Price:" + this.price);
         return result.toString();
     }
