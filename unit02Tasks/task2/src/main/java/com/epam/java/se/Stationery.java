@@ -54,8 +54,9 @@ public class Stationery {
     @Override
     public String toString(){
         StringBuilder result = new StringBuilder();
-        result.append(this.getClass().getName() + "@ ");
+        result.append(this.getClass().getSimpleName() + "@ ");
         result.append("ID: " + this.id);
+        result.append(", Price:" + this.price);
         return result.toString();
     }
 }
