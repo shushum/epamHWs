@@ -32,7 +32,7 @@ public class LearningGroup<T extends Number> {
 
     private void gradeLegalityCheck(T grade) {
 
-        if (isIllegal(grade)){
+        if (isIllegal(grade)) {
             illegalGradeException();
         }
 
@@ -66,6 +66,29 @@ public class LearningGroup<T extends Number> {
     private static void illegalGradeException() {
         String error = "Grades must be from 0 to 10 system.";
         throw new IllegalArgumentException(error);
+    }
+
+    private static void nullGradeException(Student student) {
+        String message = String.format("Student %s has no grade on this Subject.",
+                student.getLastName());
+        throw new IllegalArgumentException(message);
+    }
+
+    public T getStudentGrades(Student student) {
+
+        if (students.contains(student)) {
+
+            T grade = grades.get(students.indexOf(student));
+
+            if (grade == null) {
+                nullGradeException(student);
+            }
+            return grade;
+        }
+
+        String message = String.format("Student %s is not in this Learning Group.",
+                student.getLastName());
+        throw new IllegalArgumentException(message);
     }
 
     public ArrayList<T> getGrades() {

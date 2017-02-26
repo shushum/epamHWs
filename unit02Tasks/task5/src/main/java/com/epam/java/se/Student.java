@@ -23,7 +23,7 @@ public class Student {
         return lastName;
     }
 
-    public ArrayList<LearningGroup> searchForStudentGroups (ArrayList<LearningGroup> existingGroups){
+    private ArrayList<LearningGroup> searchForStudentGroups (ArrayList<LearningGroup> existingGroups){
         ArrayList<LearningGroup> groups = new ArrayList<>();
 
         for (LearningGroup group: existingGroups) {
@@ -32,7 +32,23 @@ public class Student {
             }
         }
 
-        return this.groups = groups;
+        return groups;
+    }
+
+    public String compareStudentGradesByEyes(ArrayList<LearningGroup> existingGroups){
+        ArrayList<LearningGroup> studentGroups = searchForStudentGroups(existingGroups);
+
+        StringBuilder result = new StringBuilder();
+        result.append(firstName + " " + lastName + "'s grades are:\n");
+
+        for (LearningGroup group: studentGroups) {
+
+            String subject = group.getSubject().toString();
+            String grade = group.getStudentGrades(this).toString();
+
+            result.append("Subject: " + subject + ", Grade: " + grade +"\n");
+        }
+        return result.toString();
     }
 
     public ArrayList<LearningGroup> getGroups() {
