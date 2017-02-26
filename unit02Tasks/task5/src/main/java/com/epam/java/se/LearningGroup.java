@@ -71,4 +71,12 @@ public class LearningGroup<T extends Number> {
     public ArrayList<T> getGrades() {
         return grades;
     }
+
+    public ArrayList<Student> getStudents() {
+        return students;
+    }
+
+    public Subject getSubject() {
+        return subject;
+    }
 }
