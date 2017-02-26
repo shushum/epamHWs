@@ -2,21 +2,25 @@ package com.epam.java.se;
 
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Comparator;
 
 /**
  * Created by Yegor on 25.02.2017.
  */
-public class NoviceKit {
+public class NoviceKit{
     private ArrayList<Stationery> inventory;
 
     public NoviceKit(){
         inventory = new ArrayList<>(4);
 
-        inventory.add(new BallPen(15, Colour.BLUE));
-        inventory.add(new BallPen(15, Colour.BLACK));
-        inventory.add(new Liner(30, Colour.YELLOW));
+        inventory.add(new BallPen(20, Colour.BLACK));
         inventory.add(new Ruler(15, 25));
+        inventory.add(new Liner(30, Colour.YELLOW));
+        inventory.add(new BallPen(15, Colour.BLUE));
+    }
+
+    public ArrayList<Stationery> getInventory(){
+        return inventory;
     }
 
     public String accountingOfInventory(){
