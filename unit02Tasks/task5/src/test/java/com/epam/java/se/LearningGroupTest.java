@@ -12,18 +12,53 @@ import static org.junit.Assert.*;
 public class LearningGroupTest {
 
     @Test
-    public void initialGradeTest() {
+    public void initialLearningGroupTest() {
         Student peter = new Student("Peter", "Jackson");
 
         ArrayList<Student> list = new ArrayList();
         list.add(peter);
 
-        LearningGroup lg = new LearningGroup(Subject.MATH,list);
+        LearningGroup lg = new LearningGroup(Subject.MATH, list);
 
         System.out.println(lg.getGrades());
         System.out.println(list.contains(peter));
     }
 
+    @Test
+    public void rateStudent() {
+        Student peter = new Student("Peter", "Jackson");
+        Student sam = new Student("Samuel", "Jackson");
 
+        ArrayList<Student> list = new ArrayList();
+        list.add(peter);
+        list.add(sam);
 
+        LearningGroup mathClass = new LearningGroup(Subject.MATH, list);
+
+        System.out.println(mathClass.getGrades());
+
+        mathClass.rateStudent(peter, 4);
+
+        System.out.println(mathClass.getGrades());
+    }
+
+    @Test
+    public void illegalRateStudent() {
+        Student peter = new Student("Peter", "Jackson");
+        Student sam = new Student("Samuel", "Jackson");
+
+        ArrayList<Student> list = new ArrayList();
+        list.add(peter);
+        list.add(sam);
+
+        LearningGroup mathClass = new LearningGroup(Subject.MATH, list);
+
+        System.out.println(mathClass.getGrades());
+
+        try {
+            mathClass.rateStudent(peter, 4.0);
+        } catch (IllegalArgumentException e){
+            System.err.println("You should see this.");
+        }
+    }
 }

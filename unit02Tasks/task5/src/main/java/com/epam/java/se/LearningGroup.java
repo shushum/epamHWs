@@ -1,6 +1,8 @@
 package com.epam.java.se;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Objects;
 
 /**
  * Created by Yegor on 26.02.2017.
@@ -13,11 +15,12 @@ public class LearningGroup<T extends Number> {
     public LearningGroup(Subject subject, ArrayList<Student> students) {
         this.subject = subject;
         this.students = students;
-        this.grades = new ArrayList<>(students.size());
+        this.grades = new ArrayList<>(Collections.nCopies(students.size(), null));
     }
 
     public void rateStudent(Student student, T grade) {
-        //nottull todo
+        Objects.requireNonNull(grade);
+        Objects.requireNonNull(student);
 
         if (students.contains(student)) {
             gradeLegalityCheck(grade);
@@ -28,21 +31,27 @@ public class LearningGroup<T extends Number> {
     }
 
     private void gradeLegalityCheck(T grade) {
-        //nottull todo
+
+        if (isIllegal(grade)){
+            illegalGradeException();
+        }
 
         switch (subject) {
             case IT:
             case MATH: {
                 if (!(grade instanceof Integer)) {
-                    throw new IllegalArgumentException();
+                    String message = String.format("Grade (%s) for '%s' must be Integer.",
+                            grade.toString(), subject.toString());
+                    throw new IllegalArgumentException(message);
                 }
-                // new exception on value of grade
                 break;
             }
             case PHYSICS:
             case STATISTICS: {
                 if (!(grade instanceof Double)) {
-                    throw new IllegalArgumentException();
+                    String message = String.format("Grade (%s) for '%s' must be Double.",
+                            grade.toString(), subject.toString());
+                    throw new IllegalArgumentException(message);
                 }
                 break;
             }
@@ -50,28 +59,14 @@ public class LearningGroup<T extends Number> {
 
     }
 
-   /* private<T extends Number> double setDoubleGrade(Grade grade) {
-        if (isIllegalGrade(grade)) {
-            illegalGradeException();
-        }
-        return grade.doubleValue();
-    }
-
-    private <T extends Number> int setIntGrade(T grade) {
-        if (isIllegalGrade(grade)) {
-            illegalGradeException();
-        }
-        return grade.intValue();
-    }
-
-    private static <T extends Number> boolean isIllegalGrade(T grade) {
+    private static <T extends Number> boolean isIllegal(T grade) {
         return grade.intValue() < 0 || grade.intValue() > 10;
     }
 
     private static void illegalGradeException() {
-        String error = "Grades must be in decimal system.";
+        String error = "Grades must be from 0 to 10 system.";
         throw new IllegalArgumentException(error);
-    }*/
+    }
 
     public ArrayList<T> getGrades() {
         return grades;
