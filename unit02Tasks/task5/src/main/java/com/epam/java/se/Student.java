@@ -8,7 +8,6 @@ import java.util.ArrayList;
 public class Student {
     private String firstName;
     private String lastName;
-    private ArrayList<LearningGroup> groups = new ArrayList<>();
 
     public Student(String firstName, String lastName) {
         this.firstName = firstName;
@@ -21,18 +20,6 @@ public class Student {
 
     public String getLastName() {
         return lastName;
-    }
-
-    private ArrayList<LearningGroup> searchForStudentGroups (ArrayList<LearningGroup> existingGroups){
-        ArrayList<LearningGroup> groups = new ArrayList<>();
-
-        for (LearningGroup group: existingGroups) {
-            if (group.getStudents().contains(this)){
-                groups.add(group);
-            }
-        }
-
-        return groups;
     }
 
     public String compareStudentGradesByEyes(ArrayList<LearningGroup> existingGroups){
@@ -51,7 +38,16 @@ public class Student {
         return result.toString();
     }
 
-    public ArrayList<LearningGroup> getGroups() {
+    private ArrayList<LearningGroup> searchForStudentGroups (ArrayList<LearningGroup> existingGroups){
+        ArrayList<LearningGroup> groups = new ArrayList<>();
+
+        for (LearningGroup group: existingGroups) {
+            if (group.getStudents().contains(this)){
+                groups.add(group);
+            }
+        }
+
         return groups;
     }
+
 }

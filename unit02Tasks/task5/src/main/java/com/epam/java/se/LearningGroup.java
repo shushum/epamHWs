@@ -30,50 +30,6 @@ public class LearningGroup<T extends Number> {
 
     }
 
-    private void gradeLegalityCheck(T grade) {
-
-        if (isIllegal(grade)) {
-            illegalGradeException();
-        }
-
-        switch (subject) {
-            case IT:
-            case MATH: {
-                if (!(grade instanceof Integer)) {
-                    String message = String.format("Grade (%s) for '%s' must be Integer.",
-                            grade.toString(), subject.toString());
-                    throw new IllegalArgumentException(message);
-                }
-                break;
-            }
-            case PHYSICS:
-            case STATISTICS: {
-                if (!(grade instanceof Double)) {
-                    String message = String.format("Grade (%s) for '%s' must be Double.",
-                            grade.toString(), subject.toString());
-                    throw new IllegalArgumentException(message);
-                }
-                break;
-            }
-        }
-
-    }
-
-    private static <T extends Number> boolean isIllegal(T grade) {
-        return grade.intValue() < 0 || grade.intValue() > 10;
-    }
-
-    private static void illegalGradeException() {
-        String error = "Grades must be from 0 to 10 system.";
-        throw new IllegalArgumentException(error);
-    }
-
-    private static void nullGradeException(Student student) {
-        String message = String.format("Student %s has no grade on this Subject.",
-                student.getLastName());
-        throw new IllegalArgumentException(message);
-    }
-
     public T getStudentGrades(Student student) {
 
         if (students.contains(student)) {
@@ -101,5 +57,48 @@ public class LearningGroup<T extends Number> {
 
     public Subject getSubject() {
         return subject;
+    }
+
+    private void gradeLegalityCheck(T grade) {
+
+        if (isIllegal(grade)) {
+            illegalGradeException();
+        }
+
+        switch (subject) {
+            case IT:
+            case MATH: {
+                if (!(grade instanceof Integer)) {
+                    String message = String.format("Grade (%s) for '%s' must be Integer.",
+                            grade.toString(), subject.toString());
+                    throw new IllegalArgumentException(message);
+                }
+                break;
+            }
+            case PHYSICS:
+            case STATISTICS: {
+                if (!(grade instanceof Double)) {
+                    String message = String.format("Grade (%s) for '%s' must be Double.",
+                            grade.toString(), subject.toString());
+                    throw new IllegalArgumentException(message);
+                }
+                break;
+            }
+        }
+    }
+
+    private static <T extends Number> boolean isIllegal(T grade) {
+        return grade.intValue() < 0 || grade.intValue() > 10;
+    }
+
+    private static void illegalGradeException() {
+        String error = "Grades must be from 0 to 10 system.";
+        throw new IllegalArgumentException(error);
+    }
+
+    private static void nullGradeException(Student student) {
+        String message = String.format("Student %s has no grade on this Subject.",
+                student.getLastName());
+        throw new IllegalArgumentException(message);
     }
 }
