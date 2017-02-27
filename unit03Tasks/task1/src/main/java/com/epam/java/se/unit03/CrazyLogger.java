@@ -21,11 +21,15 @@ public class CrazyLogger {
         log.append(timeStamp.format(dateTimeFormatter));
         log.append(" - ");
         log.append(message);
-        log.append("\n");
+        log.append(";\n");
         log.trimToSize();
     }
 
     public String toString(){
         return log.toString();
+    }
+
+    public StringBuilder getLog() {
+        return log;
     }
 }
