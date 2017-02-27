@@ -1,7 +1,6 @@
 package com.epam.java.se;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Objects;
 
 /**
@@ -12,6 +11,9 @@ public class LearningGroup {
     private ArrayList<Student> students;
     private ArrayList<Grade> grades;
 
+    //get "unchecked" warning
+    //playing with annotations
+    @SuppressWarnings("unchecked")
     public LearningGroup(Subject subject, ArrayList<Student> students) {
         this.subject = subject;
         this.students = students;
