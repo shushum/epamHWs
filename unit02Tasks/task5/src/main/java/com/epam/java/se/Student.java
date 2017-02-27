@@ -31,7 +31,7 @@ public class Student {
         for (LearningGroup group: studentGroups) {
 
             String subject = group.getSubject().toString();
-            String grade = group.getStudentGrades(this).toString();
+            String grade = group.getStudentGrades(this).getGrade().toString();
 
             result.append("Subject: " + subject + ", Grade: " + grade +"\n");
         }

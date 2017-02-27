@@ -7,18 +7,22 @@ import java.util.Objects;
 /**
  * Created by Yegor on 26.02.2017.
  */
-public class LearningGroup<T extends Number> {
+public class LearningGroup {
     private Subject subject;
     private ArrayList<Student> students;
-    private ArrayList<T> grades;
+    private ArrayList<Grade> grades;
 
     public LearningGroup(Subject subject, ArrayList<Student> students) {
         this.subject = subject;
         this.students = students;
-        this.grades = new ArrayList<>(Collections.nCopies(students.size(), null));
+
+        grades = new ArrayList<>(students.size());
+        for (int i = 0; i < students.size(); i++) {
+            grades.add(new Grade(0));
+        }
     }
 
-    public void rateStudent(Student student, T grade) {
+    public void rateStudent(Student student, Grade grade) {
         Objects.requireNonNull(grade);
         Objects.requireNonNull(student);
 
@@ -26,15 +30,15 @@ public class LearningGroup<T extends Number> {
             gradeLegalityCheck(grade);
             grades.set(students.indexOf(student), grade);
         }
-        return;
 
     }
 
-    public T getStudentGrades(Student student) {
+    public Grade getStudentGrades(Student student) {
+        Objects.requireNonNull(student);
 
         if (students.contains(student)) {
 
-            T grade = grades.get(students.indexOf(student));
+            Grade grade = grades.get(students.indexOf(student));
 
             if (grade == null) {
                 nullGradeException(student);
@@ -47,7 +51,7 @@ public class LearningGroup<T extends Number> {
         throw new IllegalArgumentException(message);
     }
 
-    public ArrayList<T> getGrades() {
+    public ArrayList<Grade> getGrades() {
         return grades;
     }
 
@@ -59,7 +63,7 @@ public class LearningGroup<T extends Number> {
         return subject;
     }
 
-    private void gradeLegalityCheck(T grade) {
+    private void gradeLegalityCheck(Grade grade) {
 
         if (isIllegal(grade)) {
             illegalGradeException();
@@ -68,7 +72,7 @@ public class LearningGroup<T extends Number> {
         switch (subject) {
             case IT:
             case MATH: {
-                if (!(grade instanceof Integer)) {
+                if (!(grade.getGrade() instanceof Integer)) {
                     String message = String.format("Grade (%s) for '%s' must be Integer.",
                             grade.toString(), subject.toString());
                     throw new IllegalArgumentException(message);
@@ -77,7 +81,7 @@ public class LearningGroup<T extends Number> {
             }
             case PHYSICS:
             case STATISTICS: {
-                if (!(grade instanceof Double)) {
+                if (!(grade.getGrade() instanceof Double)) {
                     String message = String.format("Grade (%s) for '%s' must be Double.",
                             grade.toString(), subject.toString());
                     throw new IllegalArgumentException(message);
@@ -87,12 +91,12 @@ public class LearningGroup<T extends Number> {
         }
     }
 
-    private static <T extends Number> boolean isIllegal(T grade) {
-        return grade.intValue() < 0 || grade.intValue() > 10;
+    private static boolean isIllegal(Grade grade) {
+        return grade.toDouble() < 0 || grade.toDouble() > 10;
     }
 
     private static void illegalGradeException() {
-        String error = "Grades must be from 0 to 10 system.";
+        String error = "Grades must be from 0 to 10.";
         throw new IllegalArgumentException(error);
     }
 

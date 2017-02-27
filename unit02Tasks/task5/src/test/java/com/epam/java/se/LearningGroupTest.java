@@ -37,13 +37,13 @@ public class LearningGroupTest {
 
         System.out.println(mathClass.getGrades());
 
-        mathClass.rateStudent(peter, 4);
+        mathClass.rateStudent(peter, new Grade(4));
 
         System.out.println(mathClass.getGrades());
     }
 
     @Test
-    public void illegalRateStudent() {
+    public void illegalTypeRateStudent() {
         Student peter = new Student("Peter", "Jackson");
         Student sam = new Student("Samuel", "Jackson");
 
@@ -53,12 +53,28 @@ public class LearningGroupTest {
 
         LearningGroup mathClass = new LearningGroup(Subject.MATH, list);
 
-        System.out.println(mathClass.getGrades());
+        try {
+            mathClass.rateStudent(peter, new Grade(4.0));
+        } catch (IllegalArgumentException e){
+            System.err.println("Wrong type of grade.");
+        }
+    }
+
+    @Test
+    public void illegalGradeRateStudent() {
+        Student peter = new Student("Peter", "Jackson");
+        Student sam = new Student("Samuel", "Jackson");
+
+        ArrayList<Student> list = new ArrayList();
+        list.add(peter);
+        list.add(sam);
+
+        LearningGroup mathClass = new LearningGroup(Subject.MATH, list);
 
         try {
-            mathClass.rateStudent(peter, 4.0);
+            mathClass.rateStudent(peter, new Grade(12));
         } catch (IllegalArgumentException e){
-            System.err.println("You should see this.");
+            System.err.println("Grades must be from 0 to 10.");
         }
     }
 }
