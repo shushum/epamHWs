@@ -4,6 +4,7 @@ package com.epam.java.se;
  * Created by Yegor on 27.02.2017.
  */
 public class AtomicSubmarine {
+    
     private SubmarineEngine engine;
 
     public AtomicSubmarine() {

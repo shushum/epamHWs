@@ -12,6 +12,7 @@ public class AtomicSubmarineTest {
     public void submarineLaunchTest() throws Exception {
         AtomicSubmarine submarine = new AtomicSubmarine();
         submarine.launch();
+
     }
 
 }
