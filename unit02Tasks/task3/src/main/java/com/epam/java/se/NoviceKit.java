@@ -2,15 +2,16 @@ package com.epam.java.se;
 
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 
 /**
  * Created by Yegor on 25.02.2017.
  */
-public class NoviceKit{
+public class NoviceKit implements Sorter {
     private ArrayList<Stationery> inventory;
 
-    public NoviceKit(){
+    public NoviceKit() {
         inventory = new ArrayList<>(4);
 
         inventory.add(new BallPen(20, Colour.BLACK));
@@ -19,11 +20,11 @@ public class NoviceKit{
         inventory.add(new BallPen(15, Colour.BLUE));
     }
 
-    public ArrayList<Stationery> getInventory(){
+    public ArrayList<Stationery> getInventory() {
         return inventory;
     }
 
-    public String accountingOfInventory(){
+    public String accountingOfInventory() {
         StringBuilder message = new StringBuilder();
 
         message.append("List of Novice Kit:\n");
@@ -32,5 +33,40 @@ public class NoviceKit{
         }
 
         return message.toString();
+    }
+
+    @Override
+    public void sortByClassName(ArrayList<Stationery> sorted) {
+        Collections.sort(sorted, (o1, o2) -> {
+            String s1 = o1.getClass().getSimpleName();
+            String s2 = o2.getClass().getSimpleName();
+            return s1.compareTo(s2);
+        });
+    }
+
+    @Override
+    public void sortByPrice(ArrayList<Stationery> sorted) {
+        Collections.sort(sorted, (o1, o2) -> {
+            Integer p1 = o1.getPrice();
+            Integer p2 = o2.getPrice();
+            return p1.compareTo(p2);
+        });
+    }
+
+    @Override
+    public void sortByPriceAndClassName(ArrayList<Stationery> sorted) {
+        Collections.sort(sorted, (o1, o2) -> {
+            Integer p1 = o1.getPrice();
+            Integer p2 = o2.getPrice();
+
+            int result = p1.compareTo(p2);
+            if (result != 0) {
+                return result;
+            }
+
+            String s1 = o1.getClass().getSimpleName();
+            String s2 = o2.getClass().getSimpleName();
+            return s1.compareTo(s2);
+        });
     }
 }
