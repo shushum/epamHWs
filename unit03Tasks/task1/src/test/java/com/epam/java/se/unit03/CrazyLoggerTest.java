@@ -82,12 +82,27 @@ public class CrazyLoggerTest {
 
         log.addNewMessage("Log initialized!");
         log.addNewMessage("Message1");
+        log.addNewMessage("Mesage2");
+        log.addNewMessage("Message3");
+
+        assertTrue(log.findMessageInLog("Message").contains(" - Message1;"));
+        assertTrue(log.findMessageInLog("Message").contains(" - Message3;"));
+        assertFalse(log.findMessageInLog("Message").contains(" - Mesage2;"));
+
+        assertTrue(log.findMessageInLog("Log").contains("initialized!;"));
+    }
+
+    @Test
+    public void findEmptyOrSeparatorKindMessages() throws Exception {
+        CrazyLogger log = new CrazyLogger();
+
+        log.addNewMessage("Log initialized!");
+        log.addNewMessage("Message1");
         log.addNewMessage("Message2");
         log.addNewMessage("Message3");
 
-        System.out.println(log);
-        System.out.println(log.findMessageInLog("Message"));
-
+        assertTrue(log.findMessageInLog("").equals("Couldn't find. Message [] is empty or separator-kind."));
+        assertTrue(log.findMessageInLog(";").equals("Couldn't find. Message [;] is empty or separator-kind."));
     }
 
 }

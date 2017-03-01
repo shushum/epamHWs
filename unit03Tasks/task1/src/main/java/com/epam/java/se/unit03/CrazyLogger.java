@@ -47,32 +47,49 @@ public class CrazyLogger {
     public String findMessageInLog(String message) {
         Objects.requireNonNull(message);
 
-        int beginningLogLineIndex = 0;
-        int endingOfLogLineIndex = 0;
+        if (message.isEmpty() || message == separator){
+            String result = String.format("Couldn't find. Message [%s] is empty or separator-kind.", message);
+            return result;
+        }
+
+        int beginningOfCurrentLogLine = 0;
+        int endingOfCurrentLogLine = 0;
         int indexOfMatching;
         StringBuilder result = new StringBuilder();
 
-        while ((indexOfMatching = log.indexOf(message, endingOfLogLineIndex)) != -1) {
+        while ((indexOfMatching = log.indexOf(message, endingOfCurrentLogLine)) != -1) {
 
-            for (int i = indexOfMatching + message.length(); i <= log.capacity(); i++) {
-                String curSubString = log.substring(i, i + separator.length());
-                if (curSubString.equals(separator)) {
-                    endingOfLogLineIndex = i;
-                    break;
-                }
-            }
+            endingOfCurrentLogLine =
+                    getEndingOfCurrentLogLineIndex(message, endingOfCurrentLogLine, indexOfMatching);
 
-            for (int i = indexOfMatching - 1; i >= beginningLogLineIndex; i--) {
-                String curSubString = log.substring(i - separator.length(), i);
-                if (curSubString.equals(separator)){
-                    beginningLogLineIndex = i;
-                    break;
-                }
-            }
+            beginningOfCurrentLogLine =
+                    getBeginningOfCurrentLogLineIndex(beginningOfCurrentLogLine, indexOfMatching);
 
-            result.append(log.substring(beginningLogLineIndex,endingOfLogLineIndex));
+            result.append(log.substring(beginningOfCurrentLogLine, endingOfCurrentLogLine));
         }
         return result.toString();
+    }
+
+    private int getBeginningOfCurrentLogLineIndex(int beginningOfCurrentLogLineIndex, int indexOfMatching) {
+        for (int i = indexOfMatching; i > beginningOfCurrentLogLineIndex; i--) {
+            String curSubString = log.substring(i - separator.length(), i);
+            if (curSubString.equals(separator)) {
+                beginningOfCurrentLogLineIndex = i;
+                break;
+            }
+        }
+        return beginningOfCurrentLogLineIndex;
+    }
+
+    private int getEndingOfCurrentLogLineIndex(String message, int endingOfLogLineIndex, int indexOfMatching) {
+        for (int i = indexOfMatching + message.length(); i < log.capacity(); i++) {
+            String curSubString = log.substring(i, i + separator.length());
+            if (curSubString.equals(separator)) {
+                endingOfLogLineIndex = i + separator.length();
+                break;
+            }
+        }
+        return endingOfLogLineIndex;
     }
 
     public String toString() {
