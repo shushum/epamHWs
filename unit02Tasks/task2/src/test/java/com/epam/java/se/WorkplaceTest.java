@@ -12,32 +12,46 @@ public class WorkplaceTest {
     @Test
     public void accountingOfStationery() throws Exception {
         Stationery[] stat1 = new Stationery[3];
-        Stationery[] stat2 = new Stationery[3];
         for (int i = 0; i < 3; i++) {
-            stat1[i] = new Stationery(i*10);
-            stat2[i] = new Stationery(i*10);
-
+            stat1[i] = new Stationery(i * 10);
         }
-        Stationery stat3 = new Stationery(70);
 
-        Workplace empty = new Workplace();
-        Workplace john = new Workplace("John",stat1);
-        Workplace peter = new Workplace("Peter",stat2);
+        Workplace john = new Workplace("John", stat1);
 
-        System.out.println(empty.accountingOfStationery());
-        System.out.println(john.accountingOfStationery());
-        System.out.println(peter.accountingOfStationery());
-
-        empty.setOwner("Micky");
-        empty.addStationery(stat1);
-        empty.addStationery(stat3);
-        john.addStationery(stat3);
-        peter.addStationery(stat1);
-
-        System.out.println(empty.accountingOfStationery());
-        System.out.println(john.accountingOfStationery());
-        System.out.println(peter.accountingOfStationery());
-
+        assertTrue(john.accountingOfStationery().contains("Owner name: John|Stationery"));
+        assertTrue(john.accountingOfStationery().contains("Price:0"));
+        assertTrue(john.accountingOfStationery().contains("Price:20"));
+        assertTrue(john.accountingOfStationery().contains("Total cost: 30"));
     }
 
+    @Test
+    public void accountingOfEmptyWorkplace() throws Exception {
+        Workplace empty = new Workplace();
+        assertTrue(empty.accountingOfStationery().contains("This workplace currently has no owner."));
+    }
+
+    @Test
+    public void accountingOfEmptyStationery() throws Exception {
+        Workplace empty = new Workplace();
+        empty.setOwner("Micky");
+        assertTrue(empty.accountingOfStationery().contains("This owner has no stationery."));
+    }
+    @Test
+    public void addToStationery() throws Exception {
+        Stationery[] stat1 = new Stationery[3];
+        for (int i = 0; i < 3; i++) {
+            stat1[i] = new Stationery(i * 10);
+        }
+
+        Workplace john = new Workplace("John", stat1);
+
+        assertFalse(john.accountingOfStationery().contains("Price:70"));
+        assertFalse(john.accountingOfStationery().contains("Total cost: 100"));
+
+        Stationery stat3 = new Stationery(70);
+        john.addStationery(stat3);
+
+        assertTrue(john.accountingOfStationery().contains("Price:70"));
+        assertTrue(john.accountingOfStationery().contains("Total cost: 100"));
+    }
 }

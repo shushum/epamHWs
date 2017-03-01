@@ -11,10 +11,11 @@ public class StationeryTest {
     @Test
     public void priceTest() throws Exception {
         Stationery stat = new Stationery();
-        System.out.println(stat.getPrice());
+        assertTrue(stat.getPrice() == 0);
+
 
         Stationery preciousStat = new Stationery(10);
-        System.out.println(preciousStat.getPrice());
+        assertTrue(stat.getPrice() == 10);
 
         assertFalse(stat.equals(preciousStat));
         assertTrue(stat.equals(stat));
@@ -24,10 +25,12 @@ public class StationeryTest {
     @Test
     public void toStringTest() throws Exception {
         Stationery stat = new Stationery();
-        System.out.println(stat.toString());
+        assertTrue(stat.toString().contains("Stationery"));
+        assertTrue(stat.toString().contains("Price:0"));
 
         Stationery preciousStat = new Stationery(10);
-        System.out.println(preciousStat.toString());
+        assertTrue(preciousStat.toString().contains("Stationery"));
+        assertTrue(preciousStat.toString().contains("Price:10"));
     }
 
 
