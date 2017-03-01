@@ -11,7 +11,11 @@ public class RulerTest {
     @Test
     public void toStringTest() throws Exception {
         Ruler ruler = new Ruler(31,20);
-        System.out.println(ruler.toString());
+
+        assertTrue(ruler.toString().contains("Price:31"));
+        assertTrue(ruler.toString().contains("Length:20"));
+
+        assertFalse(ruler.toString().contains("Colour:PINK"));
     }
 
 }
