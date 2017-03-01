@@ -64,9 +64,16 @@ public class CrazyLoggerTest {
 
         assertTrue(log.getLastMessage().contains(mes1Stamp.format(DateTimeFormatter.ofPattern("dd-MM-YYYY : hh-mm"))));
         assertTrue(log.getLastMessage().contains(" - Message1;\n"));
+    }
 
+    @Test
+    public void addNewMessageSeparatorTest() throws Exception {
+        CrazyLogger log = new CrazyLogger();
 
+        log.addNewMessage("Log; initialized;");
 
+        assertFalse(log.toString().contains("Log; initialized;;\n"));
+        assertTrue(log.toString().contains("Log: initialized:;\n"));
     }
 
 }
