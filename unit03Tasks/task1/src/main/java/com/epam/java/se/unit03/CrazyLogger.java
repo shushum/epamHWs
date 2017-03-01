@@ -22,7 +22,7 @@ public class CrazyLogger {
         Objects.requireNonNull(message);
 
         if (message.contains(separator)) {
-            message = message.replaceAll(separator, ":");
+            message = message.replaceAll(separator, " ");
         }
 
         LocalDateTime timeStamp = LocalDateTime.now();
@@ -30,7 +30,8 @@ public class CrazyLogger {
         log.append(timeStamp.format(dateTimeFormatter));
         log.append(" - ");
         log.append(message);
-        log.append(";\n");
+        log.append(separator);
+        log.append("\n");
         log.trimToSize();
         indexOfLastMessageWithDate = log.capacity() - (message.length() + 23);
     }
@@ -41,6 +42,37 @@ public class CrazyLogger {
             return "This log is empty!";
         }
         return log.substring(indexOfLastMessageWithDate);
+    }
+
+    public String findMessageInLog(String message) {
+        Objects.requireNonNull(message);
+
+        int beginningLogLineIndex = 0;
+        int endingOfLogLineIndex = 0;
+        int indexOfMatching;
+        StringBuilder result = new StringBuilder();
+
+        while ((indexOfMatching = log.indexOf(message, endingOfLogLineIndex)) != -1) {
+
+            for (int i = indexOfMatching + message.length(); i <= log.capacity(); i++) {
+                String curSubString = log.substring(i, i + separator.length());
+                if (curSubString.equals(separator)) {
+                    endingOfLogLineIndex = i;
+                    break;
+                }
+            }
+
+            for (int i = indexOfMatching - 1; i >= beginningLogLineIndex; i--) {
+                String curSubString = log.substring(i - separator.length(), i);
+                if (curSubString.equals(separator)){
+                    beginningLogLineIndex = i;
+                    break;
+                }
+            }
+
+            result.append(log.substring(beginningLogLineIndex,endingOfLogLineIndex));
+        }
+        return result.toString();
     }
 
     public String toString() {

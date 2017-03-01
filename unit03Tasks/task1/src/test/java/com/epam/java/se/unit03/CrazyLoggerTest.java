@@ -73,7 +73,21 @@ public class CrazyLoggerTest {
         log.addNewMessage("Log; initialized;");
 
         assertFalse(log.toString().contains("Log; initialized;;\n"));
-        assertTrue(log.toString().contains("Log: initialized:;\n"));
+        assertTrue(log.toString().contains("Log  initialized ;\n"));
+    }
+
+    @Test
+    public void findMessagesInLogWorks() throws Exception {
+        CrazyLogger log = new CrazyLogger();
+
+        log.addNewMessage("Log initialized!");
+        log.addNewMessage("Message1");
+        log.addNewMessage("Message2");
+        log.addNewMessage("Message3");
+
+        System.out.println(log);
+        System.out.println(log.findMessageInLog("Message"));
+
     }
 
 }
