@@ -26,8 +26,8 @@ public class StudentTest {
         LearningGroup statClass = new LearningGroup(Subject.STATISTICS, list1);
         LearningGroup itClass = new LearningGroup(Subject.IT, list2);
 
-        mathClass.rateStudent(peter, new Grade(5));
-        statClass.rateStudent(peter,new Grade(9.99));
+        mathClass.rateStudent(peter, new Grade<Integer>(5));
+        statClass.rateStudent(peter, new Grade<Double>(9.99));
 
 
         ArrayList<LearningGroup> groups = new ArrayList<>();
@@ -35,11 +35,17 @@ public class StudentTest {
         groups.add(statClass);
         groups.add(itClass);
 
-        System.out.println(peter.compareStudentGradesByEyes(groups));
+        assertTrue(peter.compareStudentGradesByEyes(groups).contains("Peter Jackson"));
+        assertTrue(peter.compareStudentGradesByEyes(groups).contains("Subject: MATH, Grade: 5"));
+        assertTrue(peter.compareStudentGradesByEyes(groups).contains("Subject: STATISTICS, Grade: 9.99"));
+
+        assertFalse(peter.compareStudentGradesByEyes(groups).contains("Subject: IT, Grade: 7"));
+
+
     }
 
     @Test
-    public void compareStudentGradesWithNoGrades() throws Exception {
+    public void compareStudentGradesWithNoGradesWorking() throws Exception {
         Student peter = new Student("Peter", "Jackson");
         Student sam = new Student("Samuel", "Jackson");
 
@@ -59,7 +65,11 @@ public class StudentTest {
         groups.add(statClass);
         groups.add(itClass);
 
-        System.out.println(peter.compareStudentGradesByEyes(groups));
+        assertTrue(peter.compareStudentGradesByEyes(groups).contains("Peter Jackson"));
+        assertTrue(peter.compareStudentGradesByEyes(groups).contains("Subject: MATH, Grade: 0"));
+        assertTrue(peter.compareStudentGradesByEyes(groups).contains("Subject: STATISTICS, Grade: 0"));
+
+        assertFalse(peter.compareStudentGradesByEyes(groups).contains("Subject: IT, Grade: 0"));
     }
 
 }
