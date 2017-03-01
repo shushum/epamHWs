@@ -37,7 +37,7 @@ public class LearningGroupTest {
         Student peter = new Student("Peter", "Jackson");
         Student sam = new Student("Samuel", "Jackson");
 
-        ArrayList<Student> list = new ArrayList();
+        ArrayList<Student> list = new ArrayList<>();
         list.add(peter);
         list.add(sam);
 
