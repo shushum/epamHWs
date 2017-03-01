@@ -18,5 +18,18 @@ public class Grade<T extends Number> {
         return grade.doubleValue();
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
+        Grade<?> grade1 = (Grade<?>) o;
+
+        return grade != null ? grade.equals(grade1.grade) : grade1.grade == null;
+    }
+
+    @Override
+    public int hashCode() {
+        return grade != null ? grade.hashCode() : 0;
+    }
 }

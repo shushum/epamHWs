@@ -3,6 +3,7 @@ package com.epam.java.se;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.IntSummaryStatistics;
 
 import static org.junit.Assert.*;
 
@@ -12,16 +13,23 @@ import static org.junit.Assert.*;
 public class LearningGroupTest {
 
     @Test
-    public void initialLearningGroupTest() {
+    public void initiateLearningGroupTest() {
         Student peter = new Student("Peter", "Jackson");
+        Student sam = new Student("Samuel", "Jackson");
 
-        ArrayList<Student> list = new ArrayList();
+        ArrayList<Student> list = new ArrayList<>();
         list.add(peter);
+        list.add(sam);
 
-        LearningGroup lg = new LearningGroup(Subject.MATH, list);
+        LearningGroup mathClass = new LearningGroup(Subject.MATH, list);
 
-        System.out.println(lg.getGrades());
-        System.out.println(list.contains(peter));
+        assertTrue(mathClass.getSubject().equals(Subject.MATH));
+
+        assertTrue(mathClass.getStudents().contains(peter));
+        assertTrue(mathClass.getStudents().contains(sam));
+
+        assertTrue(mathClass.getStudentGrade(peter).toDouble() == 0);
+
     }
 
     @Test
@@ -35,46 +43,41 @@ public class LearningGroupTest {
 
         LearningGroup mathClass = new LearningGroup(Subject.MATH, list);
 
-        System.out.println(mathClass.getGrades());
+        mathClass.rateStudent(peter, new Grade<Integer>(4));
 
-        mathClass.rateStudent(peter, new Grade(4));
+        assertTrue(mathClass.getStudentGrade(peter).equals(new Grade<Integer>(4)));
+        assertFalse(mathClass.getStudentGrade(peter).equals(new Grade<Double>(4.0)));
 
-        System.out.println(mathClass.getGrades());
+        assertTrue(mathClass.getStudentGrade(sam).equals(new Grade<Integer>(0)));
+
     }
 
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void illegalTypeRateStudent() {
         Student peter = new Student("Peter", "Jackson");
         Student sam = new Student("Samuel", "Jackson");
 
-        ArrayList<Student> list = new ArrayList();
+        ArrayList<Student> list = new ArrayList<>();
         list.add(peter);
         list.add(sam);
 
         LearningGroup mathClass = new LearningGroup(Subject.MATH, list);
 
-        try {
-            mathClass.rateStudent(peter, new Grade(4.0));
-        } catch (IllegalArgumentException e){
-            System.err.println("Wrong type of grade.");
-        }
+        mathClass.rateStudent(peter, new Grade<Double>(4.0));
+
     }
 
-    @Test
-    public void illegalGradeRateStudent() {
+    @Test(expected = IllegalArgumentException.class)
+    public void illegalGradeAmountRateStudent() {
         Student peter = new Student("Peter", "Jackson");
         Student sam = new Student("Samuel", "Jackson");
 
-        ArrayList<Student> list = new ArrayList();
+        ArrayList<Student> list = new ArrayList<>();
         list.add(peter);
         list.add(sam);
 
         LearningGroup mathClass = new LearningGroup(Subject.MATH, list);
 
-        try {
-            mathClass.rateStudent(peter, new Grade(12));
-        } catch (IllegalArgumentException e){
-            System.err.println("Grades must be from 0 to 10.");
-        }
+        mathClass.rateStudent(peter, new Grade<Integer>(12));
     }
 }

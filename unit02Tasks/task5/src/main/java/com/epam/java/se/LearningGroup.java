@@ -35,7 +35,7 @@ public class LearningGroup {
 
     }
 
-    public Grade getStudentGrades(Student student) {
+    public Grade getStudentGrade(Student student) {
         Objects.requireNonNull(student);
 
         if (students.contains(student)) {
