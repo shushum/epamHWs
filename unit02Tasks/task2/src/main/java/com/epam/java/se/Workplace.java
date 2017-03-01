@@ -26,17 +26,20 @@ public class Workplace {
 
     public String accountingOfStationery() {
         if (owner.equals("No owner")) {
-            String message = "This workplace currently has no owner.";
-            return message;
-        } else {
-            StringBuilder message = new StringBuilder();
-            message.append("Owner name: " + owner + "|Stationary:\n");
-            for (int i = 0; i < stationery.length; i++) {
-                message.append("\t\t\t\t\t" + stationery[i].toString() + "\n");
-            }
-            message.append("\t\t\t\t\t" + "Total cost: " + totalCost());
-            return message.toString();
+            return "This workplace currently has no owner.";
         }
+        if (stationery == null) {
+            return "This owner has no stationery.";
+        }
+
+        StringBuilder message = new StringBuilder();
+        message.append("Owner name: " + owner + "|Stationery:\n");
+        for (int i = 0; i < stationery.length; i++) {
+            message.append("\t\t\t\t\t" + stationery[i].toString() + "\n");
+        }
+        message.append("\t\t\t\t\t" + "Total cost: " + totalCost());
+        return message.toString();
+
     }
 
     private int totalCost() {
