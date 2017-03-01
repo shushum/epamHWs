@@ -20,7 +20,7 @@ public class LearningGroup {
 
         grades = new ArrayList<>(students.size());
         for (int i = 0; i < students.size(); i++) {
-            grades.add(new Grade(0));
+            grades.add(new Grade<>(0));
         }
     }
 
@@ -67,39 +67,18 @@ public class LearningGroup {
 
     private void gradeLegalityCheck(Grade grade) {
 
-        if (isIllegal(grade)) {
-            illegalGradeException();
-        }
+        gradeAmountCheck(grade);
 
-        switch (subject) {
-            case IT:
-            case MATH: {
-                if (!(grade.getGrade() instanceof Integer)) {
-                    String message = String.format("Grade (%s) for '%s' must be Integer.",
-                            grade.toString(), subject.toString());
-                    throw new IllegalArgumentException(message);
-                }
-                break;
-            }
-            case PHYSICS:
-            case STATISTICS: {
-                if (!(grade.getGrade() instanceof Double)) {
-                    String message = String.format("Grade (%s) for '%s' must be Double.",
-                            grade.toString(), subject.toString());
-                    throw new IllegalArgumentException(message);
-                }
-                break;
-            }
-        }
+        Subject.gradeTypeCheck(this.subject, grade);
+
     }
 
-    private static boolean isIllegal(Grade grade) {
-        return grade.toDouble() < 0 || grade.toDouble() > 10;
-    }
+    private static void gradeAmountCheck(Grade grade) {
 
-    private static void illegalGradeException() {
-        String error = "Grades must be from 0 to 10.";
-        throw new IllegalArgumentException(error);
+        if (grade.toDouble() < 0 || grade.toDouble() > 10) {
+            String error = "Grades must be from 0 to 10.";
+            throw new IllegalArgumentException(error);
+        }
     }
 
     private static void nullGradeException(Student student) {

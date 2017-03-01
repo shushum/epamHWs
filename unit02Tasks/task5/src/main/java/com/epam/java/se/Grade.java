@@ -6,7 +6,7 @@ package com.epam.java.se;
 public class Grade<T extends Number> {
     private T grade;
 
-    public Grade(T grade){
+    public Grade(T grade) {
         this.grade = grade;
     }
 
@@ -14,7 +14,7 @@ public class Grade<T extends Number> {
         return grade;
     }
 
-    public double toDouble(){
+    public double toDouble() {
         return grade.doubleValue();
     }
 
