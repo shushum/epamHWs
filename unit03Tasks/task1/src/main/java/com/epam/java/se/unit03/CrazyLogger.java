@@ -9,6 +9,7 @@ import java.time.format.DateTimeFormatter;
 public class CrazyLogger {
     private StringBuilder log;
     private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-YYYY : hh-mm");
+    private int indexOfLastMessageWithDate = 0;
 
 
     public CrazyLogger() {
@@ -23,6 +24,16 @@ public class CrazyLogger {
         log.append(message);
         log.append(";\n");
         log.trimToSize();
+        indexOfLastMessageWithDate = log.capacity() - (message.length() + 23);
+    }
+
+    public String getLastMessage(){
+        log.trimToSize();
+        if (log.capacity() == 0){
+            return "This log is empty!";
+        }
+
+        return log.substring(indexOfLastMessageWithDate);
     }
 
     public String toString(){
