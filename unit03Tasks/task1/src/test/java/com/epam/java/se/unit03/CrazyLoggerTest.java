@@ -105,4 +105,18 @@ public class CrazyLoggerTest {
         assertTrue(log.findMessageInLog(";").equals("Couldn't find. Message [;] is empty or separator-kind."));
     }
 
+    @Test
+    public void setNewSeparatorWorks() throws Exception {
+        CrazyLogger log = new CrazyLogger();
+
+        log.addNewMessage("Log initialized!");
+        log.addNewMessage("Message1");
+        log.addNewMessage("Message2");
+        log.addNewMessage("Message3");
+
+        // todo
+    }
+
+
+
 }

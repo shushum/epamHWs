@@ -5,19 +5,54 @@ import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 /**
+ * A class designed to store your messages in log.
+ *
+ * <p>Each message is followed by the time that message was stored in log.
+ * All messages are stored in the pattern <b>dd-MM-YYYY : hh-mm - message;</b>.
+ * Each message starts from new line.</p>
+ *
+ * <p>Default separator for the messages is symbol <b>;</b>.
+ * Separator can be changed with {@code setNewSeparator}.</p>
+ *
+ * <p>Messages from the log can be received through certain methods.</p>
+ *
  * Created by Yegor on 27.02.2017.
  */
 public class CrazyLogger {
+    /**
+     * The log is used for messages storage.
+     */
     private StringBuilder log;
-    private final String separator = ";";
+
+    /**
+     * The separator is used for separating one message from another.
+     */
+    private String separator = ";";
+
+    /**
+     * The dateTimeFormatter is used to format LocalDateTime in certain pattern.
+     */
     private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-YYYY : hh-mm");
+
+    /**
+     * The indexOfLastMessageWithDate indicates the first index of last message (with date).
+     */
     private int indexOfLastMessageWithDate = 0;
 
-
+    /**
+     * Creates an empty CrazyLogger.
+     */
     public CrazyLogger() {
         this.log = new StringBuilder();
     }
 
+    /**
+     * Adds a new message to the current CrazyLog.
+     *
+     * If message contains separator-like symbols, they will be changed to " ".
+     * @param message the message to add.
+     * @throws NullPointerException if given message is {@code null}.
+     */
     public void addNewMessage(String message) {
         Objects.requireNonNull(message);
 
@@ -36,6 +71,12 @@ public class CrazyLogger {
         indexOfLastMessageWithDate = log.capacity() - (message.length() + 23);
     }
 
+    /**
+     * Returns the last message stored in log.
+     *
+     * @return the last message with the date of storing in log.
+     * @throws NullPointerException if given message is {@code null}.
+     */
     public String getLastMessage() {
         log.trimToSize();
         if (log.capacity() == 0) {
@@ -44,6 +85,14 @@ public class CrazyLogger {
         return log.substring(indexOfLastMessageWithDate);
     }
 
+    /**
+     * Finds all mentions of certain {@code message} and returns all lines of log
+     * that contains this message.
+     *
+     * @param message the message to find in log
+     * @return the {@code String} consisting of lines that contains {@code message}.
+     * @throws NullPointerException if {@code message} is {@code null}.
+     */
     public String findMessageInLog(String message) {
         Objects.requireNonNull(message);
 
@@ -68,6 +117,19 @@ public class CrazyLogger {
             result.append(log.substring(beginningOfCurrentLogLine, endingOfCurrentLogLine));
         }
         return result.toString();
+    }
+
+    /**
+     * Sets new type of separator for this log.
+     *
+     * @param separator the new separator of lines in log.
+     * @throws NullPointerException if new {@code separator} is {@code null}.
+     */
+    public void setNewSeparator(String separator) {
+        Objects.requireNonNull(separator);
+
+        this.log = new StringBuilder(log.toString().replaceAll(this.separator, separator));
+        this.separator = separator;
     }
 
     private int getBeginningOfCurrentLogLineIndex(int beginningOfCurrentLogLineIndex, int indexOfMatching) {
