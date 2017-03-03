@@ -11,6 +11,8 @@ public class Quiz {
     private ResourceBundle answers;
 
     public Quiz(Locale chosenLocale) {
+        Objects.requireNonNull(chosenLocale);
+
         this.questions = ResourceBundle.getBundle("questions", chosenLocale);
         this.answers = ResourceBundle.getBundle("answers", chosenLocale);
     }
@@ -39,6 +41,14 @@ public class Quiz {
         result.append("\n");
 
         return result.toString();
+    }
+
+    public ResourceBundle getQuestions() {
+        return questions;
+    }
+
+    public ResourceBundle getAnswers() {
+        return answers;
     }
 
     /*public String listAllQuestions2() {
