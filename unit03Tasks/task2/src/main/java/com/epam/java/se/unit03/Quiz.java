@@ -15,13 +15,12 @@ public class Quiz {
         this.answers = ResourceBundle.getBundle("answers", chosenLocale);
     }
 
-    public String listAllQuestions() {
+    public String listOfAllQuestions() {
         StringBuilder list = new StringBuilder();
 
-        for (int i = 0; i < questions.keySet().size(); i++) {
-            String question = questions.getString("s" + (i + 1));
-            list.append("Question ");
-            list.append(i + 1);
+        for (int i = 1; i <= questions.keySet().size(); i++) {
+            String question = questions.getString("s" + (i));
+            list.append(i);
             list.append(": ");
             list.append(question);
             list.append("\n");
@@ -30,7 +29,19 @@ public class Quiz {
         return list.toString();
     }
 
-    public String listAllQuestions2() {
+    public String showAnswer(String key) {
+        StringBuilder result = new StringBuilder();
+
+        String answer = answers.getString("s" + key);
+        result.append(key);
+        result.append(": ");
+        result.append(answer);
+        result.append("\n");
+
+        return result.toString();
+    }
+
+    /*public String listAllQuestions2() {
         StringBuilder list = new StringBuilder();
         Enumeration keys = questions.getKeys();
 
@@ -45,30 +56,5 @@ public class Quiz {
         }
 
         return list.toString();
-    }
-
-    private void isAcceptableLocale(Locale locale) {
-        Objects.requireNonNull(locale);
-
-        while (true) {
-            if (locale.getLanguage().equals("ru") || locale.getLanguage().equals("en")) {
-                break;
-            }
-            System.out.println("Quiz supports only two versions of language. Please, type 'en' for English or " +
-                    "'ru' for Russian:");
-        }
-    }
-
-    public static void main(String[] args) {
-        Locale locale = new Locale("en");
-        Quiz test = new Quiz(locale);
-
-
-
-        System.out.println(test.listAllQuestions());
-
-
-
-    }
-
+    }*/
 }
