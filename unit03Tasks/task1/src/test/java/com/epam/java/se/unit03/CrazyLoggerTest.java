@@ -114,7 +114,14 @@ public class CrazyLoggerTest {
         log.addNewMessage("Message2");
         log.addNewMessage("Message3");
 
-        // todo
+        log.setNewSeparator("!");
+
+        assertTrue(log.toString().contains("Log initialized!!"));
+        assertTrue(log.toString().contains("Message2!"));
+        assertFalse(log.toString().contains("Message3;"));
+
+        assertTrue(log.findMessageInLog("Message").contains(" - Message1!"));
+        assertTrue(log.findMessageInLog("Message").contains(" - Message3!"));
     }
 
 
