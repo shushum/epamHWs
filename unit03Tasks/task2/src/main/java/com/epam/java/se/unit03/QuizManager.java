@@ -17,7 +17,7 @@ public class QuizManager {
         passTheQuiz(isAcceptableLocale());
     }
 
-    public static void passTheQuiz(String typedLocale) {
+    private static void passTheQuiz(String typedLocale) {
 
         Quiz quiz = new Quiz(new Locale(typedLocale));
 
