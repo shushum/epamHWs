@@ -9,10 +9,20 @@ import java.util.Scanner;
 /**
  * Created by Yegor on 03.03.2017.
  */
+
+/**
+ * Allows to participate in Quiz.
+ */
 public class QuizManager {
 
+    /**
+     * Reads all participator's responds.
+     */
     private static Scanner reader = new Scanner(System.in);
 
+    /**
+     * Quiz starts here. It is looped.
+     */
     public static void main(String[] args) {
         passTheQuiz(isAcceptableLocale());
     }
