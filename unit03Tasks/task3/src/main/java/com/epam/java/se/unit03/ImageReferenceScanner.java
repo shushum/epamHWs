@@ -13,6 +13,8 @@ import java.util.regex.Pattern;
 public class ImageReferenceScanner {
     private final static Pattern imageRef =
             Pattern.compile("(\\([Рр]ис\\. ?\\d+((, ?\\d+)?|( и \\d+)?|((-| )[а-я](,[а-я])*)?)\\))|( [Рр]исун\\D\\D \\d+)");
+    private final static Pattern number =
+            Pattern.compile("\\d+");
 
     private String fileName;
 
@@ -42,19 +44,28 @@ public class ImageReferenceScanner {
         return file;
     }
 
-    public void imageRefsAreConseq(List<String> file) {
+    public boolean imageRefsAreConseq(List<String> file) {
         Objects.requireNonNull(file);
-        int i = 0;
+
+        List<Integer> consequence = new ArrayList<>();
+
         for (String line : file) {
             Matcher imageRefMatcher = imageRef.matcher(line);
 
-
             while(imageRefMatcher.find()){
-                System.out.println(i++);
-                System.out.println(imageRefMatcher.group());
+                Matcher numberMatcher = number.matcher(imageRefMatcher.group());
+
+                while(numberMatcher.find()){
+                    consequence.add(Integer.valueOf(numberMatcher.group()));
+                    if(consequence.get(consequence.size())<consequence.get(consequence.size()-1)){
+                        return false;
+                    }
+                }
+
             }
 
         }
+        return true;
     }
 
     public static void main(String[] args) {
