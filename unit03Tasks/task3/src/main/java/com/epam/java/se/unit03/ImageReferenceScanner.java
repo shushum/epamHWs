@@ -48,16 +48,17 @@ public class ImageReferenceScanner {
         Objects.requireNonNull(file);
 
         List<Integer> consequence = new ArrayList<>();
+        consequence.add(0);
 
         for (String line : file) {
             Matcher imageRefMatcher = imageRef.matcher(line);
 
-            while(imageRefMatcher.find()){
+            while (imageRefMatcher.find()) {
                 Matcher numberMatcher = number.matcher(imageRefMatcher.group());
 
-                while(numberMatcher.find()){
+                while (numberMatcher.find()) {
                     consequence.add(Integer.valueOf(numberMatcher.group()));
-                    if(consequence.get(consequence.size())<consequence.get(consequence.size()-1)){
+                    if (consequence.get(consequence.size() - 1) < consequence.get(consequence.size() - 2)) {
                         return false;
                     }
                 }
@@ -73,6 +74,6 @@ public class ImageReferenceScanner {
                 "E://Study//java//Projects//unit03Tasks//Java.SE.03.Information handling_task_attachment.html");
 
         List<String> text = test.readFileBody();
-        test.imageRefsAreConseq(text);
+        System.out.println(test.imageRefsAreConseq(text));
     }
 }
