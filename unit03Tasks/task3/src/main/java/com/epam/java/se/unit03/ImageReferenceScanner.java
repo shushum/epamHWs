@@ -47,19 +47,21 @@ public class ImageReferenceScanner {
     public boolean imageRefsAreConseq(List<String> file) {
         Objects.requireNonNull(file);
 
-        List<Integer> consequence = new ArrayList<>();
-        consequence.add(0);
-
+        int currentMaxRefNumber = 1;
         for (String line : file) {
             Matcher imageRefMatcher = imageRef.matcher(line);
 
             while (imageRefMatcher.find()) {
-                Matcher numberMatcher = number.matcher(imageRefMatcher.group());
+                String currentImageRef = imageRefMatcher.group();
+                Matcher numberMatcher = number.matcher(currentImageRef);
 
                 while (numberMatcher.find()) {
-                    consequence.add(Integer.valueOf(numberMatcher.group()));
-                    if (consequence.get(consequence.size() - 1) < consequence.get(consequence.size() - 2)) {
+                    int currentRefNumber = Integer.valueOf(numberMatcher.group());
+                    
+                    if (currentRefNumber < currentMaxRefNumber) {
                         return false;
+                    } else if (currentRefNumber > currentMaxRefNumber) {
+                        currentMaxRefNumber = currentRefNumber;
                     }
                 }
 
