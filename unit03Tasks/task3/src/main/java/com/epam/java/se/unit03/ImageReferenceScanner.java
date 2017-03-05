@@ -100,6 +100,8 @@ public class ImageReferenceScanner {
     }
 
     public List<String> extractSentencesWithImageRefs(List<String> file) {
+        Objects.requireNonNull(file);
+
         List<String> sentencesWithRefs = new ArrayList<>();
 
         for (String sentence : file) {
