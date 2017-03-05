@@ -80,12 +80,23 @@ public class ImageReferenceScanner {
 
         int start = breaker.first();
         for (int end = breaker.next(); end != BreakIterator.DONE; start = end, end = breaker.next()) {
-            String sentence = line.substring(start,end);
+            String sentence = line.substring(start, end);
 
-            sentences.add(sentence);
+            sentence = trim(sentence);
+
+            if(!sentence.isEmpty()){
+                sentences.add(sentence);
+            }
         }
 
         return sentences;
+    }
+
+    private String trim(String sentence) {
+        if (sentence.matches("<.*>.*")) {
+            sentence = sentence.replaceFirst("<.*>","");
+        }
+        return sentence;
     }
 
     public static void main(String[] args) {
@@ -93,6 +104,6 @@ public class ImageReferenceScanner {
                 "E://Study//java//Projects//unit03Tasks//Java.SE.03.Information handling_task_attachment.html");
 
         List<String> text = test.readFileBody();
-        System.out.println(test.breakLineInSentences(text.get(200)));
+        System.out.println(test.breakLineInSentences(text.get(259)));
     }
 }
