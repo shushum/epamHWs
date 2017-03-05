@@ -1,6 +1,7 @@
 package com.epam.java.se.unit03;
 
 import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
 
 import java.io.*;
 import java.text.BreakIterator;
@@ -75,7 +76,9 @@ public class ImageReferenceScanner {
         return true;
     }
 
-    public List<String> breakLineInSentences(String line) {
+
+
+    private List<String> breakLineInSentences(String line) {
         List<String> sentences = new ArrayList<>();
         BreakIterator breaker = BreakIterator.getSentenceInstance();
 
@@ -96,11 +99,10 @@ public class ImageReferenceScanner {
     }
 
     private String trim(String sentence) {
-        sentence = Jsoup.parse(sentence).text();
-        /*
-        while(sentence.matches("<[a-z]+>.*")) {
-            sentence = sentence.replaceAll("\\<.*?>","");
-        }*/
+        sentence = Jsoup.clean(sentence, Whitelist.simpleText());
+        if (sentence.contains("&nbsp;")) {
+            sentence = sentence.replaceAll("&nbsp;","");
+        }
         return sentence;
     }
 
@@ -113,5 +115,7 @@ public class ImageReferenceScanner {
             System.out.println(sentence);
 
         }
+
+
     }
 }
