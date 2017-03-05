@@ -11,6 +11,7 @@ import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+
 /**
  * Created by Yegor on 04.03.2017.
  */
@@ -19,16 +20,38 @@ public class ImageReferenceScanner {
             Pattern.compile("(\\([Рр]ис\\. ?\\d+((, ?\\d+)?|( и \\d+)?|((-| )[а-я](,[а-я])*)?)\\))|( [Рр]исун\\D\\D \\d+)");
     private final static Pattern number =
             Pattern.compile("\\d+");
-
     private String fileName;
 
     public ImageReferenceScanner(String fileName) {
         this.fileName = fileName;
     }
 
-    public List<String> readFileBody() {
+    public static void main(String[] args) {
+        ImageReferenceScanner taskScanner =
+                new ImageReferenceScanner("Java.SE.03.Information handling_task_attachment.html");
+
+        try {
+            List<String> text = taskScanner.readFileBody();
+
+            if (taskScanner.imageRefsAreConseq(text)) {
+                System.out.println("Image references are consistent in this text");
+            } else {
+                System.out.println("Image references are not consistent in this text");
+            }
+
+            List<String> sentencesWithImageRefs = taskScanner.extractSentencesWithImageRefs(text);
+            System.out.println("All sentences with image references are extracted!");
+
+        } catch (FileNotFoundException e) {
+            System.out.println(e);
+        }
+    }
+
+    public List<String> readFileBody() throws FileNotFoundException {
         List<String> file = new ArrayList<>();
         String currentLine;
+
+        fileExists(fileName);
 
         try (BufferedReader reader = new BufferedReader(
                 new InputStreamReader(new FileInputStream(fileName), "windows-1251"))) {
@@ -116,17 +139,10 @@ public class ImageReferenceScanner {
         return sentence;
     }
 
-    public static void main(String[] args) {
-        ImageReferenceScanner test = new ImageReferenceScanner(
-                "E://Study//java//Projects//unit03Tasks//Java.SE.03.Information handling_task_attachment.html");
-
-        List<String> text = test.readFileBody();
-        List<String> refs = test.extractSentencesWithImageRefs(text);
-        for (String sentence : refs) {
-            System.out.println(sentence);
-
+    private void fileExists(String fileName) throws FileNotFoundException {
+        File file = new File(fileName);
+        if (!file.exists()) {
+            throw new FileNotFoundException(file.getName());
         }
-
-
     }
 }
