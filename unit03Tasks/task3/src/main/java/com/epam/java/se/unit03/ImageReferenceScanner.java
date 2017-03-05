@@ -1,5 +1,7 @@
 package com.epam.java.se.unit03;
 
+import org.jsoup.Jsoup;
+
 import java.io.*;
 import java.text.BreakIterator;
 import java.util.ArrayList;
@@ -36,7 +38,8 @@ public class ImageReferenceScanner {
             while (!currentLine.equals("<body>"));
 
             while ((currentLine = reader.readLine()) != null) {
-                file.add(currentLine);
+                List<String> sentences = breakLineInSentences(currentLine);
+                file.addAll(sentences);
             }
         } catch (IOException e) {
             e.getMessage();
@@ -84,7 +87,7 @@ public class ImageReferenceScanner {
 
             sentence = trim(sentence);
 
-            if(!sentence.isEmpty()){
+            if (!sentence.isEmpty()) {
                 sentences.add(sentence);
             }
         }
@@ -93,9 +96,11 @@ public class ImageReferenceScanner {
     }
 
     private String trim(String sentence) {
-        if (sentence.matches("<.*>.*")) {
-            sentence = sentence.replaceFirst("<.*>","");
-        }
+        sentence = Jsoup.parse(sentence).text();
+        /*
+        while(sentence.matches("<[a-z]+>.*")) {
+            sentence = sentence.replaceAll("\\<.*?>","");
+        }*/
         return sentence;
     }
 
@@ -104,6 +109,9 @@ public class ImageReferenceScanner {
                 "E://Study//java//Projects//unit03Tasks//Java.SE.03.Information handling_task_attachment.html");
 
         List<String> text = test.readFileBody();
-        System.out.println(test.breakLineInSentences(text.get(259)));
+        for (String sentence : text) {
+            System.out.println(sentence);
+
+        }
     }
 }
