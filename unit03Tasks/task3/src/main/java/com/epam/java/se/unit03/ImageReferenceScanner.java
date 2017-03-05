@@ -15,17 +15,43 @@ import java.util.regex.Pattern;
 /**
  * Created by Yegor on 04.03.2017.
  */
+
+/**
+ * A class designed for scanning a text document with a view to finding image references in it.
+ *
+ * Class can trim down HTML documents to a clean text.
+ * The references should fit certain patterns.
+ * Class allows to get a {@code List<String>} of sentences with image references only.
+ * Class checks if the image references are constitute a non-decreasing sequence.
+ */
 public class ImageReferenceScanner {
+    /**
+     * A pattern to find an image references.
+     */
     private final static Pattern imageRef =
             Pattern.compile("(\\([Рр]ис\\. ?\\d+((, ?\\d+)?|( и \\d+)?|((-| )[а-я](,[а-я])*)?)\\))|( [Рр]исун\\D\\D \\d+)");
+    /**
+     * A pattern to find number. Needed for sequence check.
+     */
     private final static Pattern number =
             Pattern.compile("\\d+");
+    /**
+     * A name of text document.
+     */
     private String fileName;
 
+    /**
+     * Creates a scanner for certain text document.
+     * @param fileName
+     */
     public ImageReferenceScanner(String fileName) {
         this.fileName = fileName;
     }
 
+    /**
+     * Main needed only to accomplish unit03task3 HTML document.
+     * @param args
+     */
     public static void main(String[] args) {
         ImageReferenceScanner taskScanner =
                 new ImageReferenceScanner("Java.SE.03.Information handling_task_attachment.html");
@@ -47,6 +73,11 @@ public class ImageReferenceScanner {
         }
     }
 
+    /**
+     * Reads a text from file. In case of HTML document trims it.
+     * @return {@code List<String>} full of separate 'clean' sentences.
+     * @throws FileNotFoundException if file does not exist.
+     */
     public List<String> readFileBody() throws FileNotFoundException {
         List<String> file = new ArrayList<>();
         String currentLine;
@@ -72,6 +103,11 @@ public class ImageReferenceScanner {
         return file;
     }
 
+    /**
+     * Checks if the image references in this text are constitute a non-decreasing sequence.
+     * @param file is a {@code List<String>} of separate 'clean' sentences.
+     * @return {@code true} when image references are not decreasing, {@code false} in other cases.
+     */
     public boolean imageRefsAreConseq(List<String> file) {
         Objects.requireNonNull(file);
 
@@ -99,6 +135,11 @@ public class ImageReferenceScanner {
         return true;
     }
 
+    /**
+     * Extracts from text only the sentences with image references.
+     * @param file is a {@code List<String>} of separate 'clean' sentences.
+     * @return {@code List<String>} of only the sentences with image references.
+     */
     public List<String> extractSentencesWithImageRefs(List<String> file) {
         Objects.requireNonNull(file);
 
