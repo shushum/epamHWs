@@ -1,6 +1,7 @@
 package com.epam.java.se.unit03;
 
 import java.io.*;
+import java.text.BreakIterator;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -24,18 +25,18 @@ public class ImageReferenceScanner {
 
     public List<String> readFileBody() {
         List<String> file = new ArrayList<>();
-        String current;
+        String currentLine;
 
         try (BufferedReader reader = new BufferedReader(
                 new InputStreamReader(new FileInputStream(fileName), "windows-1251"))) {
 
             do {
-                current = reader.readLine();
+                currentLine = reader.readLine();
             }
-            while (!current.equals("<body>"));
+            while (!currentLine.equals("<body>"));
 
-            while ((current = reader.readLine()) != null) {
-                file.add(current);
+            while ((currentLine = reader.readLine()) != null) {
+                file.add(currentLine);
             }
         } catch (IOException e) {
             e.getMessage();
@@ -57,7 +58,7 @@ public class ImageReferenceScanner {
 
                 while (numberMatcher.find()) {
                     int currentRefNumber = Integer.valueOf(numberMatcher.group());
-                    
+
                     if (currentRefNumber < currentMaxRefNumber) {
                         return false;
                     } else if (currentRefNumber > currentMaxRefNumber) {
@@ -71,11 +72,27 @@ public class ImageReferenceScanner {
         return true;
     }
 
+    public List<String> breakLineInSentences(String line) {
+        List<String> sentences = new ArrayList<>();
+        BreakIterator breaker = BreakIterator.getSentenceInstance();
+
+        breaker.setText(line);
+
+        int start = breaker.first();
+        for (int end = breaker.next(); end != BreakIterator.DONE; start = end, end = breaker.next()) {
+            String sentence = line.substring(start,end);
+
+            sentences.add(sentence);
+        }
+
+        return sentences;
+    }
+
     public static void main(String[] args) {
         ImageReferenceScanner test = new ImageReferenceScanner(
                 "E://Study//java//Projects//unit03Tasks//Java.SE.03.Information handling_task_attachment.html");
 
         List<String> text = test.readFileBody();
-        System.out.println(test.imageRefsAreConseq(text));
+        System.out.println(test.breakLineInSentences(text.get(200)));
     }
 }
