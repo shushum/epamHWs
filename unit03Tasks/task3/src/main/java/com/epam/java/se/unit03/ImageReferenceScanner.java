@@ -53,8 +53,8 @@ public class ImageReferenceScanner {
         Objects.requireNonNull(file);
 
         int currentMaxRefNumber = 1;
-        for (String line : file) {
-            Matcher imageRefMatcher = imageRef.matcher(line);
+        for (String sentence : file) {
+            Matcher imageRefMatcher = imageRef.matcher(sentence);
 
             while (imageRefMatcher.find()) {
                 String currentImageRef = imageRefMatcher.group();
@@ -76,7 +76,17 @@ public class ImageReferenceScanner {
         return true;
     }
 
+    public List<String> extractSentencesWithImageRefs(List<String> file) {
+        List<String> sentencesWithRefs = new ArrayList<>();
 
+        for (String sentence : file) {
+            if (imageRef.matcher(sentence).find()) {
+                sentencesWithRefs.add(sentence);
+            }
+        }
+
+        return sentencesWithRefs;
+    }
 
     private List<String> breakLineInSentences(String line) {
         List<String> sentences = new ArrayList<>();
@@ -101,7 +111,7 @@ public class ImageReferenceScanner {
     private String trim(String sentence) {
         sentence = Jsoup.clean(sentence, Whitelist.simpleText());
         if (sentence.contains("&nbsp;")) {
-            sentence = sentence.replaceAll("&nbsp;","");
+            sentence = sentence.replaceAll("&nbsp;", "");
         }
         return sentence;
     }
@@ -111,7 +121,8 @@ public class ImageReferenceScanner {
                 "E://Study//java//Projects//unit03Tasks//Java.SE.03.Information handling_task_attachment.html");
 
         List<String> text = test.readFileBody();
-        for (String sentence : text) {
+        List<String> refs = test.extractSentencesWithImageRefs(text);
+        for (String sentence : refs) {
             System.out.println(sentence);
 
         }
