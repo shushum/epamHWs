@@ -4,6 +4,7 @@ import org.junit.Test;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import static org.junit.Assert.*;
 
@@ -11,26 +12,62 @@ import static org.junit.Assert.*;
  * Created by Yegor on 06.03.2017.
  */
 public class KeyWordsAnalyzerTest {
+
     @Test(expected = FileNotFoundException.class)
-    public void createKeyWordsMapFromFile() throws Exception {
-        KeyWordsAnalyzer test = new KeyWordsAnalyzer();
-        test.analyzeFileAndWriteResults("Quiz.jva", "keyWords.txt", "result.txt");
+    public void wrongPathKeyWordsInitialize() throws Exception {
+        KeyWordsAnalyzer keyWordsAnalyzer = new KeyWordsAnalyzer("wrongPath");
     }
 
-    /*@Test
-    public void createKeyWordsMapFromFile() throws Exception {
-        KeyWordsAnalyzer test = new KeyWordsAnalyzer();
-        test.analyzeFileAndWriteResults("Quiz.java", "keyWords.txt", "result.txt");
+    @Test(expected = NullPointerException.class)
+    public void nullKeyWordsInitialize() throws Exception {
+        KeyWordsAnalyzer keyWordsAnalyzer = new KeyWordsAnalyzer(null);
     }
-    @Test
-    public void createKeyWordsMapFromFile() throws Exception {
-        KeyWordsAnalyzer test = new KeyWordsAnalyzer();
-        test.analyzeFileAndWriteResults("Quiz.java", "keyWords.txt", "result.txt");
-    }
-    @Test
-    public void createKeyWordsMapFromFile() throws Exception {
-        KeyWordsAnalyzer test = new KeyWordsAnalyzer();
-        test.analyzeFileAndWriteResults("Quiz.java", "keyWords.txt", "result.txt");
-    }*/
 
+    @Test(expected = FileNotFoundException.class)
+    public void wrongFileToAnalyzePath() throws Exception {
+        KeyWordsAnalyzer keyWordsAnalyzer = new KeyWordsAnalyzer("keyWords.txt");
+        keyWordsAnalyzer.analyzeFileAndWriteResults("wrongPath", "result.txt");
+    }
+
+    @Test(expected = FileNotFoundException.class)
+    public void wrongResultPath() throws Exception {
+        KeyWordsAnalyzer keyWordsAnalyzer = new KeyWordsAnalyzer("keyWords.txt");
+        keyWordsAnalyzer.analyzeFileAndWriteResults("Quiz.java", "wrongPath");
+    }
+
+    @Test
+    public void keyWordsReadIsRight() throws Exception {
+        KeyWordsAnalyzer keyWordsAnalyzer = new KeyWordsAnalyzer("keyWords.txt");
+
+        assertTrue(keyWordsAnalyzer.getKeyWords().contains("abstract"));
+        assertFalse(keyWordsAnalyzer.getKeyWords().get(10).equals("goto"));
+        assertTrue(keyWordsAnalyzer.getKeyWords().contains("while"));
+    }
+
+    @Test
+    public void textFromFileReadCorrectly() throws Exception {
+        KeyWordsAnalyzer keyWordsAnalyzer = new KeyWordsAnalyzer("keyWords.txt");
+        keyWordsAnalyzer.analyzeFileAndWriteResults("Quiz.java", "result.txt");
+
+        assertTrue(keyWordsAnalyzer.getCodeText().contains("package"));
+        assertTrue(keyWordsAnalyzer.getCodeText().contains("import"));
+        assertTrue(keyWordsAnalyzer.getCodeText().contains("public"));
+
+        assertFalse(keyWordsAnalyzer.getCodeText().contains("Не может такого быть"));
+        assertFalse(keyWordsAnalyzer.getCodeText().contains("goto"));
+    }
+
+    @Test
+    public void textFromFileAnalyzedCorrectly() throws Exception {
+        KeyWordsAnalyzer keyWordsAnalyzer = new KeyWordsAnalyzer("keyWords.txt");
+        keyWordsAnalyzer.analyzeFileAndWriteResults("Quiz.java", "result.txt");
+
+        assertTrue(keyWordsAnalyzer.getMatches().size() <= keyWordsAnalyzer.getKeyWords().size());
+
+        assertTrue(keyWordsAnalyzer.getMatches().containsKey("package"));
+        assertTrue(keyWordsAnalyzer.getMatches().containsKey("private"));
+        assertTrue(keyWordsAnalyzer.getMatches().containsValue(1));
+
+        assertFalse(keyWordsAnalyzer.getMatches().containsKey("goto"));
+    }
 }

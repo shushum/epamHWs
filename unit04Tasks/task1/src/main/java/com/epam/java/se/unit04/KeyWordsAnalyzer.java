@@ -13,10 +13,21 @@ public class KeyWordsAnalyzer {
     private HashMap<String, Integer> matches;
     private ArrayList<String> keyWords;
 
-    public void analyzeFileAndWriteResults(String fileToAnalyzePath, String keyWordsFilePath, String resultsFilePath) throws IOException{
-        Objects.requireNonNull(resultsFilePath);
+    public KeyWordsAnalyzer(String keyWordsFilePath) throws IOException {
+        createKeyWordsMapFromFile(keyWordsFilePath);
+    }
 
-        countKeyWordsMatches(fileToAnalyzePath, keyWordsFilePath);
+    public void setKeyWordsFromNewFile(String keyWordsFilePath) throws IOException{
+        createKeyWordsMapFromFile(keyWordsFilePath);
+    }
+
+    public void analyzeFileAndWriteResults(String fileToAnalyzePath, String resultsFilePath) throws IOException{
+        fileExists(fileToAnalyzePath);
+        fileExists(resultsFilePath);
+
+        readFile(fileToAnalyzePath);
+
+        countKeyWordsMatches();
 
         try (BufferedOutputStream outputStream = new BufferedOutputStream(new FileOutputStream(resultsFilePath))) {
             outputStream.write(resultToString().getBytes());
@@ -39,8 +50,6 @@ public class KeyWordsAnalyzer {
     }
 
     private void readFile(String filename) throws IOException{
-        Objects.requireNonNull(filename);
-
         try (BufferedInputStream inputStream = new BufferedInputStream(new FileInputStream(filename))) {
             StringBuilder fileText = new StringBuilder();
             int symbol;
@@ -51,10 +60,7 @@ public class KeyWordsAnalyzer {
         }
     }
 
-    private void countKeyWordsMatches(String filePath, String keyWordsFilePath) throws IOException{
-        readFile(filePath);
-        createKeyWordsMapFromFile(keyWordsFilePath);
-
+    private void countKeyWordsMatches() throws IOException{
         HashMap<String, Integer> result = new HashMap<>();
 
         for (String keyWord : keyWords) {
@@ -88,4 +94,22 @@ public class KeyWordsAnalyzer {
         return prettyResult.toString();
     }
 
+    private void fileExists(String fileName) throws FileNotFoundException {
+        File file = new File(fileName);
+        if (!file.exists()) {
+            throw new FileNotFoundException(file.getName());
+        }
+    }
+
+    public ArrayList<String> getKeyWords() {
+        return keyWords;
+    }
+
+    public String getCodeText() {
+        return codeText;
+    }
+
+    public HashMap<String, Integer> getMatches() {
+        return matches;
+    }
 }
