@@ -11,7 +11,7 @@ public class KeyWordsAnalyzerTest {
     @Test
     public void createKeyWordsMapFromFile() throws Exception {
         KeyWordsAnalyzer test = new KeyWordsAnalyzer();
-        test.readFile("Quiz.java");
+        test.testMap("Quiz.java", "keyWords.txt");
     }
 
 }

@@ -1,8 +1,6 @@
 package com.epam.java.se.unit04;
 
-import java.io.BufferedInputStream;
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -12,7 +10,7 @@ import java.util.regex.Pattern;
  */
 public class KeyWordsAnalyzer {
     private String codeText;
-    private HashMap<String, Integer> result;
+    private HashMap<String, Integer> matches;
     private ArrayList<String> keyWords;
 
 
@@ -48,9 +46,10 @@ public class KeyWordsAnalyzer {
         }
     }
 
-    public void analyzeFile(String filePath, String keyWordsFilePath) {
+    private void countKeyWordsMatches(String filePath, String keyWordsFilePath) {
         readFile(filePath);
         createKeyWordsMapFromFile(keyWordsFilePath);
+
         HashMap<String, Integer> result = new HashMap<>();
 
         for (String keyWord : keyWords) {
@@ -67,7 +66,25 @@ public class KeyWordsAnalyzer {
             }
         }
 
-        this.result = result;
+        this.matches = result;
+    }
+
+    public void analyzeFileAndWriteResults(String fileToAnalyzePath, String keyWordsFilePath, String resultsFilePath){
+        Objects.requireNonNull(resultsFilePath);
+
+        countKeyWordsMatches(fileToAnalyzePath, keyWordsFilePath);
+
+        try (BufferedOutputStream outputStream = new BufferedOutputStream(new FileOutputStream(resultsFilePath))){
+            //outputStream.write(matches.toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void testMap(String filePath, String keyWordsFilePath){
+        countKeyWordsMatches(filePath, keyWordsFilePath);
+
+        System.out.println(matches.toString());
     }
 
 }
