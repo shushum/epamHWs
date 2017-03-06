@@ -14,25 +14,31 @@ import java.util.Scanner;
  * Created by Yegor on 06.03.2017.
  */
 public class KeyWordsAnalyzer {
-    private String codetext;
+    private String codeText;
     private Map<String, Integer> result;
     private ArrayList<String> keywords = new ArrayList<>();
 
-    public void createKeyWordsMapFromFile(String filename) {
+
+    private void createKeyWordsMapFromFile(String filename) {
         try (BufferedInputStream inputStream = new BufferedInputStream(new FileInputStream(filename))) {
             Scanner scanWord = new Scanner(inputStream);
 
-            while(scanWord.hasNext()){
+            while (scanWord.hasNext()) {
                 keywords.add(scanWord.next());
             }
-            /*StringBuilder word = new StringBuilder();
-            int symbol;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
+    public void readFile(String filename) {
+        try (BufferedInputStream inputStream = new BufferedInputStream(new FileInputStream(filename))) {
+            StringBuilder fileText = new StringBuilder();
+            int symbol;
             while ((symbol = inputStream.read()) != -1) {
-                if(symbol != 10 && symbol != 13){
-                    word.append((char) symbol);
-                }
-            }*/
+                fileText.append((char) symbol);
+            }
+            codeText = fileText.toString();
         } catch (IOException e) {
             e.printStackTrace();
         }
