@@ -13,6 +13,18 @@ public class KeyWordsAnalyzer {
     private HashMap<String, Integer> matches;
     private ArrayList<String> keyWords;
 
+    public void analyzeFileAndWriteResults(String fileToAnalyzePath, String keyWordsFilePath, String resultsFilePath) {
+        Objects.requireNonNull(resultsFilePath);
+
+        countKeyWordsMatches(fileToAnalyzePath, keyWordsFilePath);
+
+        try (BufferedOutputStream outputStream = new BufferedOutputStream(new FileOutputStream(resultsFilePath))) {
+
+            outputStream.write(resultToString().getBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     private void createKeyWordsMapFromFile(String filename) {
         Objects.requireNonNull(filename);
@@ -69,22 +81,18 @@ public class KeyWordsAnalyzer {
         this.matches = result;
     }
 
-    public void analyzeFileAndWriteResults(String fileToAnalyzePath, String keyWordsFilePath, String resultsFilePath){
-        Objects.requireNonNull(resultsFilePath);
+    private String resultToString() {
+        StringBuilder prettyResult = new StringBuilder();
 
-        countKeyWordsMatches(fileToAnalyzePath, keyWordsFilePath);
-
-        try (BufferedOutputStream outputStream = new BufferedOutputStream(new FileOutputStream(resultsFilePath))){
-            //outputStream.write(matches.toString());
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (matches.isEmpty()) {
+            return prettyResult.append("No matches found.").toString();
         }
-    }
 
-    public void testMap(String filePath, String keyWordsFilePath){
-        countKeyWordsMatches(filePath, keyWordsFilePath);
+        matches.forEach((s, i) -> {
+            prettyResult.append("Key word '").append(s).append("' has ").append(i).append(" entries.\n");
+        });
 
-        System.out.println(matches.toString());
+        return prettyResult.toString();
     }
 
 }
