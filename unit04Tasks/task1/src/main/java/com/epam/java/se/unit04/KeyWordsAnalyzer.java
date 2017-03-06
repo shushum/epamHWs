@@ -13,20 +13,17 @@ public class KeyWordsAnalyzer {
     private HashMap<String, Integer> matches;
     private ArrayList<String> keyWords;
 
-    public void analyzeFileAndWriteResults(String fileToAnalyzePath, String keyWordsFilePath, String resultsFilePath) {
+    public void analyzeFileAndWriteResults(String fileToAnalyzePath, String keyWordsFilePath, String resultsFilePath) throws IOException{
         Objects.requireNonNull(resultsFilePath);
 
         countKeyWordsMatches(fileToAnalyzePath, keyWordsFilePath);
 
         try (BufferedOutputStream outputStream = new BufferedOutputStream(new FileOutputStream(resultsFilePath))) {
-
             outputStream.write(resultToString().getBytes());
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
-    private void createKeyWordsMapFromFile(String filename) {
+    private void createKeyWordsMapFromFile(String filename) throws IOException {
         Objects.requireNonNull(filename);
 
         try (BufferedInputStream inputStream = new BufferedInputStream(new FileInputStream(filename))) {
@@ -38,12 +35,10 @@ public class KeyWordsAnalyzer {
             }
 
             this.keyWords = keywords;
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
-    private void readFile(String filename) {
+    private void readFile(String filename) throws IOException{
         Objects.requireNonNull(filename);
 
         try (BufferedInputStream inputStream = new BufferedInputStream(new FileInputStream(filename))) {
@@ -53,12 +48,10 @@ public class KeyWordsAnalyzer {
                 fileText.append((char) symbol);
             }
             codeText = fileText.toString();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
-    private void countKeyWordsMatches(String filePath, String keyWordsFilePath) {
+    private void countKeyWordsMatches(String filePath, String keyWordsFilePath) throws IOException{
         readFile(filePath);
         createKeyWordsMapFromFile(keyWordsFilePath);
 
