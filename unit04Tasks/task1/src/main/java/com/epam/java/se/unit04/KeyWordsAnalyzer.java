@@ -8,19 +8,52 @@ import java.util.regex.Pattern;
 /**
  * Created by Yegor on 06.03.2017.
  */
+
+/**
+ * A class designed to find certain set of 'keywords' in text document.
+ * Text document and set of 'keywords' are read from file.
+ * The analysis result is the list of occurrences of each found 'keyword' in text document.
+ * The result is written to a file.
+ */
 public class KeyWordsAnalyzer {
+    /**
+     * Text of a document.
+     */
     private String codeText;
+    /**
+     * HashMap of found 'keywords' and their occurrences in document.
+     */
     private HashMap<String, Integer> matches;
+    /**
+     * Full set of 'keywords'.
+     */
     private ArrayList<String> keyWords;
 
+    /**
+     * Creates a KeyWordAnalyzer with a binding to certain set of 'keywords'.
+     * @param keyWordsFilePath path to the file with 'keywords'.
+     * @throws IOException if there is a problem with reading the file.
+     */
     public KeyWordsAnalyzer(String keyWordsFilePath) throws IOException {
         createKeyWordsMapFromFile(keyWordsFilePath);
     }
 
+    /**
+     * Binds new set of 'keywords' to a KeyWordAnalyzer.
+     * @param keyWordsFilePath path to the file with new 'keywords'.
+     * @throws IOException if there is a problem with reading the file.
+     */
     public void setKeyWordsFromNewFile(String keyWordsFilePath) throws IOException{
         createKeyWordsMapFromFile(keyWordsFilePath);
     }
 
+    /**
+     * Reads the text document from file, analyzes 'keywords' occurrences in it.
+     * Writes the result to a file.
+     * @param fileToAnalyzePath path to the file needed to analyze.
+     * @param resultsFilePath path to the file the result will be written.
+     * @throws IOException if there is a problem with reading or writing the file.
+     */
     public void analyzeFileAndWriteResults(String fileToAnalyzePath, String resultsFilePath) throws IOException{
         fileExists(fileToAnalyzePath);
         fileExists(resultsFilePath);
@@ -101,6 +134,10 @@ public class KeyWordsAnalyzer {
         }
     }
 
+    /**
+     * Getters were added for only testing purposes.
+     * @return
+     */
     public ArrayList<String> getKeyWords() {
         return keyWords;
     }
