@@ -3,8 +3,6 @@ package com.epam.java.se.unit04;
 import org.junit.Test;
 
 import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.ArrayList;
 
 import static org.junit.Assert.*;
 
@@ -39,9 +37,9 @@ public class KeyWordsAnalyzerTest {
     public void keyWordsReadIsRight() throws Exception {
         KeyWordsAnalyzer keyWordsAnalyzer = new KeyWordsAnalyzer("keyWords.txt");
 
-        assertTrue(keyWordsAnalyzer.getKeyWords().contains("abstract"));
-        assertFalse(keyWordsAnalyzer.getKeyWords().get(10).equals("goto"));
-        assertTrue(keyWordsAnalyzer.getKeyWords().contains("while"));
+        assertTrue(keyWordsAnalyzer.getKeywords().contains("abstract"));
+        assertFalse(keyWordsAnalyzer.getKeywords().get(10).equals("goto"));
+        assertTrue(keyWordsAnalyzer.getKeywords().contains("while"));
     }
 
     @Test
@@ -62,7 +60,7 @@ public class KeyWordsAnalyzerTest {
         KeyWordsAnalyzer keyWordsAnalyzer = new KeyWordsAnalyzer("keyWords.txt");
         keyWordsAnalyzer.analyzeFileAndWriteResults("Quiz.java", "result.txt");
 
-        assertTrue(keyWordsAnalyzer.getMatches().size() <= keyWordsAnalyzer.getKeyWords().size());
+        assertTrue(keyWordsAnalyzer.getMatches().size() <= keyWordsAnalyzer.getKeywords().size());
 
         assertTrue(keyWordsAnalyzer.getMatches().containsKey("package"));
         assertTrue(keyWordsAnalyzer.getMatches().containsKey("private"));

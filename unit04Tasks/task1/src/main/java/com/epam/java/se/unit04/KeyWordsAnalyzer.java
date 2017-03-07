@@ -27,34 +27,37 @@ public class KeyWordsAnalyzer {
     /**
      * Full set of 'keywords'.
      */
-    private ArrayList<String> keyWords;
+    private ArrayList<String> keywords;
 
     /**
      * Creates a KeyWordAnalyzer with a binding to certain set of 'keywords'.
+     *
      * @param keyWordsFilePath path to the file with 'keywords'.
      * @throws IOException if there is a problem with reading the file.
      */
-    public KeyWordsAnalyzer(String keyWordsFilePath) throws IOException {
+    public KeyWordsAnalyzer(String keyWordsFilePath)throws FileNotFoundException {
         createKeyWordsMapFromFile(keyWordsFilePath);
     }
 
     /**
      * Binds new set of 'keywords' to a KeyWordAnalyzer.
+     *
      * @param keyWordsFilePath path to the file with new 'keywords'.
      * @throws IOException if there is a problem with reading the file.
      */
-    public void setKeyWordsFromNewFile(String keyWordsFilePath) throws IOException{
+    public void setKeyWordsFromNewFile(String keyWordsFilePath) throws FileNotFoundException {
         createKeyWordsMapFromFile(keyWordsFilePath);
     }
 
     /**
      * Reads the text document from file, analyzes 'keywords' occurrences in it.
      * Writes the result to a file.
+     *
      * @param fileToAnalyzePath path to the file needed to analyze.
-     * @param resultsFilePath path to the file the result will be written.
+     * @param resultsFilePath   path to the file the result will be written.
      * @throws IOException if there is a problem with reading or writing the file.
      */
-    public void analyzeFileAndWriteResults(String fileToAnalyzePath, String resultsFilePath) throws IOException{
+    public void analyzeFileAndWriteResults(String fileToAnalyzePath, String resultsFilePath) throws FileNotFoundException {
         fileExists(fileToAnalyzePath);
         fileExists(resultsFilePath);
 
@@ -64,11 +67,14 @@ public class KeyWordsAnalyzer {
 
         try (BufferedOutputStream outputStream = new BufferedOutputStream(new FileOutputStream(resultsFilePath))) {
             outputStream.write(resultToString().getBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
-    private void createKeyWordsMapFromFile(String filename) throws IOException {
+    private void createKeyWordsMapFromFile(String filename) throws FileNotFoundException {
         Objects.requireNonNull(filename);
+        fileExists(filename);
 
         try (BufferedInputStream inputStream = new BufferedInputStream(new FileInputStream(filename))) {
             ArrayList<String> keywords = new ArrayList<>();
@@ -78,11 +84,13 @@ public class KeyWordsAnalyzer {
                 keywords.add(scanWord.next());
             }
 
-            this.keyWords = keywords;
+            this.keywords = keywords;
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
-    private void readFile(String filename) throws IOException{
+    private void readFile(String filename) {
         try (BufferedInputStream inputStream = new BufferedInputStream(new FileInputStream(filename))) {
             StringBuilder fileText = new StringBuilder();
             int symbol;
@@ -90,13 +98,15 @@ public class KeyWordsAnalyzer {
                 fileText.append((char) symbol);
             }
             codeText = fileText.toString();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
-    private void countKeyWordsMatches() throws IOException{
+    private void countKeyWordsMatches() {
         HashMap<String, Integer> result = new HashMap<>();
 
-        for (String keyWord : keyWords) {
+        for (String keyWord : keywords) {
             Pattern keyWordPattern = Pattern.compile(keyWord);
             Matcher keyWordMatcher = keyWordPattern.matcher(codeText);
 
@@ -136,10 +146,11 @@ public class KeyWordsAnalyzer {
 
     /**
      * Getters were added for only testing purposes.
+     *
      * @return
      */
-    public ArrayList<String> getKeyWords() {
-        return keyWords;
+    public ArrayList<String> getKeywords() {
+        return keywords;
     }
 
     public String getCodeText() {
