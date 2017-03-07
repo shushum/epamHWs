@@ -11,9 +11,9 @@ import java.util.regex.Pattern;
 
 /**
  * A class designed to find certain set of 'keywords' in text document.
- * Text document and set of 'keywords' are read from file.
+ * Text document and set of 'keywords' are byte-read from files.
  * The analysis result is the list of occurrences of each found 'keyword' in text document.
- * The result is written to a file.
+ * The result is byte-written to a file.
  */
 public class KeyWordsAnalyzer {
     /**
