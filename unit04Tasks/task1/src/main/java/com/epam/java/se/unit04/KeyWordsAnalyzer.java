@@ -33,7 +33,7 @@ public class KeyWordsAnalyzer {
      * Creates a KeyWordAnalyzer with a binding to certain set of 'keywords'.
      *
      * @param keyWordsFilePath path to the file with 'keywords'.
-     * @throws IOException if there is a problem with reading the file.
+     * @throws FileNotFoundException if file with such path doesn't exist.
      */
     public KeyWordsAnalyzer(String keyWordsFilePath)throws FileNotFoundException {
         createKeyWordsMapFromFile(keyWordsFilePath);
@@ -43,7 +43,7 @@ public class KeyWordsAnalyzer {
      * Binds new set of 'keywords' to a KeyWordAnalyzer.
      *
      * @param keyWordsFilePath path to the file with new 'keywords'.
-     * @throws IOException if there is a problem with reading the file.
+     * @throws FileNotFoundException if file with such path doesn't exist.
      */
     public void setKeyWordsFromNewFile(String keyWordsFilePath) throws FileNotFoundException {
         createKeyWordsMapFromFile(keyWordsFilePath);
@@ -55,7 +55,7 @@ public class KeyWordsAnalyzer {
      *
      * @param fileToAnalyzePath path to the file needed to analyze.
      * @param resultsFilePath   path to the file the result will be written.
-     * @throws IOException if there is a problem with reading or writing the file.
+     * @throws FileNotFoundException if file with such path doesn't exist.
      */
     public void analyzeFileAndWriteResults(String fileToAnalyzePath, String resultsFilePath) throws FileNotFoundException {
         fileExists(fileToAnalyzePath);

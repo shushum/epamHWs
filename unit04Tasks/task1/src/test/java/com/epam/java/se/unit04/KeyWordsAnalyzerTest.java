@@ -64,7 +64,7 @@ public class KeyWordsAnalyzerTest {
 
         assertTrue(keyWordsAnalyzer.getMatches().containsKey("package"));
         assertTrue(keyWordsAnalyzer.getMatches().containsKey("private"));
-        assertTrue(keyWordsAnalyzer.getMatches().containsValue(1));
+        assertTrue(keyWordsAnalyzer.getMatches().containsValue(7));
 
         assertFalse(keyWordsAnalyzer.getMatches().containsKey("goto"));
     }
