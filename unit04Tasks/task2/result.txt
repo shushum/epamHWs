@@ -1,0 +1,14 @@
+Key word 'new' has 5 entries.
+Key word 'private' has 6 entries.
+Key word 'package' has 1 entries.
+Key word 'static' has 2 entries.
+Key word 'void' has 4 entries.
+Key word 'import' has 2 entries.
+Key word 'for' has 3 entries.
+Key word 'this' has 5 entries.
+Key word 'int' has 1 entries.
+Key word 'public' has 7 entries.
+Key word 'throw' has 3 entries.
+Key word 'class' has 1 entries.
+Key word 'if' has 4 entries.
+Key word 'return' has 4 entries.
