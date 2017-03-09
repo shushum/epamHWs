@@ -12,10 +12,26 @@ import static org.junit.Assert.*;
 public class TextReCoderTest {
 
     @Test
-    public void initializeScannerWithNotExistingFile() throws Exception {
+    public void testRecoding() throws Exception {
         TextReCoder reCoder =
                 new TextReCoder("input.txt", "output.txt");
-        reCoder.readFile();
-        assertTrue(reCoder.getFileText().isEmpty());
+        reCoder.recodeUTFfrom8To16();
+
+        assertTrue(reCoder.getFileText().contains("Этот текст в кодировке ЮТИФИ-8."));
+        assertTrue(reCoder.getFileText().contains("????????? Текст выглядит довольно глупо :)"));
+
+        assertFalse(reCoder.getFileText().contains("А этот достаточно осмысленен. Но его нет."));
+    }
+
+    @Test(expected = FileNotFoundException.class)
+    public void wrongInputName() throws Exception {
+        TextReCoder reCoder =
+                new TextReCoder("wrongName", "output.txt");
+    }
+
+    @Test(expected = FileNotFoundException.class)
+    public void wrongOutputName() throws Exception {
+        TextReCoder reCoder =
+                new TextReCoder("wrongName", "wrongName");
     }
 }

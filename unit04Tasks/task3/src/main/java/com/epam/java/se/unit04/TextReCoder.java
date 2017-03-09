@@ -18,6 +18,11 @@ public class TextReCoder {
         this.outputPath = outputPath;
     }
 
+    public void recodeUTFfrom8To16(){
+        readFile();
+        writeFile();
+    }
+
     private void readFile(){
         try (BufferedReader reader = new BufferedReader(
                 new InputStreamReader(new FileInputStream(inputPath), "UTF-8"))) {
