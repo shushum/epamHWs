@@ -1,6 +1,6 @@
 package com.epam.java.se.unit04;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.Objects;
 
 /**
@@ -9,13 +9,14 @@ import java.util.Objects;
 public class Actor {
     private final String firstName;
     private final String lastName;
-    private final Date dateOfBirth;
+    private final LocalDate dateOfBirth;
     private int age;
     private Gender gender;
     private int height;
-    private int amountOfMainRoles;
+    private int amountOfLeadRoles;
 
-    public Actor(String firstName, String lastName, Date dateOfBirth, int age, Gender gender, int height) {
+    public Actor(String firstName, String lastName, LocalDate dateOfBirth, int age, Gender gender, int height) {
+
         personIsNotNull(firstName, lastName, dateOfBirth);
         ageAndHeightAreValid(age, height);
 
@@ -25,10 +26,18 @@ public class Actor {
         this.age = age;
         this.gender = gender;
         this.height = height;
-        amountOfMainRoles = 0;
+        amountOfLeadRoles = 0;
     }
 
-    private void personIsNotNull(String firstName, String lastName, Date dateOfBirth) {
+    public void addLeadRole(){
+        amountOfLeadRoles++;
+    }
+
+    public int getAmountOfLeadRoles() {
+        return amountOfLeadRoles;
+    }
+
+    private void personIsNotNull(String firstName, String lastName, LocalDate dateOfBirth) {
         Objects.requireNonNull(firstName);
         Objects.requireNonNull(lastName);
         Objects.requireNonNull(dateOfBirth);
@@ -49,3 +58,4 @@ enum Gender {
     MALE,
     FEMALE
 }
+
