@@ -91,7 +91,7 @@ public class MovieCollectionTest {
 
         assertTrue(smallCollection.getCollection().size() == 2);
 
-        smallCollection.removeMovieFromCollection(laLaLandSequel);
+        smallCollection.removeMovieFromCollectionByTitle("La-la-land: Moonlight shadow");
 
         assertTrue(smallCollection.getCollection().size() == 1);
         assertTrue(smallCollection.getCollection().get(0).equals(laLaLand));
@@ -115,7 +115,7 @@ public class MovieCollectionTest {
 
         Movie notExistingInCollectionMovie = new Movie("Heavy rain", "Quantic Dream", Genre.DRAMA, cast);
 
-        smallCollection.removeMovieFromCollection(notExistingInCollectionMovie);
+        smallCollection.removeMovieFromCollectionByTitle("Heavy rain");
 
         assertTrue(smallCollection.getCollection().size() == 2);
         assertTrue(smallCollection.getCollection().get(0).equals(laLaLand));
@@ -211,4 +211,34 @@ public class MovieCollectionTest {
         assertTrue(loadedSmallCollection.getCollection().get(1).getStarring().get(0).equals(ryan));
     }
 
+    @Test
+    public void loadModifySaveLoadTest() throws Exception {
+        saveLoadTest();
+
+        
+        Actor michael =
+                new Actor("Michael", "Cera", LocalDate.of(1988, Month.JUNE, 7), 28, Gender.MALE, 174);
+        Actor mary =
+                new Actor("Mary Elizabeth", "Winstead", LocalDate.of(1984, Month.NOVEMBER, 28), 32, Gender.FEMALE, 173);
+
+        ArrayList<Actor> newCast = new ArrayList<>();
+        newCast.add(mary);
+        newCast.add(michael);
+
+        MovieCollection backupCollection = MovieCollection.loadMovieCollectionFromFile("My collection");
+
+        MovieCollection loadedSmallCollection = MovieCollection.loadMovieCollectionFromFile("My collection");
+        loadedSmallCollection.addMovieToCollection(
+                new Movie("Scott Pilgrim vs. the World", "Edgar Wright", Genre.ADVENTURE, newCast));
+        loadedSmallCollection.removeMovieFromCollectionByTitle("BLa-bla-bland: Moonlight shadow");
+
+
+        loadedSmallCollection.saveMovieCollectionToFile();
+
+
+        MovieCollection modifiedSmallCollection = MovieCollection.loadMovieCollectionFromFile("My collection");
+
+        assertTrue(modifiedSmallCollection.equals(loadedSmallCollection));
+        assertFalse(modifiedSmallCollection.equals(backupCollection));
+    }
 }

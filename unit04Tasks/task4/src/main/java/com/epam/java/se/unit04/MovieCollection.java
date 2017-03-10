@@ -30,13 +30,18 @@ public class MovieCollection implements Serializable {
         //todo organize sorted adding?
     }
 
-    public void removeMovieFromCollection(Movie movie) {
-        Objects.requireNonNull(movie);
+    public void removeMovieFromCollectionByTitle(String title) {
+        Objects.requireNonNull(title);
 
-        if (collection.remove(movie)) {
-            return;
+        for (Movie movie: collection) {
+
+            if (movie.getTitle().equals(title)){
+                collection.remove(movie);
+                return;
+            }
         }
-        //todo add feedback?
+
+        //todo add feedback on not existed in collection movie?
     }
 
     public void sortMovieCollectionByTitle() {
