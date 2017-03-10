@@ -37,6 +37,14 @@ public class Actor {
         return amountOfLeadRoles;
     }
 
+    public String getLastName() {
+        return lastName;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
     private void personIsNotNull(String firstName, String lastName, LocalDate dateOfBirth) {
         Objects.requireNonNull(firstName);
         Objects.requireNonNull(lastName);
