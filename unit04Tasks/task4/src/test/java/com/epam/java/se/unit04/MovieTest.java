@@ -11,25 +11,82 @@ import static org.junit.Assert.*;
  * Created by Yegor on 10.03.2017.
  */
 public class MovieTest {
+    Actor emma =
+            new Actor("Emma", "Stone", LocalDate.of(1988, Month.NOVEMBER, 6), 28, Gender.FEMALE, 165);
+    Actor ryan =
+            new Actor("Ryan", "Gosling", LocalDate.of(1980, Month.NOVEMBER,12), 36, Gender.MALE, 184);
 
     @Test
-    public void addLeadRolesToCastCheck() throws Exception {
-        Actor emma =
-                new Actor("Emma", "Stone", LocalDate.of(1988, Month.NOVEMBER, 6), 28, Gender.FEMALE, 165);
-        Actor ryan =
-                new Actor("Ryan", "Gosling", LocalDate.of(1980, Month.NOVEMBER,12), 36, Gender.MALE, 184);
+    public void sortingCastWhileInitializationWorks() throws Exception {
+        Actor sharon =
+                new Actor("Sharon", "Stone", LocalDate.of(1958, Month.MARCH, 10), 59, Gender.FEMALE, 174);
 
-        assertTrue(emma.getAmountOfLeadRoles() == 0);
-        assertTrue(ryan.getAmountOfLeadRoles() == 0);
+        ArrayList<Actor> cast = new ArrayList<>();
+        cast.add(sharon);
+        cast.add(emma);
+        cast.add(ryan);
+
+        Movie notLaLaLand = new Movie("La-la-land???", "Damien Chazelle", Genre.MUSICAL, cast);
+
+        assertTrue(notLaLaLand.getStarring().get(0).equals(ryan));
+        assertTrue(notLaLaLand.getStarring().get(1).equals(emma));
+        assertTrue(notLaLaLand.getStarring().get(2).equals(sharon));
+    }
+
+    @Test
+    public void equalsOnTheSameFilms() throws Exception {
 
         ArrayList<Actor> cast = new ArrayList<>();
         cast.add(emma);
         cast.add(ryan);
+        Movie LaLaLand = new Movie("La-la-land", "Damien Chazelle", Genre.MUSICAL, cast);
 
-        Movie lalaland = new Movie("La-la-land", "Damien Chazelle", Genre.MUSICAL, cast);
 
-        assertTrue(emma.getAmountOfLeadRoles() == 1);
-        assertTrue(ryan.getAmountOfLeadRoles() == 1);
+        Actor emmaCopy =
+                new Actor("Emma", "Stone", LocalDate.of(1988, Month.NOVEMBER, 6), 28, Gender.FEMALE, 165);
+        Actor ryanCopy =
+                new Actor("Ryan", "Gosling", LocalDate.of(1980, Month.NOVEMBER,12), 36, Gender.MALE, 184);
+
+        ArrayList<Actor> sequelCast = new ArrayList<>();
+
+        sequelCast.add(ryanCopy);
+        sequelCast.add(emmaCopy);
+
+        Movie LaLaLandSequel = new Movie("La-la-land", "Damien Chazelle", Genre.MUSICAL, sequelCast);
+
+        assertTrue(LaLaLand.equals(LaLaLandSequel));
+    }
+
+    @Test
+    public void equalsOnTheDifferentFilmsWithOneCast() throws Exception {
+        ArrayList<Actor> cast = new ArrayList<>();
+        cast.add(emma);
+        cast.add(ryan);
+        Movie LaLaLand = new Movie("La-la-land", "Damien Chazelle", Genre.MUSICAL, cast);
+
+        ArrayList<Actor> sequelCast = new ArrayList<>();
+        sequelCast.add(ryan);
+        sequelCast.add(emma);
+        Movie LaLaLandSequel = new Movie("Bla-bla-bland", "Damien Chazelle", Genre.MUSICAL, sequelCast);
+
+        assertFalse(LaLaLand.equals(LaLaLandSequel));
+    }
+
+    @Test
+    public void equalsOnTheOneFilmsWithDifferentCast() throws Exception {
+        ArrayList<Actor> cast = new ArrayList<>();
+        cast.add(emma);
+        cast.add(ryan);
+        Movie LaLaLand = new Movie("La-la-land", "Damien Chazelle", Genre.MUSICAL, cast);
+
+        Actor sharon =
+                new Actor("Sharon", "Stone", LocalDate.of(1958, Month.MARCH, 10), 59, Gender.FEMALE, 174);
+        ArrayList<Actor> sequelCast = new ArrayList<>();
+        sequelCast.add(ryan);
+        sequelCast.add(sharon);
+        Movie LaLaLandSequel = new Movie("Bla-bla-bland", "Damien Chazelle", Genre.MUSICAL, sequelCast);
+
+        assertFalse(LaLaLand.equals(LaLaLandSequel));
     }
 
 }

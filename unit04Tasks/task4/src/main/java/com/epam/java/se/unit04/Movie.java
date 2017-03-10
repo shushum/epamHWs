@@ -20,9 +20,9 @@ public class Movie {
         this.title = title;
         this.directorsName = directorsName;
         this.genre = genre;
-        this.starring = starring;
 
-        addLeadRolesToCast(starring);
+        sortCastByNames(starring);
+        this.starring = starring;
     }
 
     @Override
@@ -47,8 +47,12 @@ public class Movie {
         return result;
     }
 
-    private void sortCastByNames(ArrayList<Actor> cast) {
-        Collections.sort(cast, (o1, o2) -> {
+    public List<Actor> getStarring() {
+        return starring;
+    }
+
+    private void sortCastByNames(ArrayList<Actor> starring) {
+        Collections.sort(starring, (o1, o2) -> {
             String lastName1 = o1.getLastName();
             String lastName2 = o2.getLastName();
 
@@ -62,12 +66,6 @@ public class Movie {
 
             return firstName1.compareTo(firstName2);
         });
-    }
-
-    private void addLeadRolesToCast(ArrayList<Actor> starring) {
-        for (Actor actor : starring) {
-            actor.addLeadRole();
-        }
     }
 
     private void movieIsNotNull(String title, String directorsName, ArrayList<Actor> starring) {

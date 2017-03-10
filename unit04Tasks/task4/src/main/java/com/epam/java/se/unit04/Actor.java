@@ -13,7 +13,6 @@ public class Actor {
     private int age;
     private Gender gender;
     private int height;
-    private int amountOfLeadRoles;
 
     public Actor(String firstName, String lastName, LocalDate dateOfBirth, int age, Gender gender, int height) {
 
@@ -26,15 +25,6 @@ public class Actor {
         this.age = age;
         this.gender = gender;
         this.height = height;
-        amountOfLeadRoles = 0;
-    }
-
-    public void addLeadRole(){
-        amountOfLeadRoles++;
-    }
-
-    public int getAmountOfLeadRoles() {
-        return amountOfLeadRoles;
     }
 
     public String getLastName() {
@@ -43,6 +33,32 @@ public class Actor {
 
     public String getFirstName() {
         return firstName;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Actor actor = (Actor) o;
+
+        if (age != actor.age) return false;
+        if (height != actor.height) return false;
+        if (!firstName.equals(actor.firstName)) return false;
+        if (!lastName.equals(actor.lastName)) return false;
+        if (!dateOfBirth.equals(actor.dateOfBirth)) return false;
+        return gender == actor.gender;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = firstName.hashCode();
+        result = 31 * result + lastName.hashCode();
+        result = 31 * result + dateOfBirth.hashCode();
+        result = 31 * result + age;
+        result = 31 * result + gender.hashCode();
+        result = 31 * result + height;
+        return result;
     }
 
     private void personIsNotNull(String firstName, String lastName, LocalDate dateOfBirth) {
