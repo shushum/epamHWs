@@ -9,12 +9,26 @@ import java.util.Objects;
 /**
  * Created by Yegor on 10.03.2017.
  */
+
+/**
+ * A class designed to store info about movie.
+ */
 public class Movie implements Serializable {
     private final String title;
     private final String directorsName;
     private final Genre genre;
+    /**
+     * List of Actors with lead roles in movie.
+     */
     private final List<Actor> starring;
 
+    /**
+     * Creates a movie description.
+     * @param title title of the movie.
+     * @param directorsName director of the movie.
+     * @param genre genre of the movie.
+     * @param starring ArrayList of Actors with lead roles in the movie. Stored sorted by Actors' names.
+     */
     public Movie(String title, String directorsName, Genre genre, ArrayList<Actor> starring) {
         movieIsNotNull(title, directorsName, starring);
 

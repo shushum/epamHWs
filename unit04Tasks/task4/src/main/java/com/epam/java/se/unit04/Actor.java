@@ -7,6 +7,10 @@ import java.util.Objects;
 /**
  * Created by Yegor on 10.03.2017.
  */
+
+/**
+ * A class designed to store info about actor.
+ */
 public class Actor implements Serializable {
     private final String firstName;
     private final String lastName;

@@ -215,7 +215,6 @@ public class MovieCollectionTest {
     public void loadModifySaveLoadTest() throws Exception {
         saveLoadTest();
 
-        
         Actor michael =
                 new Actor("Michael", "Cera", LocalDate.of(1988, Month.JUNE, 7), 28, Gender.MALE, 174);
         Actor mary =

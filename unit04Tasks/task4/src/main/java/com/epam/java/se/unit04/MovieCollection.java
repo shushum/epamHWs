@@ -1,6 +1,7 @@
 package com.epam.java.se.unit04;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -8,17 +9,38 @@ import java.util.Objects;
 /**
  * Created by Yegor on 10.03.2017.
  */
+
+/**
+ * A class designed to create collection of Movies, modify it, save in or load from file.
+ */
 public class MovieCollection implements Serializable {
+    /**
+     * A String identifier. Can be interpreted as owner or name of the Movie Collection.
+     */
     private final String ID;
+    /**
+     * List of Movies in collection.
+     */
     private List<Movie> collection;
 
-    public MovieCollection(String ID, List<Movie> collection) {
+    /**
+     * Creates a Movie Collection with a preset of Movies.
+     * @param ID identifier for collection.
+     * @param collection a preset of movies that the collection will contain after creation.
+     */
+    public MovieCollection(String ID, ArrayList<Movie> collection) {
         movieCollectionIsNotNull(ID, collection);
 
         this.ID = ID;
         this.collection = collection;
     }
 
+    /**
+     * Add a new Movie to Movie Collection.
+     *
+     * If Movie Collection already has that specific Movie, it won't be added.
+     * @param newMovie
+     */
     public void addMovieToCollection(Movie newMovie) {
         Objects.requireNonNull(newMovie);
 
@@ -30,6 +52,13 @@ public class MovieCollection implements Serializable {
         //todo organize sorted adding?
     }
 
+    /**
+     * Removes the Movie from Movie Collection based on the Movie title.
+     *
+     * If Movie Collection doesn't contain such Movie title, Movie Collection won't be changed.
+     * If Movie Collection contains multiple Movies with such title, only the one with the lowest index will be removed.
+     * @param title
+     */
     public void removeMovieFromCollectionByTitle(String title) {
         Objects.requireNonNull(title);
 
@@ -44,6 +73,9 @@ public class MovieCollection implements Serializable {
         //todo add feedback on not existed in collection movie?
     }
 
+    /**
+     * Sorts all Movies in Movie Collection by title.
+     */
     public void sortMovieCollectionByTitle() {
         Collections.sort(collection, (o1, o2) -> {
             String t1 = o1.getTitle();
@@ -52,10 +84,17 @@ public class MovieCollection implements Serializable {
         });
     }
 
+    /**
+     * Needed for testing.
+     * @return
+     */
     public List<Movie> getCollection() {
         return collection;
     }
 
+    /**
+     * Saves current Movie Collection in file with specified name.
+     */
     public void saveMovieCollectionToFile() {
         try (ObjectOutputStream save = new ObjectOutputStream(new FileOutputStream("Movie Collection of " + ID))) {
 
@@ -68,6 +107,13 @@ public class MovieCollection implements Serializable {
         }
     }
 
+    /**
+     * Loads Movie Collection from file for further work with it.
+     * @param collectionID an ID of required Movie Collection.
+     * @return loaded from Movie Collection.
+     * @throws FileNotFoundException if there is no Movie Collection with such ID.
+     * @throws ClassNotFoundException if loaded info is not Movie Collection type?
+     */
     public static MovieCollection loadMovieCollectionFromFile(String collectionID) throws FileNotFoundException, ClassNotFoundException {
         MovieCollection loadedCollection = null;
 
