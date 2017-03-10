@@ -1,5 +1,6 @@
 package com.epam.java.se.unit04;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -8,7 +9,7 @@ import java.util.Objects;
 /**
  * Created by Yegor on 10.03.2017.
  */
-public class Movie {
+public class Movie implements Serializable {
     private final String title;
     private final String directorsName;
     private final Genre genre;

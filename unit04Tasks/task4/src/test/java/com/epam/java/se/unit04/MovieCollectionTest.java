@@ -2,6 +2,7 @@ package com.epam.java.se.unit04;
 
 import org.junit.Test;
 
+import java.io.File;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
@@ -140,6 +141,28 @@ public class MovieCollectionTest {
         assertTrue(smallCollection.getCollection().get(0).equals(laLaLandSequel));
         assertTrue(smallCollection.getCollection().get(1).equals(heavyRain));
         assertTrue(smallCollection.getCollection().get(2).equals(laLaLand));
+    }
+
+    @Test
+    public void saveMovieCollectionAutoPathTest() throws Exception {
+        ArrayList<Actor> cast = new ArrayList<>();
+        cast.add(emma);
+        cast.add(ryan);
+        Movie laLaLand = new Movie("La-la-land", "Damien Chazelle", Genre.MUSICAL, cast);
+        Movie laLaLandSequel = new Movie("BLa-bla-bland: Moonlight shadow", "Damien Chazelle", Genre.MUSICAL, cast);
+        Movie heavyRain = new Movie("Heavy rain", "Quantic Dream", Genre.DRAMA, cast);
+
+        ArrayList<Movie> collection = new ArrayList<>();
+        collection.add(heavyRain);
+        collection.add(laLaLandSequel);
+        collection.add(laLaLand);
+
+        MovieCollection smallCollection = new MovieCollection("My collection", collection);
+
+        smallCollection.saveMovieCollectionToFile();
+
+        File check = new File("Movie Collection of My collection");
+        assertTrue(check.exists());
     }
 
 }

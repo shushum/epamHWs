@@ -1,12 +1,13 @@
 package com.epam.java.se.unit04;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 
 /**
  * Created by Yegor on 10.03.2017.
  */
-public class Actor {
+public class Actor implements Serializable {
     private final String firstName;
     private final String lastName;
     private final LocalDate dateOfBirth;

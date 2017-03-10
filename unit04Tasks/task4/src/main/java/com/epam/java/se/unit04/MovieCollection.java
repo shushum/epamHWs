@@ -1,5 +1,6 @@
 package com.epam.java.se.unit04;
 
+import java.io.*;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -7,7 +8,7 @@ import java.util.Objects;
 /**
  * Created by Yegor on 10.03.2017.
  */
-public class MovieCollection {
+public class MovieCollection implements Serializable {
     private final String ID;
     private List<Movie> collection;
 
@@ -49,6 +50,31 @@ public class MovieCollection {
     public List<Movie> getCollection() {
         return collection;
     }
+
+    public void saveMovieCollectionToFile() {
+
+        try (ObjectOutputStream save = new ObjectOutputStream(new FileOutputStream("Movie Collection of " + ID))) {
+
+            save.writeObject(this);
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    
+
+   /* private File fileExistCheck() {
+        File file = new File("Movie Collection " + ID);
+        try {
+            file.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return file;
+    }*/
 
     private void movieCollectionIsNotNull(String ID, List<Movie> collection) {
         Objects.requireNonNull(ID);
