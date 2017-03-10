@@ -3,6 +3,7 @@ package com.epam.java.se.unit04;
 import org.junit.Test;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ public class MovieCollectionTest {
             new Actor("Emma", "Stone", LocalDate.of(1988, Month.NOVEMBER, 6), 28, Gender.FEMALE, 165);
     Actor ryan =
             new Actor("Ryan", "Gosling", LocalDate.of(1980, Month.NOVEMBER, 12), 36, Gender.MALE, 184);
+
 
     @Test
     public void addMovieToCollectionWorksRight() throws Exception {
@@ -163,6 +165,50 @@ public class MovieCollectionTest {
 
         File check = new File("Movie Collection of My collection");
         assertTrue(check.exists());
+    }
+
+    @Test
+    public void loadMovieCollectionFromFileTest() throws Exception {
+        MovieCollection loadedCollection = MovieCollection.loadMovieCollectionFromFile("My collection");
+
+        assertFalse(loadedCollection == null);
+
+        assertFalse(loadedCollection.getCollection().isEmpty());
+
+    }
+
+    @Test(expected = FileNotFoundException.class)
+    public void loadMovieCollectionFromWrongFile() throws Exception {
+        MovieCollection loadedCollection = MovieCollection.loadMovieCollectionFromFile("Wrong ID of collection");
+    }
+
+    @Test
+    public void saveLoadTest() throws Exception {
+        ArrayList<Actor> cast = new ArrayList<>();
+        cast.add(emma);
+        cast.add(ryan);
+        Movie laLaLand = new Movie("La-la-land", "Damien Chazelle", Genre.MUSICAL, cast);
+        Movie laLaLandSequel = new Movie("BLa-bla-bland: Moonlight shadow", "Damien Chazelle", Genre.MUSICAL, cast);
+        Movie heavyRain = new Movie("Heavy rain", "Quantic Dream", Genre.DRAMA, cast);
+
+        ArrayList<Movie> collection = new ArrayList<>();
+        collection.add(heavyRain);
+        collection.add(laLaLandSequel);
+        collection.add(laLaLand);
+
+        MovieCollection smallCollection = new MovieCollection("My collection", collection);
+
+        smallCollection.saveMovieCollectionToFile();
+
+
+        MovieCollection loadedSmallCollection = MovieCollection.loadMovieCollectionFromFile("My collection");
+
+        assertTrue(loadedSmallCollection.getCollection().size() == 3);
+
+        assertTrue(loadedSmallCollection.equals(smallCollection));
+
+        assertTrue(loadedSmallCollection.getCollection().get(2).equals(laLaLand));
+        assertTrue(loadedSmallCollection.getCollection().get(1).getStarring().get(0).equals(ryan));
     }
 
 }

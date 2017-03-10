@@ -52,7 +52,6 @@ public class MovieCollection implements Serializable {
     }
 
     public void saveMovieCollectionToFile() {
-
         try (ObjectOutputStream save = new ObjectOutputStream(new FileOutputStream("Movie Collection of " + ID))) {
 
             save.writeObject(this);
@@ -64,17 +63,42 @@ public class MovieCollection implements Serializable {
         }
     }
 
-    
+    public static MovieCollection loadMovieCollectionFromFile(String collectionID) throws FileNotFoundException, ClassNotFoundException {
+        MovieCollection loadedCollection = null;
 
-   /* private File fileExistCheck() {
-        File file = new File("Movie Collection " + ID);
-        try {
-            file.createNewFile();
+        try (ObjectInputStream load = new ObjectInputStream(new FileInputStream("Movie Collection of " + collectionID))) {
+
+            loadedCollection = (MovieCollection) load.readObject();
+
+        } catch (FileNotFoundException e) {
+            throw new FileNotFoundException(String.format("Collection with ID [%s] doesn't exist.", collectionID));
+
         } catch (IOException e) {
             e.printStackTrace();
+
+        } catch (ClassNotFoundException e) {
+            throw new ClassNotFoundException(String.format("Apparently, some classes are missing. That's not normal." +
+                    "Supposed missed class is [%s].", e.getMessage()));
         }
-        return file;
-    }*/
+        return loadedCollection;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        MovieCollection that = (MovieCollection) o;
+
+        return ID.equals(that.ID) && collection.equals(that.collection);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = ID.hashCode();
+        result = 31 * result + collection.hashCode();
+        return result;
+    }
 
     private void movieCollectionIsNotNull(String ID, List<Movie> collection) {
         Objects.requireNonNull(ID);
