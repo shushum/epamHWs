@@ -21,8 +21,8 @@ public class Movie {
         this.directorsName = directorsName;
         this.genre = genre;
 
-        sortCastByNames(starring);
         this.starring = starring;
+        sortCastByNames();
     }
 
     @Override
@@ -51,7 +51,11 @@ public class Movie {
         return starring;
     }
 
-    private void sortCastByNames(ArrayList<Actor> starring) {
+    public String getTitle() {
+        return title;
+    }
+
+    private void sortCastByNames() {
         Collections.sort(starring, (o1, o2) -> {
             String lastName1 = o1.getLastName();
             String lastName2 = o2.getLastName();
