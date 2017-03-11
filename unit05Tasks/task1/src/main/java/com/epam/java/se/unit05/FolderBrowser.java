@@ -55,11 +55,12 @@ public class FolderBrowser {
 
         fileExists(childFile.getPath());
 
-        if (childFile.isDirectory()) {
-            pathname = childFile;
-        } else if (childFile.isFile()) {
-            throw new InvalidActionException("You can only inspect directories, not files.");
-        }
+        pathname = childFile;
+
+    }
+
+    public File getPathname() {
+        return pathname;
     }
 
     private void fileExists(String directory) throws FileNotFoundException {
@@ -79,7 +80,7 @@ public class FolderBrowser {
                 content.add("File:\t\t" + child.getName());
             }
         }
-        content.sort(Comparator.naturalOrder());
+        content.sort(String::compareToIgnoreCase);
         return content;
     }
 
