@@ -16,6 +16,20 @@ public class FolderBrowserTest {
 
         browser.directoryContent().forEach(System.out::println);
 
+        browser.upToParent();
+        browser.upToParent();
+        browser.upToParent();
+
+        System.out.println(browser.currentDirectory());
+
+        browser.downToChild("Yegor");
+
+        System.out.println(browser.currentDirectory());
+
+        browser.downToChild("ntuser.ini");
+
+        System.out.println(browser.currentDirectory());
+
 
 
     }

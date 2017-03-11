@@ -43,15 +43,14 @@ public class FolderBrowser {
         return content;
     }
 
-    public void upToParent() {
+    public void upToParent() throws InvalidActionException {
         if (pathname.getParentFile() == null) {
-            System.out.println("Root directory.");
-            return;
+            throw new InvalidActionException("Root directory.");
         }
         pathname = pathname.getParentFile();
     }
 
-    public void downToChild(String childDirectory) throws FileNotFoundException {
+    public void downToChild(String childDirectory) throws FileNotFoundException, InvalidActionException {
         File childFile = new File(pathname, childDirectory);
 
         fileExists(childFile.getPath());
@@ -59,7 +58,7 @@ public class FolderBrowser {
         if (childFile.isDirectory()) {
             pathname = childFile;
         } else if (childFile.isFile()) {
-            System.out.println("You can only inspect directories, not files.");
+            throw new InvalidActionException("You can only inspect directories, not files.");
         }
     }
 
