@@ -1,27 +1,58 @@
 package com.epam.java.se.unit05;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 
 /**
  * Created by Yegor on 11.03.2017.
  */
 public class FolderBrowser {
-    private File currentDirectory;
+    private File pathname;
 
 
     public FolderBrowser() {
-        currentDirectory = new File(System.getProperty("user.home"));
+        pathname = new File(System.getProperty("user.home"));
     }
 
-    public FolderBrowser(String homeDirectory) {
-        currentDirectory = new File(homeDirectory);
+    public FolderBrowser(String homeDirectory) throws FileNotFoundException {
+        File file = new File(homeDirectory);
+
+        if (!file.exists()){
+            throw new FileNotFoundException(String.format("%s does no exist.", homeDirectory));
+        }
+
+        pathname = new File(homeDirectory);
     }
 
     public void showCurrentDirectory() {
-        System.out.println(currentDirectory.getPath() + ">");
+        System.out.println(pathname.getPath() + ">");
     }
 
-    public void showChildrens() {
+    public void showDirectoryContent() {
+        try {
 
+            if (directoryIsEmpty()) {
+                System.out.println("This directory is empty.");
+            } else {
+                printContent();
+            }
+        } catch (NullPointerException e) {
+            System.out.println(String.format("%s does not denote a directory!", pathname));
+        }
+    }
+
+    //todo printSortedContent
+    private void printContent() {
+        for (File child : pathname.listFiles()) {
+            if (child.isDirectory()) {
+                System.out.println("Directory:\t\t" + child.getName());
+            } else if (child.isFile()) {
+                System.out.println("File:\t\t" + child.getName());
+            }
+        }
+    }
+
+    private boolean directoryIsEmpty() {
+        return pathname.listFiles().length == 0;
     }
 }
