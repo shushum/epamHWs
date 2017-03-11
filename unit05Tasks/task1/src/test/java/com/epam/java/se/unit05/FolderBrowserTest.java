@@ -12,10 +12,20 @@ public class FolderBrowserTest {
     public void showCurrentDirectory() throws Exception {
         FolderBrowser browser = new FolderBrowser();
 
-        //browser.showCurrentDirectory();
-        //browser.showDirectoryContent();
+        browser.showCurrentDirectory();
 
-        FolderBrowser emptyFolder = new FolderBrowser("E:\\Study\\java\\emptyFolde");
+        browser.upToParent();
+
+        browser.showCurrentDirectory();
+
+        browser.upToParent();
+
+        browser.showCurrentDirectory();
+
+        browser.upToParent();
+
+        browser.showCurrentDirectory();
+
 
     }
 
