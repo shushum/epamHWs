@@ -6,19 +6,22 @@ import java.io.File;
  * Created by Yegor on 11.03.2017.
  */
 public class FolderBrowser {
-    private String currentDirectory;
+    private File currentDirectory;
 
 
-    public FolderBrowser(){
-        currentDirectory = System.getProperty("user.home");
+    public FolderBrowser() {
+        currentDirectory = new File(System.getProperty("user.home"));
     }
 
-    public FolderBrowser(String homeDirectory){
-        currentDirectory = homeDirectory;
+    public FolderBrowser(String homeDirectory) {
+        currentDirectory = new File(homeDirectory);
     }
 
-    public void showCurrentDirectory(){
-        File currentDirectory = new File(this.currentDirectory);
-        System.out.println(currentDirectory.getPath() + "> path");
+    public void showCurrentDirectory() {
+        System.out.println(currentDirectory.getPath() + ">");
+    }
+
+    public void showChildrens() {
+
     }
 }
