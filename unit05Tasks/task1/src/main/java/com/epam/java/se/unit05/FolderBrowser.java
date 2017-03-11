@@ -2,6 +2,9 @@ package com.epam.java.se.unit05;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
 /**
  * Created by Yegor on 11.03.2017.
@@ -25,20 +28,19 @@ public class FolderBrowser {
         pathname = new File(newDirectory);
     }
 
-    public void showCurrentDirectory() {
-        System.out.println(pathname.getPath() + ">");
+    public String currentDirectory() {
+        return pathname.getPath() + ">";
     }
 
-    public void showDirectoryContent() {
-        try {
-            if (directoryIsEmpty()) {
-                System.out.println("This directory is empty.");
-            } else {
-                printContent();
-            }
-        } catch (NullPointerException e) {
-            System.out.println(String.format("%s does not denote a directory!", pathname));
+    public List<String> directoryContent() throws NullPointerException {
+
+        List<String> content = new ArrayList<>(pathname.listFiles().length);
+        if (directoryIsEmpty()) {
+            content.add("This directory is empty.");
+        } else {
+            writeIn(content);
         }
+        return content;
     }
 
     public void upToParent() {
@@ -54,9 +56,9 @@ public class FolderBrowser {
 
         fileExists(childFile.getPath());
 
-        if (childFile.isDirectory()){
+        if (childFile.isDirectory()) {
             pathname = childFile;
-        } else if (childFile.isFile()){
+        } else if (childFile.isFile()) {
             System.out.println("You can only inspect directories, not files.");
         }
     }
@@ -69,15 +71,17 @@ public class FolderBrowser {
         }
     }
 
-    //todo printSortedContent
-    private void printContent() {
+    private List<String> writeIn(List<String> content) {
         for (File child : pathname.listFiles()) {
+
             if (child.isDirectory()) {
-                System.out.println("Directory:\t" + child.getName());
+                content.add("Directory:\t" + child.getName());
             } else if (child.isFile()) {
-                System.out.println("File:\t\t" + child.getName());
+                content.add("File:\t\t" + child.getName());
             }
         }
+        content.sort(Comparator.naturalOrder());
+        return content;
     }
 
     private boolean directoryIsEmpty() {

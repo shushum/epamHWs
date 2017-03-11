@@ -12,19 +12,10 @@ public class FolderBrowserTest {
     public void showCurrentDirectory() throws Exception {
         FolderBrowser browser = new FolderBrowser();
 
-        browser.showCurrentDirectory();
+        System.out.println(browser.currentDirectory());
 
-        browser.upToParent();
+        browser.directoryContent().forEach(System.out::println);
 
-        browser.showCurrentDirectory();
-
-        browser.upToParent();
-
-        browser.showCurrentDirectory();
-
-        browser.upToParent();
-
-        browser.showCurrentDirectory();
 
 
     }
