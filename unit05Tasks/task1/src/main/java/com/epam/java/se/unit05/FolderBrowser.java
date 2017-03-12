@@ -66,7 +66,7 @@ public class FolderBrowser {
         File file = new File(directory);
 
         if (!file.exists()) {
-            throw new FileNotFoundException(String.format("%s does not exist.", directory));
+            throw new FileNotFoundException(String.format("<%s> does not exist.", directory));
         }
     }
 

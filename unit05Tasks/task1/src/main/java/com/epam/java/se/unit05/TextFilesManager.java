@@ -1,8 +1,6 @@
 package com.epam.java.se.unit05;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.*;
 
 /**
@@ -29,5 +27,18 @@ public class TextFilesManager {
         if (!file.delete()) {
             throw new FileNotFoundException(String.format("File %s does not exist.", file.getName()));
         }
+    }
+
+    public void writeToFile(File directory, String fileName, boolean append, String text) throws IOException {
+        File file = new File(directory, fileName + filenameExtension);
+
+        if (!file.exists()){
+            throw new FileNotFoundException(String.format("File %s does not exist.", file.getName()));
+        }
+
+        BufferedWriter writer = new BufferedWriter(new FileWriter(file, append));
+        writer.write(text);
+        writer.flush();
+        writer.close();
     }
 }

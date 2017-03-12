@@ -79,4 +79,16 @@ public class TextFilesManagerTest {
 
         filesManager.deleteFile(browser.getPathname(), "thisNeverBeExisting");
     }
+
+    @Test(expected = FileNotFoundException.class)
+    public void writeToNotExistingFile() throws Exception {
+        FolderBrowser browser = new FolderBrowser("E:\\Study\\java\\Projects\\unit05Tasks\\task1");
+        TextFilesManager filesManager = new TextFilesManager();
+
+        File notExistingFile = new File("E:\\Study\\java\\Projects\\unit05Tasks\\task1\\thisNeverBeExisting");
+
+        assertFalse(notExistingFile.exists());
+
+        filesManager.writeToFile(browser.getPathname(), "thisNeverBeExisting", true, "bla");
+    }
 }
