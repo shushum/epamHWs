@@ -13,6 +13,7 @@ public class AppMain {
         Scanner scanner = new Scanner(System.in);
         boolean incorrectInput = true;
 
+        AppMain.printCommandList();
         System.out.println("Please, type in a starting directory. For default directory type 'ENTER':");
 
         while (incorrectInput) {
@@ -31,7 +32,27 @@ public class AppMain {
         }
 
         while (true){
-            
+
         }
+    }
+
+    private static void printCommandList(){
+        StringBuilder commands = new StringBuilder();
+        commands.append("List of available commands. Type the required command to proceed:\n");
+        commands.append("'cd'   - change current directory to required.\n");
+        commands.append("'cd..' - move one level up the directory tree.\n");
+        commands.append("'cd\\'  - move to required child directory.\n");
+        commands.append("'dir'  - display the content of current directory.\n");
+        commands.append("\n");
+        commands.append("'mf'   - create new .txt file in current directory.\n");
+        commands.append("'del'  - delete required .txt file.\n");
+        commands.append("'edit' - edit required .txt file.\n");
+
+        System.out.println(commands);
+
+
+
+
+
     }
 }
