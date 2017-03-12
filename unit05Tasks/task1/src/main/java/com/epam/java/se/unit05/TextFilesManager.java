@@ -13,7 +13,8 @@ public class TextFilesManager {
         File newFile = new File(directory, fileName + filenameExtension);
 
         if (!newFile.createNewFile()) {
-            throw new java.nio.file.FileAlreadyExistsException(String.format("File %s already exists.", newFile.getName()));
+            throw new java.nio.file.FileAlreadyExistsException(String.format("File %s already exists in current directory.",
+                    newFile.getName()));
         }
     }
 
@@ -25,7 +26,7 @@ public class TextFilesManager {
         }
 
         if (!file.delete()) {
-            throw new FileNotFoundException(String.format("File %s does not exist.", file.getName()));
+            throw new FileNotFoundException(String.format("File %s does not exist in current directory.", file.getName()));
         }
     }
 
@@ -33,7 +34,7 @@ public class TextFilesManager {
         File file = new File(directory, fileName + filenameExtension);
 
         if (!file.exists()){
-            throw new FileNotFoundException(String.format("File %s does not exist.", file.getName()));
+            throw new FileNotFoundException(String.format("File %s does not exist in current directory.", file.getName()));
         }
 
         BufferedWriter writer = new BufferedWriter(new FileWriter(file, append));

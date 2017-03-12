@@ -54,6 +54,10 @@ public class FolderBrowser {
 
         fileExists(childFile.getPath());
 
+        if (childFile.isFile()) {
+            throw new InvalidActionException("Can't move to required child. It is not a directory.");
+        }
+
         pathname = childFile;
 
     }

@@ -98,10 +98,10 @@ public class FolderBrowserTest {
         browser.downToChild("Bindings of Isaac");
     }
 
-    @Test(expected = FileNotFoundException.class)
+    @Test(expected = InvalidActionException.class)
     public void downToChildWorksRightWithNotADirectory() throws Exception {
-        FolderBrowser browser = new FolderBrowser("E:\\Study\\java\\gitStudy\\game_new.js");
+        FolderBrowser browser = new FolderBrowser("E:\\Study\\java\\gitStudy");
 
-        browser.downToChild("Bindings of Isaac");
+        browser.downToChild("game_new.js");
     }
 }
