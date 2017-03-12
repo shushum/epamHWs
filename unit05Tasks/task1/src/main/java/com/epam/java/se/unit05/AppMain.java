@@ -34,8 +34,8 @@ public class AppMain {
         }
 
         printCommandList();
+
         while (true) {
-            System.out.println("Type the required command to proceed:");
             System.out.println(browser.currentDirectory());
 
             String command = scanner.nextLine();
@@ -87,6 +87,7 @@ public class AppMain {
 
                     try {
                         filesManager.createNewFile(browser.getPathname(), newFile);
+                        System.out.println(String.format("File <%s> successfully created.", newFile));
                     } catch (FileAlreadyExistsException e) {
                         System.out.println(e.getMessage());
                     } catch (IOException e) {
@@ -100,6 +101,7 @@ public class AppMain {
 
                     try {
                         filesManager.deleteFile(browser.getPathname(), file);
+                        System.out.println(String.format("File <%s> successfully deleted.", file));
                     } catch (InvalidActionException e) {
                         System.out.println(e.getMessage());
                     } catch (FileNotFoundException e) {
@@ -109,16 +111,17 @@ public class AppMain {
 
                 case "edit":
                     try {
-                        System.out.println("Type name of .txt file to be edited:");
-                        String editedFile = scanner.nextLine();
-
                         System.out.println("Rewrite file from beginning? Y|N:");
                         boolean answer = answerToBoolean(scanner.nextLine());
 
                         System.out.println("Type line for writing in file:");
                         String text = scanner.nextLine();
 
+                        System.out.println("Type name of .txt file to be edited:");
+                        String editedFile = scanner.nextLine();
+
                         filesManager.writeToFile(browser.getPathname(), editedFile, answer, text);
+                        System.out.println(String.format("File <%s> successfully edited.", editedFile));
                     } catch (FileNotFoundException e) {
                         System.out.println(e.getMessage());
                     } catch (InvalidActionException e) {
@@ -145,9 +148,9 @@ public class AppMain {
     private static boolean answerToBoolean(String s) throws InvalidActionException {
         switch (s.toUpperCase()) {
             case "Y":
-                return true;
-            case "N":
                 return false;
+            case "N":
+                return true;
             default:
                 throw new InvalidActionException("Invalid answer type. Try Y for 'yes' or N for 'no'.");
         }
@@ -165,8 +168,10 @@ public class AppMain {
         commands.append("del  - delete required .txt file.\n");
         commands.append("edit - edit required .txt file.\n");
         commands.append("\n");
-        commands.append("help - print list of available commands.");
-        commands.append("exit - end session.");
+        commands.append("help - print list of available commands.\n");
+        commands.append("exit - end session.\n");
+        commands.append("\n");
+        commands.append("Type the required command to proceed:\n");
 
         System.out.println(commands);
 
