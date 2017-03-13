@@ -16,7 +16,7 @@ public class PropertiesReaderTest {
         PropertiesReader reader =
                 new PropertiesReader("resourcesForTest.properties");
         reader.loadPropertiesFile();
-        assertFalse(reader.getProperties().size() == 0);
+        assertTrue(reader.getProperties().size() == 2);
     }
 
     @Test
