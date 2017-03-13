@@ -12,10 +12,19 @@ import static org.junit.Assert.*;
 public class PropertiesReaderTest {
 
     @Test
-    public void loadPropertiesFromExistingPropFile() throws Exception {
-        PropertiesReader reader = new PropertiesReader("exists.properties");
+    public void loadPropertiesFromExistingNotEmptyPropFile() throws Exception {
+        PropertiesReader reader =
+                new PropertiesReader("resourcesForTest.properties");
         reader.loadPropertiesFile();
-        assertFalse(reader.getProperties() == null); //questionably
+        assertFalse(reader.getProperties().size() == 0);
+    }
+
+    @Test
+    public void loadPropertiesFromExistingEmptyPropFile() throws Exception {
+        PropertiesReader reader =
+                new PropertiesReader("resourcesEmpty.properties");
+        reader.loadPropertiesFile();
+        assertTrue(reader.getProperties().isEmpty());
     }
 
     @Test(expected = FileNotFoundException.class)
@@ -26,21 +35,33 @@ public class PropertiesReaderTest {
 
     @Test
     public void getElementWithExistingKey() throws Exception {
-        PropertiesReader reader = new PropertiesReader("exists.properties");
+        PropertiesReader reader = new PropertiesReader("resourcesForTest.properties");
         reader.loadPropertiesFile();
 
-        String element = reader.getElementByKey("existingKey");
-        assertTrue(element.equals("elementGotByKey"));
+        assertTrue(reader.getElementByKey("1").equals("element for key '1'"));
     }
 
     @Test(expected = KeyNotFoundException.class)
     public void getElementWithNotExistingKey() throws Exception {
-        PropertiesReader reader = new PropertiesReader("exists.properties");
+        PropertiesReader reader = new PropertiesReader("resourcesForTest.properties");
         reader.loadPropertiesFile();
 
-        String element = reader.getElementByKey("existingKey");
-        assertTrue(element.equals("elementGotByKey"));
+        reader.getElementByKey("2");
     }
 
-    //localeTest?
+    @Test(expected = PropertiesFileIsEmptyException.class)
+    public void getElementFromEmptyPropFile() throws Exception {
+        PropertiesReader reader = new PropertiesReader("resourcesEmpty.properties");
+        reader.loadPropertiesFile();
+
+        reader.getElementByKey("2");
+    }
+
+    @Test
+    public void localeTestForUniversalAssurance() throws Exception {
+        PropertiesReader reader = new PropertiesReader("resourcesRus.properties");
+        reader.loadPropertiesFile();
+
+        assertTrue(reader.getElementByKey("1").equals("значение для ключа '1'"));
+    }
 }
