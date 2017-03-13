@@ -74,7 +74,7 @@ public class PropertiesReader {
 
         return properties.getProperty(key);
     }
-    
+
     public Properties getProperties() {
         return properties;
     }
