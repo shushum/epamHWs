@@ -8,6 +8,10 @@ import java.util.Scanner;
 /**
  * Created by Yegor on 12.03.2017.
  */
+
+/**
+ * Main loop of app. Giant and clunky. Should it be this way? Dunno:(
+ */
 public class AppMain {
 
     public static void main(String[] args) {
@@ -16,9 +20,8 @@ public class AppMain {
         Scanner scanner = new Scanner(System.in);
         boolean incorrectInput = true;
 
-        System.out.println("Please, type in a starting directory. For default directory press 'ENTER':");
-
         while (incorrectInput) {
+            System.out.println("Please, type in a starting directory. For default directory press 'ENTER':");
             String homeDir = scanner.nextLine();
 
             try {
@@ -30,6 +33,8 @@ public class AppMain {
                 incorrectInput = false;
             } catch (FileNotFoundException e) {
                 System.out.println("Directory " + e.getMessage() + " Please, try again.");
+            } catch (InvalidActionException e) {
+                System.out.println(e.getMessage());
             }
         }
 
