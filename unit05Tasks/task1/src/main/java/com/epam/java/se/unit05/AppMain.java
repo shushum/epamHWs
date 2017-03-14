@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.FileAlreadyExistsException;
 import java.util.Scanner;
+import java.util.StringTokenizer;
 
 /**
  * Created by Yegor on 12.03.2017.
@@ -13,11 +14,11 @@ import java.util.Scanner;
  * Main loop of app. Giant and clunky. Should it be this way? Dunno:(
  */
 public class AppMain {
+    private static FolderBrowser browser = null;
+    private final static TextFilesManager filesManager = new TextFilesManager();
+    private final static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
-        FolderBrowser browser = null;
-        TextFilesManager filesManager = new TextFilesManager();
-        Scanner scanner = new Scanner(System.in);
         boolean incorrectInput = true;
 
         while (incorrectInput) {
@@ -47,93 +48,31 @@ public class AppMain {
 
             switch (command) {
                 case "cd":
-                    System.out.println("Type path to required directory:");
-                    String dir = scanner.nextLine();
-                    try {
-                        browser.changeDirectory(dir);
-                    } catch (FileNotFoundException e) {
-                        System.out.println("Directory " + e.getMessage() + " Please, try again.");
-                    }
+                    changeDirectory(scanner);
                     break;
 
                 case "cd..":
-                    try {
-                        browser.upToParent();
-                    } catch (InvalidActionException e) {
-                        System.out.println(e.getMessage());
-                    }
+                    goUpToParent();
                     break;
 
                 case "cd\\":
-                    System.out.println("Type name of required child:");
-                    String child = scanner.nextLine();
-
-                    try {
-                        browser.downToChild(child);
-                    } catch (FileNotFoundException e) {
-                        System.out.println("Directory " + e.getMessage() + " Please, try again.");
-                    } catch (InvalidActionException e) {
-                        System.out.println(e.getMessage());
-                    }
+                    goDownToChild();
                     break;
 
                 case "dir":
-                    try {
-                        browser.directoryContent().forEach(System.out::println);
-                    } catch (NullPointerException e) {
-                        System.out.println("You tried to list content of a file, not folder. You shouldn't even be here! " +
-                                "Dirty hacka!");
-                    }
+                    showDirectoryContent();
                     break;
 
                 case "mf":
-                    System.out.println("Type name of .txt file to be created:");
-                    String newFile = scanner.nextLine();
-
-                    try {
-                        filesManager.createNewFile(browser.getPathname(), newFile);
-                        System.out.println(String.format("File <%s> successfully created.", newFile));
-                    } catch (FileAlreadyExistsException e) {
-                        System.out.println(e.getMessage());
-                    } catch (IOException e) {
-                        System.out.println("File creation failed due to IOException:" + e.getMessage());
-                    }
+                    createNewTextFile();
                     break;
 
                 case "del":
-                    System.out.println("Type name of .txt file to be deleted:");
-                    String file = scanner.nextLine();
-
-                    try {
-                        filesManager.deleteFile(browser.getPathname(), file);
-                        System.out.println(String.format("File <%s> successfully deleted.", file));
-                    } catch (InvalidActionException e) {
-                        System.out.println(e.getMessage());
-                    } catch (FileNotFoundException e) {
-                        System.out.println(e.getMessage());
-                    }
+                    deleteTextFile();
                     break;
 
                 case "edit":
-                    try {
-                        System.out.println("Rewrite file from beginning? Y|N:");
-                        boolean answer = answerToBoolean(scanner.nextLine());
-
-                        System.out.println("Type line for writing in file:");
-                        String text = scanner.nextLine();
-
-                        System.out.println("Type name of .txt file to be edited:");
-                        String editedFile = scanner.nextLine();
-
-                        filesManager.writeToFile(browser.getPathname(), editedFile, answer, text);
-                        System.out.println(String.format("File <%s> successfully edited.", editedFile));
-                    } catch (FileNotFoundException e) {
-                        System.out.println(e.getMessage());
-                    } catch (InvalidActionException e) {
-                        System.out.println(e.getMessage());
-                    } catch (IOException e) {
-                        System.out.println("File edition failed due to IOException:" + e.getMessage());
-                    }
+                    editTextFile();
                     break;
 
                 case "help":
@@ -147,6 +86,96 @@ public class AppMain {
                     System.out.println("Invalid command. Try again.");
                     break;
             }
+        }
+    }
+
+    private static void editTextFile() {
+        try {
+            System.out.println("Rewrite file from beginning? Y|N:");
+            boolean answer = answerToBoolean(scanner.nextLine());
+
+            System.out.println("Type line for writing in file:");
+            String text = scanner.nextLine();
+
+            System.out.println("Type name of .txt file to be edited:");
+            String editedFile = scanner.nextLine();
+
+            filesManager.writeToFile(browser.getPathname(), editedFile, answer, text);
+            System.out.println(String.format("File <%s> successfully edited.", editedFile));
+        } catch (FileNotFoundException e) {
+            System.out.println(e.getMessage());
+        } catch (InvalidActionException e) {
+            System.out.println(e.getMessage());
+        } catch (IOException e) {
+            System.out.println("File edition failed due to IOException:" + e.getMessage());
+        }
+    }
+
+    private static void deleteTextFile() {
+        System.out.println("Type name of .txt file to be deleted:");
+        String file = scanner.nextLine();
+
+        try {
+            filesManager.deleteFile(browser.getPathname(), file);
+            System.out.println(String.format("File <%s> successfully deleted.", file));
+        } catch (InvalidActionException e) {
+            System.out.println(e.getMessage());
+        } catch (FileNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    private static void createNewTextFile() {
+        System.out.println("Type name of .txt file to be created:");
+        String newFile = scanner.nextLine();
+
+        try {
+            filesManager.createNewFile(browser.getPathname(), newFile);
+            System.out.println(String.format("File <%s> successfully created.", newFile));
+        } catch (FileAlreadyExistsException e) {
+            System.out.println(e.getMessage());
+        } catch (IOException e) {
+            System.out.println("File creation failed due to IOException:" + e.getMessage());
+        }
+    }
+
+    private static void showDirectoryContent() {
+        try {
+            browser.directoryContent().forEach(System.out::println);
+        } catch (NullPointerException e) {
+            System.out.println("You tried to list content of a file, not folder. You shouldn't even be here! " +
+                    "Dirty hacka!");
+        }
+    }
+
+    private static void goDownToChild() {
+        System.out.println("Type name of required child:");
+        String child = scanner.nextLine();
+
+        try {
+            browser.downToChild(child);
+        } catch (FileNotFoundException e) {
+            System.out.println("Directory " + e.getMessage() + " Please, try again.");
+        } catch (InvalidActionException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    private static void goUpToParent() {
+        try {
+            browser.upToParent();
+        } catch (InvalidActionException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    private static void changeDirectory(Scanner scanner) {
+        System.out.println("Type path to required directory:");
+        String dir = scanner.nextLine();
+        try {
+            browser.changeDirectory(dir);
+        } catch (FileNotFoundException e) {
+            System.out.println("Directory " + e.getMessage() + " Please, try again.");
         }
     }
 
