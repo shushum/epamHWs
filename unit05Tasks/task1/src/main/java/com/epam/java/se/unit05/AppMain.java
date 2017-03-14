@@ -54,11 +54,11 @@ public class AppMain {
                     break;
 
                 case "cd..":
-                    goUpToParent();
+                    goUpToParent(userCommand);
                     break;
 
                 case "cd\\":
-                    goDownToChild();
+                    goDownToChild(userCommand);
                     break;
 
                 case "dir":
@@ -150,12 +150,11 @@ public class AppMain {
         }
     }
 
-    private static void goDownToChild() {
-        System.out.println("Type name of required child:");
-        String child = scanner.nextLine();
+    private static void goDownToChild(StringTokenizer userCommand) {
+        String childDirectory = userCommand.nextToken("").replaceFirst(" ", "");
 
         try {
-            browser.downToChild(child);
+            browser.downToChild(childDirectory);
         } catch (FileNotFoundException e) {
             System.out.println("Directory " + e.getMessage() + " Please, try again.");
         } catch (InvalidActionException e) {
@@ -163,7 +162,11 @@ public class AppMain {
         }
     }
 
-    private static void goUpToParent() {
+    private static void goUpToParent(StringTokenizer userCommand) {
+        if (userCommand.hasMoreTokens()){
+            System.out.println("Invalid command. Try again.");
+            return;
+        }
         try {
             browser.upToParent();
         } catch (InvalidActionException e) {

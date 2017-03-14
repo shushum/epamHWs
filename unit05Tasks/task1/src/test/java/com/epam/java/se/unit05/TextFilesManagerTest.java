@@ -95,11 +95,11 @@ public class TextFilesManagerTest {
 
     @Test
     public void tokenizerTest() throws Exception {
-        String s = "jafaja akjflaksjf aksjdlkasj asd";
+        String s = "jafaja kjfaskljlas";
         StringTokenizer tokenizer = new StringTokenizer(s, " ");
 
         System.out.println(tokenizer.nextToken());
-        System.out.println(tokenizer.nextToken("").replaceFirst(" ", ""));
+        System.out.println(tokenizer.hasMoreTokens());
 
     }
 }
