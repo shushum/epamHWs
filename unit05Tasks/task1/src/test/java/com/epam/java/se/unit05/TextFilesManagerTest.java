@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.FileAlreadyExistsException;
+import java.util.StringTokenizer;
 
 import static org.junit.Assert.*;
 
@@ -90,5 +91,15 @@ public class TextFilesManagerTest {
         assertFalse(notExistingFile.exists());
 
         filesManager.writeToFile(browser.getPathname(), "thisNeverBeExisting", true, "bla");
+    }
+
+    @Test
+    public void tokenizerTest() throws Exception {
+        String s = "jafaja akjflaksjf aksjdlkasj asd";
+        StringTokenizer tokenizer = new StringTokenizer(s, " ");
+
+        System.out.println(tokenizer.nextToken());
+        System.out.println(tokenizer.nextToken("").replaceFirst(" ", ""));
+
     }
 }

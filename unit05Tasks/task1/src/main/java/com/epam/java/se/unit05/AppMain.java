@@ -44,11 +44,13 @@ public class AppMain {
         while (true) {
             System.out.println(browser.currentDirectory());
 
-            String command = scanner.nextLine();
+            String userInput = scanner.nextLine();
+            StringTokenizer userCommand = new StringTokenizer(userInput, " ");
+            String action = userCommand.nextToken();
 
-            switch (command) {
+            switch (action) {
                 case "cd":
-                    changeDirectory(scanner);
+                    changeDirectory(userCommand);
                     break;
 
                 case "cd..":
@@ -169,11 +171,10 @@ public class AppMain {
         }
     }
 
-    private static void changeDirectory(Scanner scanner) {
-        System.out.println("Type path to required directory:");
-        String dir = scanner.nextLine();
+    private static void changeDirectory(StringTokenizer userCommand) {
+        String newDirectory = userCommand.nextToken("").replaceFirst(" ", "");
         try {
-            browser.changeDirectory(dir);
+            browser.changeDirectory(newDirectory);
         } catch (FileNotFoundException e) {
             System.out.println("Directory " + e.getMessage() + " Please, try again.");
         }
