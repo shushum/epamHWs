@@ -92,14 +92,4 @@ public class TextFilesManagerTest {
 
         filesManager.writeToFile(browser.getPathname(), "thisNeverBeExisting", true, "bla");
     }
-
-    @Test
-    public void tokenizerTest() throws Exception {
-        String s = "jafaja kjfaskljlas";
-        StringTokenizer tokenizer = new StringTokenizer(s, " ");
-
-        System.out.println(tokenizer.nextToken());
-        System.out.println(tokenizer.hasMoreTokens());
-
-    }
 }

@@ -62,7 +62,7 @@ public class AppMain {
                     break;
 
                 case "dir":
-                    showDirectoryContent();
+                    showDirectoryContent(userCommand);
                     break;
 
                 case "mf":
@@ -95,7 +95,7 @@ public class AppMain {
         try {
             String fileName = userCommand.nextToken();
 
-            boolean append = answerToBoolean(userCommand.nextToken()); 
+            boolean append = answerToBoolean(userCommand.nextToken());
 
             String text = getTheRestOfTheUserCommand(userCommand);
 
@@ -136,7 +136,11 @@ public class AppMain {
         }
     }
 
-    private static void showDirectoryContent() {
+    private static void showDirectoryContent(StringTokenizer userCommand) {
+        if (userCommand.hasMoreTokens()){
+            System.out.println("Invalid command. Try again.");
+            return;
+        }
         try {
             browser.directoryContent().forEach(System.out::println);
         } catch (NullPointerException e) {
