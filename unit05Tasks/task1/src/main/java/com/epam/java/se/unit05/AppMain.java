@@ -66,15 +66,15 @@ public class AppMain {
                     break;
 
                 case "mf":
-                    createNewTextFile();
+                    createNewTextFile(userCommand);
                     break;
 
                 case "del":
-                    deleteTextFile();
+                    deleteTextFile(userCommand);
                     break;
 
                 case "edit":
-                    editTextFile();
+                    editTextFile(userCommand);
                     break;
 
                 case "help":
@@ -91,19 +91,16 @@ public class AppMain {
         }
     }
 
-    private static void editTextFile() {
+    private static void editTextFile(StringTokenizer userCommand) {
         try {
-            System.out.println("Rewrite file from beginning? Y|N:");
-            boolean answer = answerToBoolean(scanner.nextLine());
+            String fileName = userCommand.nextToken();
 
-            System.out.println("Type line for writing in file:");
-            String text = scanner.nextLine();
+            boolean append = answerToBoolean(userCommand.nextToken()); 
 
-            System.out.println("Type name of .txt file to be edited:");
-            String editedFile = scanner.nextLine();
+            String text = getTheRestOfTheUserCommand(userCommand);
 
-            filesManager.writeToFile(browser.getPathname(), editedFile, answer, text);
-            System.out.println(String.format("File <%s> successfully edited.", editedFile));
+            filesManager.writeToFile(browser.getPathname(), fileName, append, text);
+            System.out.println(String.format("File <%s> successfully edited.", fileName));
         } catch (FileNotFoundException e) {
             System.out.println(e.getMessage());
         } catch (InvalidActionException e) {
@@ -113,13 +110,12 @@ public class AppMain {
         }
     }
 
-    private static void deleteTextFile() {
-        System.out.println("Type name of .txt file to be deleted:");
-        String file = scanner.nextLine();
+    private static void deleteTextFile(StringTokenizer userCommand) {
+        String fileName = getTheRestOfTheUserCommand(userCommand);
 
         try {
-            filesManager.deleteFile(browser.getPathname(), file);
-            System.out.println(String.format("File <%s> successfully deleted.", file));
+            filesManager.deleteFile(browser.getPathname(), fileName);
+            System.out.println(String.format("File <%s> successfully deleted.", fileName));
         } catch (InvalidActionException e) {
             System.out.println(e.getMessage());
         } catch (FileNotFoundException e) {
@@ -127,13 +123,12 @@ public class AppMain {
         }
     }
 
-    private static void createNewTextFile() {
-        System.out.println("Type name of .txt file to be created:");
-        String newFile = scanner.nextLine();
+    private static void createNewTextFile(StringTokenizer userCommand) {
+        String fileName = getTheRestOfTheUserCommand(userCommand);
 
         try {
-            filesManager.createNewFile(browser.getPathname(), newFile);
-            System.out.println(String.format("File <%s> successfully created.", newFile));
+            filesManager.createNewFile(browser.getPathname(), fileName);
+            System.out.println(String.format("File <%s> successfully created.", fileName));
         } catch (FileAlreadyExistsException e) {
             System.out.println(e.getMessage());
         } catch (IOException e) {
@@ -151,7 +146,7 @@ public class AppMain {
     }
 
     private static void goDownToChild(StringTokenizer userCommand) {
-        String childDirectory = userCommand.nextToken("").replaceFirst(" ", "");
+        String childDirectory = getTheRestOfTheUserCommand(userCommand);
 
         try {
             browser.downToChild(childDirectory);
@@ -175,7 +170,7 @@ public class AppMain {
     }
 
     private static void changeDirectory(StringTokenizer userCommand) {
-        String newDirectory = userCommand.nextToken("").replaceFirst(" ", "");
+        String newDirectory = getTheRestOfTheUserCommand(userCommand);
         try {
             browser.changeDirectory(newDirectory);
         } catch (FileNotFoundException e) {
@@ -194,25 +189,27 @@ public class AppMain {
         }
     }
 
+    private static String getTheRestOfTheUserCommand(StringTokenizer userCommand) {
+        return userCommand.nextToken("").replaceFirst(" ", "");
+    }
+
     private static void printCommandList() {
         StringBuilder commands = new StringBuilder();
         commands.append("List of available commands:\n");
-        commands.append("cd   - change current directory to required.\n");
-        commands.append("cd.. - move one level up the directory tree.\n");
-        commands.append("cd\\  - move to required child directory.\n");
-        commands.append("dir  - display the content of current directory.\n");
+        commands.append("cd required\\directory\\full\\path\\name       - change current directory to required.\n");
+        commands.append("cd\\ childDirectoryName                     - move to required child directory.\n");
+        commands.append("cd..                                       - move one level up the directory tree.\n");
+        commands.append("dir                                        - display the content of current directory.\n");
         commands.append("\n");
-        commands.append("mf   - create new .txt file in current directory.\n");
-        commands.append("del  - delete required .txt file.\n");
-        commands.append("edit - edit required .txt file.\n");
+        commands.append("mf newTextFileName                         - create new .txt file in current directory.\n");
+        commands.append("del textFileName                           - delete required .txt file.\n");
+        commands.append("edit textFileName append(Y|N) textToWrite  - edit required .txt file.\n");
         commands.append("\n");
-        commands.append("help - print list of available commands.\n");
-        commands.append("exit - end session.\n");
+        commands.append("help                                       - print list of available commands.\n");
+        commands.append("exit                                       - end session.\n");
         commands.append("\n");
         commands.append("Type the required command to proceed:\n");
 
         System.out.println(commands);
-
-
     }
 }
