@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<catalog>
+   <operation id="bk101">
+      <from>Gambardella, Matthew</from>
+      <to>XML Developer's Guide</to>
+      <amount>44.95</amount>
+   </operation>
+   <operation id="bk102">
+      <from>Ralls, Kim</from>
+      <to>Midnight Rain</to>
+      <amount>5.95</amount>
+   </operation>
+</catalog>
