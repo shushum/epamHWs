@@ -30,10 +30,15 @@ public class OperationsHandler extends Thread {
 
     private void handleOperation(Operation operation) {
         Account fromWho = accounts
-                .get(accounts.indexOf(operation.getFromWho()));
+                .stream()
+                .filter(account -> account.equals(operation.getFromWho()))
+                .findFirst().get();
+
 
         Account toWhom = accounts
-                .get(accounts.indexOf(operation.getToWhom()));
+                .stream()
+                .filter(account -> account.equals(operation.getToWhom()))
+                .findFirst().get();
 
         Account acc1 = null, acc2 = null;
 
