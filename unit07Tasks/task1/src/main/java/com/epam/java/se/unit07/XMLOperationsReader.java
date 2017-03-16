@@ -22,31 +22,37 @@ public class XMLOperationsReader {
 
     public static List<Operation> readXML(String path) throws ParserConfigurationException, IOException, SAXException {
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-        dbf.setNamespaceAware(true);
-
         DocumentBuilder db = dbf.newDocumentBuilder();
         Document document = db.parse(new File(path));
 
+        dbf.setNamespaceAware(true);
         document.getDocumentElement().normalize();
 
-        List<Operation> result = new ArrayList<>();
-        NodeList operations = document.getElementsByTagName("operation");
+        NodeList nodeList = document.getElementsByTagName("operation");
 
-        for (int i = 0; i < operations.getLength(); i++) {
-            Node operation = operations.item(i);
+        List<Operation> operations = new ArrayList<>();
 
-            if (operation.getNodeType() == Node.ELEMENT_NODE) {
-                Element currentOperation = (Element) operation;
+        for (int i = 0; i < nodeList.getLength(); i++) {
+            Node node = nodeList.item(i);
 
-                String from = currentOperation.getElementsByTagName("from").item(0).getTextContent();
-                String to = currentOperation.getElementsByTagName("to").item(0).getTextContent();
-                long amount = Math.round(100 * Double.valueOf(currentOperation.getElementsByTagName("amount").item(0).getTextContent()));
+            ejectOperation(operations, node);
+        }
+        return operations;
+    }
 
-                result.add(new Operation(from,to,amount));
+    private static void ejectOperation(List<Operation> result, Node node) {
 
+        if (node.getNodeType() == Node.ELEMENT_NODE) {
+            Element currentOperation = (Element) node;
+
+            String from = currentOperation.getElementsByTagName("from").item(0).getTextContent();
+            String to = currentOperation.getElementsByTagName("to").item(0).getTextContent();
+            long amount = Math.round(100 * Double.valueOf(currentOperation.getElementsByTagName("amount").item(0).getTextContent()));
+
+            if (amount > 0) {
+                result.add(new Operation(from, to, amount));
             }
         }
-        return result;
     }
 
 }

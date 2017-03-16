@@ -11,16 +11,23 @@ public class Account {
 
     public Account(String ownerName) {
         Objects.requireNonNull(ownerName);
+
         this.ownerName = ownerName;
         balance = 100L;
     }
 
-    public void deposit(long val) {
-        balance += val;
+    public void deposit(long value) {
+        valueIsPositive(value);
+
+        balance += value;
     }
 
-    public void withdraw(long val) {
-        balance -= val;
+
+
+    public void withdraw(long value) {
+        valueIsPositive(value);
+
+        balance -= value;
     }
 
     @Override
@@ -47,5 +54,11 @@ public class Account {
 
     public long getBalance() {
         return balance;
+    }
+
+    private void valueIsPositive(long value) {
+        if (value < 0) {
+            throw new IllegalArgumentException("Can't operate with negative values!");
+        }
     }
 }
