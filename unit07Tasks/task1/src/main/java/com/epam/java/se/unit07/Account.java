@@ -22,8 +22,6 @@ public class Account {
         balance += value;
     }
 
-
-
     public void withdraw(long value) {
         valueIsPositive(value);
 
@@ -45,8 +43,7 @@ public class Account {
         return ownerName.hashCode();
     }
 
-    @Override
-    public String toString() {
+    public String getCurrentState() {
         long dollars = balance / 100;
         long cents = Math.abs(balance % 100);
         return String.format("Account of %s for now has %d.%d dollars.", ownerName, dollars, cents);

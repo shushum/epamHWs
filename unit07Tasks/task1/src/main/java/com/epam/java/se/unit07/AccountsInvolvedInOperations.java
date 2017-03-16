@@ -16,7 +16,9 @@ public class AccountsInvolvedInOperations {
 
             if (!previousVersion.contains(fromWho)) {
                 previousVersion.add(fromWho);
-            } else if (!previousVersion.contains(toWhom)) {
+            }
+
+            if (!previousVersion.contains(toWhom)) {
                 previousVersion.add(toWhom);
             }
         }

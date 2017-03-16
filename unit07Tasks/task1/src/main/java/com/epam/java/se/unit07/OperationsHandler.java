@@ -21,7 +21,6 @@ public class OperationsHandler extends Thread {
     }
 
     public void run() {
-
         for (int i = startInclusiveIndex; i < endExclusiveIndex; i++) {
             Operation operation = operations.get(i);
 
@@ -52,6 +51,5 @@ public class OperationsHandler extends Thread {
                 toWhom.deposit(operation.getAmount());
             }
         }
-
     }
 }
