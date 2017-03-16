@@ -20,8 +20,6 @@ public class OperationsHandlerTest {
         List<Account> result = new ArrayList<>();
         AccountsInvolvedInOperations.update(operations, result);
 
-        assertTrue(result.size() == 2);
-
         OperationsHandler t1 = new OperationsHandler(operations, result, 0, operations.size() / 3);
         OperationsHandler t2 = new OperationsHandler(operations, result, operations.size() / 3, operations.size() * 2 / 3);
         OperationsHandler t3 = new OperationsHandler(operations, result, operations.size() * 2 / 3, operations.size());
@@ -33,6 +31,9 @@ public class OperationsHandlerTest {
         t1.join();
         t2.join();
         t3.join();
+
+        assertTrue(result.get(0).getBalance() == -900);
+        assertTrue(result.get(1).getBalance() == 1100);
     }
 
 }

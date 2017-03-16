@@ -15,11 +15,11 @@ public class Account {
         balance = 100L;
     }
 
-    public void deposit(long val){
+    public void deposit(long val) {
         balance += val;
     }
 
-    public void withdraw(long val){
+    public void withdraw(long val) {
         balance -= val;
     }
 
@@ -36,5 +36,16 @@ public class Account {
     @Override
     public int hashCode() {
         return ownerName.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        long dollars = balance / 100;
+        long cents = Math.abs(balance % 100);
+        return String.format("Account of %s for now has %d.%d dollars.", ownerName, dollars, cents);
+    }
+
+    public long getBalance() {
+        return balance;
     }
 }
