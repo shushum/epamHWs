@@ -11,14 +11,14 @@ import static org.junit.Assert.*;
 /**
  * Created by Yegor on 16.03.2017.
  */
-public class AccountsInvolvedInOperationsTest {
+public class AccountBaseUpdaterTest {
     @Test
     public void updateEmptyAccountList() throws Exception {
         Operation op = new Operation("David", "Jake", 10);
         List<Operation> operations = Collections.nCopies(100, op);
 
         List<Account> accountList = new ArrayList<>();
-        AccountsInvolvedInOperations.update(operations, accountList);
+        AccountBaseUpdater.update(operations, accountList);
 
         assertTrue(accountList.size() == 2);
     }
@@ -29,12 +29,12 @@ public class AccountsInvolvedInOperationsTest {
         List<Operation> operations = Collections.nCopies(100, op);
 
         List<Account> accountList = new ArrayList<>();
-        AccountsInvolvedInOperations.update(operations, accountList);
+        AccountBaseUpdater.update(operations, accountList);
 
         List<Operation> newOperations = new ArrayList<>();
         newOperations.add(new Operation("Peter", "Jacob", 100));
 
-        AccountsInvolvedInOperations.update(newOperations, accountList);
+        AccountBaseUpdater.update(newOperations, accountList);
 
         assertTrue(accountList.size() == 4);
     }

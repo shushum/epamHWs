@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * Created by Yegor on 16.03.2017.
  */
-public class AccountsInvolvedInOperations {
+public class AccountBaseUpdater {
 
     public static void update(List<Operation> operations, List<Account> previousVersion) {
 

@@ -1,6 +1,5 @@
 package com.epam.java.se.unit07;
 
-import com.sun.org.apache.xml.internal.dtm.ref.DTMDefaultBaseIterators;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -19,7 +18,7 @@ public class OperationsHandlerTest {
         List<Operation> operations = Collections.nCopies(100, op);
 
         List<Account> result = new ArrayList<>();
-        AccountsInvolvedInOperations.update(operations, result);
+        AccountBaseUpdater.update(operations, result);
 
         OperationsHandler t1 = new OperationsHandler(operations, result, 0, operations.size() / 3);
         OperationsHandler t2 = new OperationsHandler(operations, result, operations.size() / 3, operations.size() * 2 / 3);
