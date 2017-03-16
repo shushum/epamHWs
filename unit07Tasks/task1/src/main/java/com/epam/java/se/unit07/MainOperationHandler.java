@@ -38,7 +38,7 @@ public class MainOperationHandler {
         oh2.join();
         oh3.join();
     }
-    
+
     private List<Operation> loadOperationsAndUpdateClientBase(String pathToXMLFile)
             throws IOException, SAXException, ParserConfigurationException {
 
@@ -47,5 +47,4 @@ public class MainOperationHandler {
 
         return currentOperations;
     }
-
 }

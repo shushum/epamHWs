@@ -24,10 +24,9 @@ public class XMLOperationsReaderTest {
         XMLOperationsReader.readXML("notExisting.xml");
     }
 
-    @Test(expected = org.xml.sax.SAXParseException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void readEmptyExistingXML() throws Exception {
         XMLOperationsReader.readXML("empty.xml");
-        //fatal error lul
     }
 
     @Test(expected = org.xml.sax.SAXParseException.class)
