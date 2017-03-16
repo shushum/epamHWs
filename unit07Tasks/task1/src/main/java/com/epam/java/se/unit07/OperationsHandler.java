@@ -21,14 +21,11 @@ public class OperationsHandler extends Thread {
     }
 
     public void run() {
+
         for (int i = startInclusiveIndex; i < endExclusiveIndex; i++) {
             Operation operation = operations.get(i);
-            synchronized (accounts) {
-                checkOnPresenceOfBothParticipantsInAccountList(operation);
-            }
 
             handleOperation(operation);
-            System.out.println("op succeeded "+ i);
         }
     }
 
@@ -56,16 +53,5 @@ public class OperationsHandler extends Thread {
             }
         }
 
-    }
-
-    private void checkOnPresenceOfBothParticipantsInAccountList(Operation operation) {
-        Account fromWho = operation.getFromWho();
-        Account toWhom = operation.getToWhom();
-
-        if (!accounts.contains(fromWho)) {
-            accounts.add(fromWho);
-        } else if (!accounts.contains(toWhom)) {
-            accounts.add(toWhom);
-        }
     }
 }
