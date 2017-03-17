@@ -1,23 +1,27 @@
-package com.epam.java.se.unit07;
+package com.epam.java.se.unit07.concurrentTask;
 
-import java.util.Collections;
+import com.epam.java.se.unit07.Account;
+import com.epam.java.se.unit07.Operation;
+
 import java.util.List;
-import java.util.Optional;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
- * Created by Yegor on 16.03.2017.
+ * Created by Yegor on 17.03.2017.
  */
-public class OperationsHandler extends Thread {
+public class OperationHandlerConcurrent extends Thread {
     private List<Operation> operations;
     private List<Account> accounts;
     private int startInclusiveIndex;
     private int endExclusiveIndex;
+    private static final Lock lock = new ReentrantLock(true);
 
-    public OperationsHandler(List<Operation> operations, List<Account> accounts, int startIndex, int endIndex) {
+    public OperationHandlerConcurrent(List<Operation> operations, List<Account> accounts, int startInclusiveIndex, int endExclusiveIndex) {
         this.operations = operations;
         this.accounts = accounts;
-        startInclusiveIndex = startIndex;
-        endExclusiveIndex = endIndex;
+        this.startInclusiveIndex = startInclusiveIndex;
+        this.endExclusiveIndex = endExclusiveIndex;
     }
 
     public void run() {
@@ -25,6 +29,7 @@ public class OperationsHandler extends Thread {
             Operation operation = operations.get(i);
 
             handleOperation(operation);
+            System.out.println(i);
         }
     }
 
@@ -40,21 +45,13 @@ public class OperationsHandler extends Thread {
                 .filter(account -> account.equals(operation.getToWhom()))
                 .findFirst().get();
 
-        Account acc1 = null, acc2 = null;
-
-        if (fromWho.hashCode() < toWhom.hashCode()) {
-            acc1 = fromWho;
-            acc2 = toWhom;
-        } else {
-            acc1 = toWhom;
-            acc2 = fromWho;
+        lock.lock();
+        try {
+            fromWho.withdraw(operation.getAmount());
+            toWhom.deposit(operation.getAmount());
+        } finally {
+            lock.unlock();
         }
 
-        synchronized (acc1) {
-            synchronized (acc2) {
-                fromWho.withdraw(operation.getAmount());
-                toWhom.deposit(operation.getAmount());
-            }
-        }
     }
 }

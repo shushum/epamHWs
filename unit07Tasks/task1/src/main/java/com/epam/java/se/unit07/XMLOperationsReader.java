@@ -45,7 +45,7 @@ public class XMLOperationsReader {
         return operations;
     }
 
-    private static void ejectOperation(List<Operation> result, Node node) {
+    private static void ejectOperation(List<Operation> operations, Node node) {
 
         if (node.getNodeType() == Node.ELEMENT_NODE) {
             Element currentOperation = (Element) node;
@@ -55,7 +55,7 @@ public class XMLOperationsReader {
             long amount = Math.round(100 * Double.valueOf(currentOperation.getElementsByTagName("amount").item(0).getTextContent()));
 
             if (amount > 0) {
-                result.add(new Operation(from, to, amount));
+                operations.add(new Operation(from, to, amount));
             }
         }
     }

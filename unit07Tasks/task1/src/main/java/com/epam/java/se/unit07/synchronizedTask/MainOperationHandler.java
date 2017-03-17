@@ -1,5 +1,6 @@
-package com.epam.java.se.unit07;
+package com.epam.java.se.unit07.synchronizedTask;
 
+import com.epam.java.se.unit07.*;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
