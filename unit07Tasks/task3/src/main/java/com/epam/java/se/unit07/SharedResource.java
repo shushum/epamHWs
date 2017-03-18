@@ -10,7 +10,7 @@ public class SharedResource {
     private List<Integer> list;
 
     public SharedResource() {
-        list = new ArrayList<Integer>();
+        list = new ArrayList<>();
     }
 
     public void setElement(Integer element) {

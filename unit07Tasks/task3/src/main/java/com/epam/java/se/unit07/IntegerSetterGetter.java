@@ -8,7 +8,6 @@ import java.util.Random;
 public class IntegerSetterGetter extends Thread {
     private SharedResource resource;
     private boolean run;
-
     private Random rand = new Random();
 
     public IntegerSetterGetter(String name, SharedResource resource) {
@@ -27,7 +26,9 @@ public class IntegerSetterGetter extends Thread {
         try {
             while (run) {
                 action = rand.nextInt(1000);
-                if (action % 2 == 0) {
+
+                //forcing random to be more pleasant for setters
+                if (action % 4 == 0) {
                     getIntegersFromResource();
                 } else {
                     setIntegersIntoResource();
@@ -43,28 +44,31 @@ public class IntegerSetterGetter extends Thread {
         Integer number;
 
         synchronized (resource) {
-            System.out.println("Поток " + getName()
-                    + " хочет извлечь число.");
+            System.out.println("Поток " + getName() + " хочет извлечь число.");
             number = resource.getElement();
-            while (number == null) {
-                System.out.println("Поток " + getName()
-                        + " ждет пока очередь заполнится.");
-                resource.wait();
-                System.out
-                        .println("Поток " + getName() + " возобновил работу.");
+
+            //limit cycle for escaping getter status
+            for (int i = 0; i < 5 && number == null; i++) {
+                System.out.println("Поток " + getName() + " ждет пока очередь заполнится.");
+                //timeout wait for escaping getter status
+                resource.wait(100);
+                System.out.println("Поток " + getName() + " возобновил работу.");
                 number = resource.getElement();
             }
-            System.out
-                    .println("Поток " + getName() + " извлек число " + number);
+            if (number == null) {
+                System.out.println("Поток не извлек число");
+            } else {
+                System.out.println("Поток " + getName() + " извлек число " + number);
+            }
         }
     }
 
     private void setIntegersIntoResource() throws InterruptedException {
         Integer number = rand.nextInt(500);
+
         synchronized (resource) {
             resource.setElement(number);
-            System.out.println("Поток " + getName() + " записал число "
-                    + number);
+            System.out.println("Поток " + getName() + " записал число " + number);
             resource.notify();
         }
     }
