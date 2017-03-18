@@ -12,11 +12,11 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 public class OperationHandlerConcurrent extends Thread {
     private List<Operation> operations;
-    private List<Account> accounts;
+    private List<AccountConcurrent> accounts;
     private int startInclusiveIndex;
     private int endExclusiveIndex;
 
-    public OperationHandlerConcurrent(List<Operation> operations, List<Account> accounts, int startInclusiveIndex, int endExclusiveIndex) {
+    public OperationHandlerConcurrent(List<Operation> operations, List<AccountConcurrent> accounts, int startInclusiveIndex, int endExclusiveIndex) {
         this.operations = operations;
         this.accounts = accounts;
         this.startInclusiveIndex = startInclusiveIndex;
@@ -33,17 +33,16 @@ public class OperationHandlerConcurrent extends Thread {
     }
 
     private void handleOperation(Operation operation) {
-        Account fromWho = accounts
+        AccountConcurrent fromWho = accounts
                 .stream()
                 .filter(account -> account.equals(operation.getFromWho()))
                 .findFirst().get();
 
 
-        Account toWhom = accounts
+        AccountConcurrent toWhom = accounts
                 .stream()
                 .filter(account -> account.equals(operation.getToWhom()))
                 .findFirst().get();
-
 
         fromWho.withdraw(operation.getAmount());
         toWhom.deposit(operation.getAmount());
