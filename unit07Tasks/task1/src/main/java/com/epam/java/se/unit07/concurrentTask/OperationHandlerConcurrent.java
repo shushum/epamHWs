@@ -1,11 +1,8 @@
 package com.epam.java.se.unit07.concurrentTask;
 
-import com.epam.java.se.unit07.synchronizedTask.Account;
-import com.epam.java.se.unit07.Operation;
+import com.epam.java.se.unit07.synchronizedTask.Operation;
 
 import java.util.List;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Created by Yegor on 17.03.2017.

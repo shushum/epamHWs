@@ -1,7 +1,5 @@
 package com.epam.java.se.unit07.synchronizedTask;
 
-import com.epam.java.se.unit07.Operation;
-
 import java.util.List;
 
 /**

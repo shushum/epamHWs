@@ -1,7 +1,6 @@
 package com.epam.java.se.unit07;
 
-import jdk.internal.org.xml.sax.SAXException;
-import jdk.internal.org.xml.sax.SAXParseException;
+import com.epam.java.se.unit07.synchronizedTask.Operation;
 import org.junit.Test;
 
 import java.io.FileNotFoundException;

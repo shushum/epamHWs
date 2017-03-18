@@ -1,6 +1,7 @@
-package com.epam.java.se.unit07;
+package com.epam.java.se.unit07.synchronizedTask;
 
 import com.epam.java.se.unit07.synchronizedTask.Account;
+import com.epam.java.se.unit07.synchronizedTask.Operation;
 
 import java.util.List;
 

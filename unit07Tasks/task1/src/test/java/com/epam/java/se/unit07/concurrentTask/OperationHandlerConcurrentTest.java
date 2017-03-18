@@ -1,13 +1,12 @@
 package com.epam.java.se.unit07.concurrentTask;
 
-import com.epam.java.se.unit07.synchronizedTask.Account;
-import com.epam.java.se.unit07.AccountBaseUpdater;
-import com.epam.java.se.unit07.Operation;
+import com.epam.java.se.unit07.synchronizedTask.Operation;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 import static org.junit.Assert.*;
 
@@ -20,13 +19,17 @@ public class OperationHandlerConcurrentTest {
         Operation op = new Operation("David", "Jake", 10);
         Operation op1 = new Operation("Josh", "Peter",10);
         Operation op2 = new Operation("David", "Peter",10);
+
         List<Operation> operations = new ArrayList<>();
         operations.addAll(Collections.nCopies(100, op));
         operations.addAll(Collections.nCopies(100, op1));
         operations.addAll(Collections.nCopies(100, op2));
 
-        List<Account> result = new ArrayList<>();
-        AccountBaseUpdater.update(operations, result);
+        Collections.shuffle(operations, new Random());
+
+
+        List<AccountConcurrent> result = new ArrayList<>();
+       // AccountBaseUpdater.update(operations, result);
 
         OperationHandlerConcurrent t1 = new OperationHandlerConcurrent(operations, result, 0, operations.size() / 3);
         OperationHandlerConcurrent t2 = new OperationHandlerConcurrent(operations, result, operations.size() / 3, operations.size() * 2 / 3);
@@ -39,6 +42,8 @@ public class OperationHandlerConcurrentTest {
         t1.join();
         t2.join();
         t3.join();
+
+        result.forEach(accountConcurrent -> System.out.println(accountConcurrent.getCurrentState()));
 
         assertTrue(result.get(0).getBalance() == -1900);
         assertTrue(result.get(1).getBalance() == 1100);

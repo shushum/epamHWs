@@ -1,6 +1,8 @@
 package com.epam.java.se.unit07;
 
 import com.epam.java.se.unit07.synchronizedTask.Account;
+import com.epam.java.se.unit07.synchronizedTask.AccountBaseUpdater;
+import com.epam.java.se.unit07.synchronizedTask.Operation;
 import org.junit.Test;
 
 import java.util.ArrayList;
