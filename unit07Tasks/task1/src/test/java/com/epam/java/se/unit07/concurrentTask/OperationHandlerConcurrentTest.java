@@ -1,12 +1,10 @@
 package com.epam.java.se.unit07.concurrentTask;
 
-import com.epam.java.se.unit07.synchronizedTask.Operation;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 
 import static org.junit.Assert.*;
 
@@ -25,9 +23,6 @@ public class OperationHandlerConcurrentTest {
         operations.addAll(Collections.nCopies(100, op1));
         operations.addAll(Collections.nCopies(100, op2));
 
-        Collections.shuffle(operations, new Random());
-
-
         List<AccountConcurrent> result = new ArrayList<>();
         AccountBaseUpdaterConcurrent.update(operations, result);
 
@@ -42,8 +37,6 @@ public class OperationHandlerConcurrentTest {
         t1.join();
         t2.join();
         t3.join();
-
-        result.forEach(accountConcurrent -> System.out.println(accountConcurrent.getCurrentState()));
 
         assertTrue(result.get(0).getBalance() == -1900);
         assertTrue(result.get(1).getBalance() == 1100);

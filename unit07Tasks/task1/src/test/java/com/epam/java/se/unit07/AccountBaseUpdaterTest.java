@@ -3,6 +3,7 @@ package com.epam.java.se.unit07;
 import com.epam.java.se.unit07.synchronizedTask.Account;
 import com.epam.java.se.unit07.synchronizedTask.AccountBaseUpdater;
 import com.epam.java.se.unit07.synchronizedTask.Operation;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -15,11 +16,16 @@ import static org.junit.Assert.*;
  * Created by Yegor on 16.03.2017.
  */
 public class AccountBaseUpdaterTest {
+
+    Operation op;
+    List<Operation> operations;
+    @Before public void initializeOperations(){
+        op = new Operation("David", "Jake", 10);
+        operations = Collections.nCopies(100, op);
+    }
+
     @Test
     public void updateEmptyAccountList() throws Exception {
-        Operation op = new Operation("David", "Jake", 10);
-        List<Operation> operations = Collections.nCopies(100, op);
-
         List<Account> accountList = new ArrayList<>();
         AccountBaseUpdater.update(operations, accountList);
 
@@ -28,9 +34,6 @@ public class AccountBaseUpdaterTest {
 
     @Test
     public void updateAccountList() throws Exception {
-        Operation op = new Operation("David", "Jake", 10);
-        List<Operation> operations = Collections.nCopies(100, op);
-
         List<Account> accountList = new ArrayList<>();
         AccountBaseUpdater.update(operations, accountList);
 

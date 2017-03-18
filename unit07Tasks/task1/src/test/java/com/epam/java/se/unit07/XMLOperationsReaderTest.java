@@ -19,7 +19,7 @@ public class XMLOperationsReaderTest {
         assertFalse(test.isEmpty());
     }
 
-    @Test(expected = FileNotFoundException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void readNotExistingXML() throws Exception {
         XMLOperationsReader.readXML("notExisting.xml");
     }
@@ -29,7 +29,7 @@ public class XMLOperationsReaderTest {
         XMLOperationsReader.readXML("empty.xml");
     }
 
-    @Test(expected = org.xml.sax.SAXParseException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void readNotXML() throws Exception {
         XMLOperationsReader.readXML("textFile.txt");
         //another fatal lul

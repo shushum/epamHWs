@@ -1,7 +1,5 @@
 package com.epam.java.se.unit07.concurrentTask;
 
-import com.epam.java.se.unit07.synchronizedTask.Operation;
-
 import java.util.List;
 
 /**
@@ -13,7 +11,8 @@ public class OperationHandlerConcurrent extends Thread {
     private int startInclusiveIndex;
     private int endExclusiveIndex;
 
-    public OperationHandlerConcurrent(List<OperationsConcurrent> operations, List<AccountConcurrent> accounts, int startInclusiveIndex, int endExclusiveIndex) {
+    public OperationHandlerConcurrent(List<OperationsConcurrent> operations, List<AccountConcurrent> accounts,
+                                      int startInclusiveIndex, int endExclusiveIndex) {
         this.operations = operations;
         this.accounts = accounts;
         this.startInclusiveIndex = startInclusiveIndex;

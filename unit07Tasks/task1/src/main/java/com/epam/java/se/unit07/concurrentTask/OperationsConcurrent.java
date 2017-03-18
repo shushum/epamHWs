@@ -1,7 +1,5 @@
 package com.epam.java.se.unit07.concurrentTask;
 
-import com.epam.java.se.unit07.synchronizedTask.Account;
-
 /**
  * Created by Yegor on 18.03.2017.
  */
