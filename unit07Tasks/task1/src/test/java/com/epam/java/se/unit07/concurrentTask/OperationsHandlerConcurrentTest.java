@@ -11,14 +11,14 @@ import static org.junit.Assert.*;
 /**
  * Created by Yegor on 17.03.2017.
  */
-public class OperationHandlerConcurrentTest {
+public class OperationsHandlerConcurrentTest {
     @Test
     public void synchronizeCheck() throws Exception {
-        OperationsConcurrent op = new OperationsConcurrent("David", "Jake", 10);
-        OperationsConcurrent op1 = new OperationsConcurrent("Josh", "Peter", 10);
-        OperationsConcurrent op2 = new OperationsConcurrent("David", "Peter", 10);
+        OperationConcurrent op = new OperationConcurrent("David", "Jake", 10);
+        OperationConcurrent op1 = new OperationConcurrent("Josh", "Peter", 10);
+        OperationConcurrent op2 = new OperationConcurrent("David", "Peter", 10);
 
-        List<OperationsConcurrent> operations = new ArrayList<>();
+        List<OperationConcurrent> operations = new ArrayList<>();
         operations.addAll(Collections.nCopies(100, op));
         operations.addAll(Collections.nCopies(100, op1));
         operations.addAll(Collections.nCopies(100, op2));
@@ -26,9 +26,9 @@ public class OperationHandlerConcurrentTest {
         List<AccountConcurrent> result = new ArrayList<>();
         AccountBaseUpdaterConcurrent.update(operations, result);
 
-        OperationHandlerConcurrent r1 = new OperationHandlerConcurrent(operations, result, 0, operations.size() / 3);
-        OperationHandlerConcurrent r2 = new OperationHandlerConcurrent(operations, result, operations.size() / 3, operations.size() * 2 / 3);
-        OperationHandlerConcurrent r3 = new OperationHandlerConcurrent(operations, result, operations.size() * 2 / 3, operations.size());
+        OperationsHandlerConcurrent r1 = new OperationsHandlerConcurrent(operations, result, 0, operations.size() / 3);
+        OperationsHandlerConcurrent r2 = new OperationsHandlerConcurrent(operations, result, operations.size() / 3, operations.size() * 2 / 3);
+        OperationsHandlerConcurrent r3 = new OperationsHandlerConcurrent(operations, result, operations.size() * 2 / 3, operations.size());
 
         Thread t1 = new Thread(r1);
         Thread t2 = new Thread(r2);

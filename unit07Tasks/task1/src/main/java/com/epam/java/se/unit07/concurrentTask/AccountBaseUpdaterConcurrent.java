@@ -7,9 +7,9 @@ import java.util.List;
  */
 public class AccountBaseUpdaterConcurrent {
 
-    public static void update(List<OperationsConcurrent> operations, List<AccountConcurrent> previousVersion) {
+    public static void update(List<OperationConcurrent> operations, List<AccountConcurrent> previousVersion) {
 
-        for (OperationsConcurrent operation : operations) {
+        for (OperationConcurrent operation : operations) {
 
             AccountConcurrent fromWho = operation.getFromWho();
             AccountConcurrent toWhom = operation.getToWhom();

@@ -5,14 +5,14 @@ import java.util.List;
 /**
  * Created by Yegor on 17.03.2017.
  */
-public class OperationHandlerConcurrent implements Runnable {
-    private List<OperationsConcurrent> operations;
+public class OperationsHandlerConcurrent implements Runnable {
+    private List<OperationConcurrent> operations;
     private List<AccountConcurrent> accounts;
     private int startInclusiveIndex;
     private int endExclusiveIndex;
 
-    public OperationHandlerConcurrent(List<OperationsConcurrent> operations, List<AccountConcurrent> accounts,
-                                      int startInclusiveIndex, int endExclusiveIndex) {
+    public OperationsHandlerConcurrent(List<OperationConcurrent> operations, List<AccountConcurrent> accounts,
+                                       int startInclusiveIndex, int endExclusiveIndex) {
         this.operations = operations;
         this.accounts = accounts;
         this.startInclusiveIndex = startInclusiveIndex;
@@ -21,13 +21,13 @@ public class OperationHandlerConcurrent implements Runnable {
 
     public void run() {
         for (int i = startInclusiveIndex; i < endExclusiveIndex; i++) {
-            OperationsConcurrent operation = operations.get(i);
+            OperationConcurrent operation = operations.get(i);
 
             handleOperation(operation);
         }
     }
 
-    private void handleOperation(OperationsConcurrent operation) {
+    private void handleOperation(OperationConcurrent operation) {
         AccountConcurrent fromWho = accounts
                 .stream()
                 .filter(account -> account.equals(operation.getFromWho()))

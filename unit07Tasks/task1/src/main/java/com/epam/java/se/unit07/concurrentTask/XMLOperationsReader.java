@@ -19,7 +19,7 @@ import java.util.List;
  */
 public class XMLOperationsReader {
 
-    public static List<OperationsConcurrent> readXML(String path) throws ParserConfigurationException, IOException, SAXException {
+    public static List<OperationConcurrent> readXML(String path) throws ParserConfigurationException, IOException, SAXException {
         File fileToParse = new File(path);
         if (fileToParse.length() == 0) {
             throw new IllegalArgumentException("This .xml file is empty!");
@@ -34,7 +34,7 @@ public class XMLOperationsReader {
 
         NodeList nodeList = document.getElementsByTagName("operation");
 
-        List<OperationsConcurrent> operations = new ArrayList<>();
+        List<OperationConcurrent> operations = new ArrayList<>();
 
         for (int i = 0; i < nodeList.getLength(); i++) {
             Node node = nodeList.item(i);
@@ -44,7 +44,7 @@ public class XMLOperationsReader {
         return operations;
     }
 
-    private static void ejectOperation(List<OperationsConcurrent> operations, Node node) {
+    private static void ejectOperation(List<OperationConcurrent> operations, Node node) {
 
         if (node.getNodeType() == Node.ELEMENT_NODE) {
             Element currentOperation = (Element) node;
@@ -54,7 +54,7 @@ public class XMLOperationsReader {
             long amount = Math.round(100 * Double.valueOf(currentOperation.getElementsByTagName("amount").item(0).getTextContent()));
 
             if (amount > 0) {
-                operations.add(new OperationsConcurrent(from, to, amount));
+                operations.add(new OperationConcurrent(from, to, amount));
             }
         }
     }

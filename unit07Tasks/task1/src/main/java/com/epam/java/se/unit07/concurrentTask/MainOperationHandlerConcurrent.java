@@ -27,15 +27,15 @@ public class MainOperationHandlerConcurrent {
     public void processOperationsFromXMLFile(String pathToXMLFile)
             throws ParserConfigurationException, SAXException, IOException, InterruptedException {
 
-        List<OperationsConcurrent> operations = loadOperationsAndUpdateClientBase(pathToXMLFile);
+        List<OperationConcurrent> operations = loadOperationsAndUpdateClientBase(pathToXMLFile);
 
         ExecutorService ex = Executors.newFixedThreadPool(3);
 
-        ex.execute(new OperationHandlerConcurrent(operations, clientAccounts,
+        ex.execute(new OperationsHandlerConcurrent(operations, clientAccounts,
                 0, operations.size() / 3));
-        ex.execute(new OperationHandlerConcurrent(operations, clientAccounts,
+        ex.execute(new OperationsHandlerConcurrent(operations, clientAccounts,
                 operations.size() / 3, operations.size() * 2 / 3));
-        ex.execute(new OperationHandlerConcurrent(operations, clientAccounts,
+        ex.execute(new OperationsHandlerConcurrent(operations, clientAccounts,
                 operations.size() * 2 / 3, operations.size()));
 
         ex.shutdown();
@@ -51,10 +51,10 @@ public class MainOperationHandlerConcurrent {
         return clientAccounts;
     }
 
-    private List<OperationsConcurrent> loadOperationsAndUpdateClientBase(String pathToXMLFile)
+    private List<OperationConcurrent> loadOperationsAndUpdateClientBase(String pathToXMLFile)
             throws IOException, SAXException, ParserConfigurationException {
 
-        List<OperationsConcurrent> currentOperations = XMLOperationsReader.readXML(pathToXMLFile);
+        List<OperationConcurrent> currentOperations = XMLOperationsReader.readXML(pathToXMLFile);
         AccountBaseUpdaterConcurrent.update(currentOperations, clientAccounts);
 
         return currentOperations;

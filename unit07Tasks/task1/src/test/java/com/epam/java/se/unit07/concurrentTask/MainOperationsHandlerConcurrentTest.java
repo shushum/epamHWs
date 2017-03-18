@@ -11,7 +11,7 @@ import static org.junit.Assert.*;
 /**
  * Created by Yegor on 18.03.2017.
  */
-public class MainOperationHandlerConcurrentTest {
+public class MainOperationsHandlerConcurrentTest {
     @Test
     public void executorServiceTest() throws Exception {
         MainOperationHandlerConcurrent main = new MainOperationHandlerConcurrent();
