@@ -8,12 +8,12 @@ import java.util.List;
  * Created by Yegor on 17.03.2017.
  */
 public class OperationHandlerConcurrent extends Thread {
-    private List<Operation> operations;
+    private List<OperationsConcurrent> operations;
     private List<AccountConcurrent> accounts;
     private int startInclusiveIndex;
     private int endExclusiveIndex;
 
-    public OperationHandlerConcurrent(List<Operation> operations, List<AccountConcurrent> accounts, int startInclusiveIndex, int endExclusiveIndex) {
+    public OperationHandlerConcurrent(List<OperationsConcurrent> operations, List<AccountConcurrent> accounts, int startInclusiveIndex, int endExclusiveIndex) {
         this.operations = operations;
         this.accounts = accounts;
         this.startInclusiveIndex = startInclusiveIndex;
@@ -22,14 +22,14 @@ public class OperationHandlerConcurrent extends Thread {
 
     public void run() {
         for (int i = startInclusiveIndex; i < endExclusiveIndex; i++) {
-            Operation operation = operations.get(i);
+            OperationsConcurrent operation = operations.get(i);
 
             handleOperation(operation);
             System.out.println(i);
         }
     }
 
-    private void handleOperation(Operation operation) {
+    private void handleOperation(OperationsConcurrent operation) {
         AccountConcurrent fromWho = accounts
                 .stream()
                 .filter(account -> account.equals(operation.getFromWho()))

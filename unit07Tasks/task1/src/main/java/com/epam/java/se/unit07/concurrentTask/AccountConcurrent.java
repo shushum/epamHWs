@@ -15,6 +15,10 @@ public class AccountConcurrent extends Account {
         super(ownerName);
     }
 
+    public Account castToAccount(){
+        return this;
+    }
+
     @Override
     public void deposit(long value) {
 

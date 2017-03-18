@@ -16,11 +16,11 @@ import static org.junit.Assert.*;
 public class OperationHandlerConcurrentTest {
     @Test
     public void synchronizeCheck() throws Exception {
-        Operation op = new Operation("David", "Jake", 10);
-        Operation op1 = new Operation("Josh", "Peter",10);
-        Operation op2 = new Operation("David", "Peter",10);
+        OperationsConcurrent op = new OperationsConcurrent("David", "Jake", 10);
+        OperationsConcurrent op1 = new OperationsConcurrent("Josh", "Peter",10);
+        OperationsConcurrent op2 = new OperationsConcurrent("David", "Peter",10);
 
-        List<Operation> operations = new ArrayList<>();
+        List<OperationsConcurrent> operations = new ArrayList<>();
         operations.addAll(Collections.nCopies(100, op));
         operations.addAll(Collections.nCopies(100, op1));
         operations.addAll(Collections.nCopies(100, op2));
@@ -29,7 +29,7 @@ public class OperationHandlerConcurrentTest {
 
 
         List<AccountConcurrent> result = new ArrayList<>();
-       // AccountBaseUpdater.update(operations, result);
+        AccountBaseUpdaterConcurrent.update(operations, result);
 
         OperationHandlerConcurrent t1 = new OperationHandlerConcurrent(operations, result, 0, operations.size() / 3);
         OperationHandlerConcurrent t2 = new OperationHandlerConcurrent(operations, result, operations.size() / 3, operations.size() * 2 / 3);
