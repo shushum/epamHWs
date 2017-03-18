@@ -1,9 +1,8 @@
 package com.epam.java.se.unit07.concurrentTask;
 
-import com.epam.java.se.unit07.Account;
+import com.epam.java.se.unit07.synchronizedTask.Account;
 import com.epam.java.se.unit07.AccountBaseUpdater;
 import com.epam.java.se.unit07.Operation;
-import com.epam.java.se.unit07.synchronizedTask.OperationsHandler;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -41,10 +40,9 @@ public class OperationHandlerConcurrentTest {
         t2.join();
         t3.join();
 
-        for (Account acc : result) {
-            System.out.println(acc.getCurrentState());
-        }
-       // assertTrue(result.get(0).getBalance() == -900);
-       // assertTrue(result.get(1).getBalance() == 1100);
+        assertTrue(result.get(0).getBalance() == -1900);
+        assertTrue(result.get(1).getBalance() == 1100);
+        assertTrue(result.get(2).getBalance() == -900);
+        assertTrue(result.get(3).getBalance() == 2100);
     }
 }

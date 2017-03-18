@@ -1,11 +1,8 @@
 package com.epam.java.se.unit07.synchronizedTask;
 
-import com.epam.java.se.unit07.Account;
 import com.epam.java.se.unit07.Operation;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Created by Yegor on 16.03.2017.

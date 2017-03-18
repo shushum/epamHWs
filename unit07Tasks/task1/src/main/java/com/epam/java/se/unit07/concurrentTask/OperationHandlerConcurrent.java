@@ -1,6 +1,6 @@
 package com.epam.java.se.unit07.concurrentTask;
 
-import com.epam.java.se.unit07.Account;
+import com.epam.java.se.unit07.synchronizedTask.Account;
 import com.epam.java.se.unit07.Operation;
 
 import java.util.List;
@@ -15,7 +15,6 @@ public class OperationHandlerConcurrent extends Thread {
     private List<Account> accounts;
     private int startInclusiveIndex;
     private int endExclusiveIndex;
-    private static final Lock lock = new ReentrantLock(true);
 
     public OperationHandlerConcurrent(List<Operation> operations, List<Account> accounts, int startInclusiveIndex, int endExclusiveIndex) {
         this.operations = operations;
@@ -45,13 +44,8 @@ public class OperationHandlerConcurrent extends Thread {
                 .filter(account -> account.equals(operation.getToWhom()))
                 .findFirst().get();
 
-        lock.lock();
-        try {
-            fromWho.withdraw(operation.getAmount());
-            toWhom.deposit(operation.getAmount());
-        } finally {
-            lock.unlock();
-        }
 
+        fromWho.withdraw(operation.getAmount());
+        toWhom.deposit(operation.getAmount());
     }
 }
