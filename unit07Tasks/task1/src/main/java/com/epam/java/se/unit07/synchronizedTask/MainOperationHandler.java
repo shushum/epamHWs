@@ -39,6 +39,10 @@ public class MainOperationHandler {
         oh3.join();
     }
 
+    public List<Account> getClientAccounts() {
+        return clientAccounts;
+    }
+
     private List<Operation> loadOperationsAndUpdateClientBase(String pathToXMLFile)
             throws IOException, SAXException, ParserConfigurationException {
 

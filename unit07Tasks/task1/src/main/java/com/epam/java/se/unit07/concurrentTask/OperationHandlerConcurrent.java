@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * Created by Yegor on 17.03.2017.
  */
-public class OperationHandlerConcurrent extends Thread {
+public class OperationHandlerConcurrent implements Runnable {
     private List<OperationsConcurrent> operations;
     private List<AccountConcurrent> accounts;
     private int startInclusiveIndex;
@@ -24,7 +24,6 @@ public class OperationHandlerConcurrent extends Thread {
             OperationsConcurrent operation = operations.get(i);
 
             handleOperation(operation);
-            System.out.println(i);
         }
     }
 

@@ -15,8 +15,8 @@ public class OperationHandlerConcurrentTest {
     @Test
     public void synchronizeCheck() throws Exception {
         OperationsConcurrent op = new OperationsConcurrent("David", "Jake", 10);
-        OperationsConcurrent op1 = new OperationsConcurrent("Josh", "Peter",10);
-        OperationsConcurrent op2 = new OperationsConcurrent("David", "Peter",10);
+        OperationsConcurrent op1 = new OperationsConcurrent("Josh", "Peter", 10);
+        OperationsConcurrent op2 = new OperationsConcurrent("David", "Peter", 10);
 
         List<OperationsConcurrent> operations = new ArrayList<>();
         operations.addAll(Collections.nCopies(100, op));
@@ -26,9 +26,13 @@ public class OperationHandlerConcurrentTest {
         List<AccountConcurrent> result = new ArrayList<>();
         AccountBaseUpdaterConcurrent.update(operations, result);
 
-        OperationHandlerConcurrent t1 = new OperationHandlerConcurrent(operations, result, 0, operations.size() / 3);
-        OperationHandlerConcurrent t2 = new OperationHandlerConcurrent(operations, result, operations.size() / 3, operations.size() * 2 / 3);
-        OperationHandlerConcurrent t3 = new OperationHandlerConcurrent(operations, result, operations.size() * 2 / 3, operations.size());
+        OperationHandlerConcurrent r1 = new OperationHandlerConcurrent(operations, result, 0, operations.size() / 3);
+        OperationHandlerConcurrent r2 = new OperationHandlerConcurrent(operations, result, operations.size() / 3, operations.size() * 2 / 3);
+        OperationHandlerConcurrent r3 = new OperationHandlerConcurrent(operations, result, operations.size() * 2 / 3, operations.size());
+
+        Thread t1 = new Thread(r1);
+        Thread t2 = new Thread(r2);
+        Thread t3 = new Thread(r3);
 
         t1.start();
         t2.start();
