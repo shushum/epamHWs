@@ -1,4 +1,4 @@
-package com.epam.java.se.unit07;
+package com.epam.java.se.unit07.concurrentTask;
 
 import com.epam.java.se.unit07.synchronizedTask.Operation;
 import org.w3c.dom.Document;
@@ -15,13 +15,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-
 /**
- * Created by Yegor on 15.03.2017.
+ * Created by Yegor on 18.03.2017.
  */
 public class XMLOperationsReader {
 
-    public static List<Operation> readXML(String path) throws ParserConfigurationException, IOException, SAXException {
+    public static List<OperationsConcurrent> readXML(String path) throws ParserConfigurationException, IOException, SAXException {
         File fileToParse = new File(path);
         if (fileToParse.length() == 0) {
             throw new IllegalArgumentException("This .xml file is empty!");
@@ -36,7 +35,7 @@ public class XMLOperationsReader {
 
         NodeList nodeList = document.getElementsByTagName("operation");
 
-        List<Operation> operations = new ArrayList<>();
+        List<OperationsConcurrent> operations = new ArrayList<>();
 
         for (int i = 0; i < nodeList.getLength(); i++) {
             Node node = nodeList.item(i);
@@ -46,7 +45,7 @@ public class XMLOperationsReader {
         return operations;
     }
 
-    private static void ejectOperation(List<Operation> operations, Node node) {
+    private static void ejectOperation(List<OperationsConcurrent> operations, Node node) {
 
         if (node.getNodeType() == Node.ELEMENT_NODE) {
             Element currentOperation = (Element) node;
@@ -56,10 +55,9 @@ public class XMLOperationsReader {
             long amount = Math.round(100 * Double.valueOf(currentOperation.getElementsByTagName("amount").item(0).getTextContent()));
 
             if (amount > 0) {
-                operations.add(new Operation(from, to, amount));
+                operations.add(new OperationsConcurrent(from, to, amount));
             }
         }
     }
 
 }
-

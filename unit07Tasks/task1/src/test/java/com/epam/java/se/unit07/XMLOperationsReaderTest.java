@@ -1,6 +1,7 @@
 package com.epam.java.se.unit07;
 
 import com.epam.java.se.unit07.synchronizedTask.Operation;
+import com.epam.java.se.unit07.synchronizedTask.XMLOperationsReader;
 import org.junit.Test;
 
 import java.io.FileNotFoundException;
