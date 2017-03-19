@@ -5,7 +5,6 @@ package com.epam.java.se.unit07;
  */
 
 import java.io.*;
-import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
 import java.nio.channels.OverlappingFileLockException;
 import java.util.HashMap;
@@ -24,6 +23,7 @@ public class PropertiesReader extends Thread {
      * Storage for read properties from .properties file.
      */
     private Properties properties;
+    private boolean run;
 
     /**
      * Creates a PropertiesReader binded to specified .properties file.
@@ -34,6 +34,7 @@ public class PropertiesReader extends Thread {
 
         this.propertiesFile = propertiesFile;
         this.properties = new Properties();
+        run = true;
     }
 
     /**
@@ -47,12 +48,16 @@ public class PropertiesReader extends Thread {
     }
 
     public void run() {
-        try {
 
-            loadPropertiesFile();
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+        while (run) {
+            try {
+                loadPropertiesFile();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (OverlappingFileLockException e) {
+                System.out.println(propertiesFile + " is currently read by another Properties Reader." +
+                        this.toString() + "making another attempt.");
+            }
         }
     }
 
@@ -88,7 +93,7 @@ public class PropertiesReader extends Thread {
             properties.load(reader);
 
             lock.release();
-
+            stopLoadAttempts();
 
         } catch (FileNotFoundException e) {
             throw new FileNotFoundException(e.getMessage());
@@ -116,6 +121,10 @@ public class PropertiesReader extends Thread {
         }
 
         return properties.getProperty(key);
+    }
+
+    private void stopLoadAttempts(){
+        run = false;
     }
 
     public Properties getProperties() {

@@ -23,16 +23,19 @@ public class PropertiesReaderTest {
 
         PropertiesReader t1 = new PropertiesReader(properties);
         PropertiesReader t2 = new PropertiesReader(properties);
+        PropertiesReader t3 = new PropertiesReader(properties);
 
-      t1.run();
-    //    t1.start();
-     //   t2.start();
+        t1.start();
+        t2.start();
+        t3.start();
 
-      //  t1.join();
-     //   t2.join();
+        t1.join();
+        t2.join();
+        t3.join();
 
         t1.getProperties().keySet().forEach(System.out::println);
         System.out.println(t2.getProperties().getProperty("1"));
+        System.out.println(t3.getProperties().getProperty("2"));
     }
 
 }
