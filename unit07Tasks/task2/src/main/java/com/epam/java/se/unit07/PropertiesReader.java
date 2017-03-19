@@ -8,8 +8,9 @@ import java.io.*;
 import java.nio.channels.FileLock;
 import java.nio.channels.OverlappingFileLockException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Properties;
+import java.util.concurrent.Callable;
+import java.util.concurrent.TimeUnit;
 
 /**
  * A class designed to read any .properties file and to get element from it by key.
@@ -17,7 +18,7 @@ import java.util.Properties;
  * Each PropertiesReader are bind to the specific .properties file. This is necessary to avoid key duplicating from
  * different .properties files.
  */
-public class PropertiesReader extends Thread {
+public class PropertiesReader implements Callable<Properties> {
     private final File propertiesFile;
     /**
      * Storage for read properties from .properties file.
@@ -47,35 +48,20 @@ public class PropertiesReader extends Thread {
         return new PropertiesReader(newPropertiesFile);
     }
 
-    public void run() {
+    public Properties call() { //<---- make callable
 
         while (run) {
             try {
                 loadPropertiesFile();
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
+
             } catch (OverlappingFileLockException e) {
-                System.out.println(propertiesFile + " is currently read by another Properties Reader." +
-                        this.toString() + "making another attempt.");
+                timeOutBeforeAnotherLoadAttempt();
             }
         }
-    }
 
-    private HashMap<String, String> getElementsByKeys(List<String> keys) {
-        HashMap<String, String> keysWithElements = new HashMap<>();
-
-        try {
-            for (String key : keys) {
-                try {
-                    keysWithElements.put(key, getElementByKey(key));
-                } catch (KeyNotFoundException e) {
-                    keysWithElements.put(key, "Not found in " + propertiesFile);
-                }
-            }
-        } catch (PropertiesFileIsEmptyException e) {
-            keysWithElements.put("Exception", "Empty .properties file");
-        }
-        return keysWithElements;
+        return properties;
     }
 
     /**
@@ -123,11 +109,19 @@ public class PropertiesReader extends Thread {
         return properties.getProperty(key);
     }
 
-    private void stopLoadAttempts(){
-        run = false;
+    private void timeOutBeforeAnotherLoadAttempt() {
+        System.out.println(propertiesFile + " is currently read by another Properties Reader.");
+
+        try {
+            TimeUnit.MICROSECONDS.sleep(100);
+        } catch (InterruptedException e1) {
+            e1.printStackTrace();
+        }
+
+        System.out.println(this.toString() + "making another load attempt.");
     }
 
-    public Properties getProperties() {
-        return properties;
+    private void stopLoadAttempts() {
+        run = false;
     }
 }
