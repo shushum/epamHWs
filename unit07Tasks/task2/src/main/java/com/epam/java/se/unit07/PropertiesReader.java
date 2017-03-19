@@ -11,7 +11,6 @@ import java.nio.channels.OverlappingFileLockException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
-import java.util.concurrent.locks.Lock;
 
 /**
  * A class designed to read any .properties file and to get element from it by key.
@@ -47,52 +46,29 @@ public class PropertiesReader extends Thread {
         return new PropertiesReader(newPropertiesFile);
     }
 
-    public HashMap<String, String> run(List<String> keys) {
-
+    public void run() {
         try {
-            FileChannel channel = new RandomAccessFile(propertiesFile, "r").getChannel();
-
-            FileLock lock = tryLock(channel);
 
             loadPropertiesFile();
 
-            if (lock != null) /*<--- need?*/ {
-                lock.release();
-            }
-
-            channel.close();
-
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
-
-        return getElementsByKeys(keys);
-    }
-
-    private FileLock tryLock(FileChannel channel) throws IOException {
-        FileLock lock;
-        
-        try {
-            lock = channel.tryLock();
-        } catch (OverlappingFileLockException e) {
-            throw new OverlappingFileLockException();
-        }
-        return lock;
     }
 
     private HashMap<String, String> getElementsByKeys(List<String> keys) {
         HashMap<String, String> keysWithElements = new HashMap<>();
 
-        for (String key : keys) {
-            try {
-                keysWithElements.put(key, getElementByKey(key));
-            } catch (PropertiesFileIsEmptyException e) {
-                e.printStackTrace();
-            } catch (KeyNotFoundException e) {
-                e.printStackTrace();
+        try {
+            for (String key : keys) {
+                try {
+                    keysWithElements.put(key, getElementByKey(key));
+                } catch (KeyNotFoundException e) {
+                    keysWithElements.put(key, "Not found in " + propertiesFile);
+                }
             }
+        } catch (PropertiesFileIsEmptyException e) {
+            keysWithElements.put("Exception", "Empty .properties file");
         }
         return keysWithElements;
     }
@@ -104,8 +80,16 @@ public class PropertiesReader extends Thread {
      */
     private void loadPropertiesFile() throws FileNotFoundException {
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(propertiesFile))) {
+        try (FileInputStream inputStream = new FileInputStream(propertiesFile);
+             BufferedInputStream reader = new BufferedInputStream(inputStream)) {
+
+            FileLock lock = inputStream.getChannel().tryLock(0L, Long.MAX_VALUE, true);
+
             properties.load(reader);
+
+            lock.release();
+
+
         } catch (FileNotFoundException e) {
             throw new FileNotFoundException(e.getMessage());
         } catch (IOException e) {
@@ -128,7 +112,7 @@ public class PropertiesReader extends Thread {
         }
 
         if (properties.getProperty(key) == null) {
-            throw new KeyNotFoundException("Such a key does not exist.");
+            throw new KeyNotFoundException("Such key does not exist.");
         }
 
         return properties.getProperty(key);
