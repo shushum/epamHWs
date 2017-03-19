@@ -1,14 +1,13 @@
 package com.epam.java.se.unit07;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.channels.OverlappingFileLockException;
-import java.util.concurrent.Executor;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
+import java.util.Properties;
+import java.util.concurrent.*;
 
 import static org.junit.Assert.*;
 
@@ -16,26 +15,27 @@ import static org.junit.Assert.*;
  * Created by Yegor on 19.03.2017.
  */
 public class PropertiesReaderTest {
+    private ExecutorService ex;
+
+    @Before public void initExecutorService() throws Exception {
+        ex = Executors.newFixedThreadPool(3);
+    }
 
     @Test
     public void multipleThreadsReadFromOneFile() throws Exception {
         File properties = new File("resourcesForTest.properties");
 
-        PropertiesReader t1 = new PropertiesReader(properties);
-        PropertiesReader t2 = new PropertiesReader(properties);
-        PropertiesReader t3 = new PropertiesReader(properties);
+        Future<Properties> p1 = ex.submit(new PropertiesReader(properties));
+        Future<Properties> p2 = ex.submit(new PropertiesReader(properties));
+        Future<Properties> p3 = ex.submit(new PropertiesReader(properties));
 
-        t1.start();
-        t2.start();
-        t3.start();
+        Properties props1 = p1.get();
+        Properties props2 = p2.get();
+        Properties props3 = p3.get();
 
-        t1.join();
-        t2.join();
-        t3.join();
-
-        t1.getProperties().keySet().forEach(System.out::println);
-        System.out.println(t2.getProperties().getProperty("1"));
-        System.out.println(t3.getProperties().getProperty("2"));
+        props1.keySet().forEach(System.out::println);
+        props2.keySet().forEach(System.out::println);
+        props3.keySet().forEach(System.out::println);
     }
 
     @Test
@@ -44,21 +44,28 @@ public class PropertiesReaderTest {
         File sameProperties = new File("resourcesForTest.properties");
         File anotherSameProperties = new File("resourcesForTest.properties");
 
-        PropertiesReader t1 = new PropertiesReader(properties);
-        PropertiesReader t2 = new PropertiesReader(sameProperties);
-        PropertiesReader t3 = new PropertiesReader(anotherSameProperties);
+        Future<Properties> p1 = ex.submit(new PropertiesReader(properties));
+        Future<Properties> p2 = ex.submit(new PropertiesReader(sameProperties));
+        Future<Properties> p3 = ex.submit(new PropertiesReader(anotherSameProperties));
 
-        t1.start();
-        t2.start();
-        t3.start();
+        Properties props1 = p1.get();
+        Properties props2 = p2.get();
+        Properties props3 = p3.get();
 
-        t1.join();
-        t2.join();
-        t3.join();
+        props1.keySet().forEach(System.out::println);
+        props2.keySet().forEach(System.out::println);
+        props3.keySet().forEach(System.out::println);
+    }
 
-        t1.getProperties().keySet().forEach(System.out::println);
-        System.out.println(t2.getProperties().getProperty("1"));
-        System.out.println(t3.getProperties().getProperty("2"));
+    @Test
+    public void getKeyFromFutureClass() throws Exception {
+        File properties = new File("resourcesForTest.properties");
+
+        Future<Properties> p1 = ex.submit(new PropertiesReader(properties));
+
+        ElementsSupplier supplier = new ElementsSupplier(p1.get());
+
+        assertTrue(supplier.getElementByKey("1").equals("element for key '1'"));
     }
 
 }

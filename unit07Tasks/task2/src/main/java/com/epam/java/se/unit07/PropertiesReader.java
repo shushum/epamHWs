@@ -7,7 +7,6 @@ package com.epam.java.se.unit07;
 import java.io.*;
 import java.nio.channels.FileLock;
 import java.nio.channels.OverlappingFileLockException;
-import java.util.HashMap;
 import java.util.Properties;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
@@ -48,7 +47,7 @@ public class PropertiesReader implements Callable<Properties> {
         return new PropertiesReader(newPropertiesFile);
     }
 
-    public Properties call() { //<---- make callable
+    public Properties call() {
 
         while (run) {
             try {
@@ -86,27 +85,6 @@ public class PropertiesReader implements Callable<Properties> {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    /**
-     * Gets element from .properties file defined by key.
-     *
-     * @param key key of required element.
-     * @return String element of the key.
-     * @throws PropertiesFileIsEmptyException if loaded .properties file is empty.
-     * @throws KeyNotFoundException           if such key does not exist in loaded .properties file.
-     */
-    private String getElementByKey(String key) throws PropertiesFileIsEmptyException, KeyNotFoundException {
-
-        if (properties.isEmpty()) {
-            throw new PropertiesFileIsEmptyException("Properties file is empty.");
-        }
-
-        if (properties.getProperty(key) == null) {
-            throw new KeyNotFoundException("Such key does not exist.");
-        }
-
-        return properties.getProperty(key);
     }
 
     private void timeOutBeforeAnotherLoadAttempt() {
