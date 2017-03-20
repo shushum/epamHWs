@@ -28,7 +28,7 @@ public class IntegerSetterGetter extends Thread {
                 action = rand.nextInt(1000);
 
                 //forcing random to be more pleasant for setters
-                if (action % 4 == 0) {
+                if (action % 2 == 0 && !resource.getList().isEmpty()) {
                     getIntegersFromResource();
                 } else {
                     setIntegersIntoResource();

@@ -24,4 +24,7 @@ public class SharedResource {
         return null;
     }
 
+    public List<Integer> getList() {
+        return list;
+    }
 }
