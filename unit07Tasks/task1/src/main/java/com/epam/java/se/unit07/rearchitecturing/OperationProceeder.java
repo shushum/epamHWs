@@ -56,25 +56,22 @@ public class OperationProceeder extends Thread {
     }
 
     private void proceedOperation(Operation operation) {
-        if (operation != null) {
+        Optional<Account> optionalAccount = accounts
+                .stream()
+                .filter(accountInList -> accountInList.equals(operation.getAccount()))
+                .findFirst();
 
-            Optional<Account> optionalAccount = accounts
-                    .stream()
-                    .filter(accountInList -> accountInList.equals(operation.getAccount()))
-                    .findFirst();
+        if (optionalAccount.isPresent()) {
 
-            if (optionalAccount.isPresent()) {
+            proceedOperationByType(operation, optionalAccount.get());
 
-                proceedOperationByType(operation, optionalAccount.get());
+        } else {
 
-            } else {
+            Account newAccountInList = operation.getAccount();
 
-                Account newAccountInList = operation.getAccount();
+            proceedOperationByType(operation, newAccountInList);
 
-                proceedOperationByType(operation, newAccountInList);
-
-                accounts.add(newAccountInList);
-            }
+            accounts.add(newAccountInList);
         }
     }
 
