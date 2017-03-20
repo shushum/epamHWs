@@ -1,8 +1,8 @@
-package com.epam.java.se.unit07;
+package com.epam.java.se.unit07.rearchitecturing;
 
-import com.epam.java.se.unit07.synchronizedTask.Operation;
-import com.epam.java.se.unit07.synchronizedTask.XMLOperationsReader;
+
 import org.junit.Test;
+import org.w3c.dom.NodeList;
 
 import java.io.FileNotFoundException;
 import java.util.List;
@@ -15,8 +15,8 @@ import static org.junit.Assert.*;
 public class XMLOperationsReaderTest {
     @Test
     public void readExistingXML() throws Exception {
-        List<Operation> test = XMLOperationsReader.readXML("123.xml");
-        assertFalse(test.isEmpty());
+        NodeList test = XMLOperationsReader.readXML("123.xml");
+        assertFalse(test.getLength() != 0);
     }
 
     @Test(expected = IllegalArgumentException.class)

@@ -1,12 +1,10 @@
 package com.epam.java.se.unit07.rearchitecturing;
 
-import com.epam.java.se.unit07.synchronizedTask.Account;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import java.util.List;
-import java.util.Optional;
 
 
 /**

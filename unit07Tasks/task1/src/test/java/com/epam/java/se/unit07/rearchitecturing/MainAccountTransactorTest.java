@@ -1,6 +1,5 @@
 package com.epam.java.se.unit07.rearchitecturing;
 
-import com.epam.java.se.unit07.synchronizedTask.Account;
 import org.junit.Test;
 
 import static org.junit.Assert.*;

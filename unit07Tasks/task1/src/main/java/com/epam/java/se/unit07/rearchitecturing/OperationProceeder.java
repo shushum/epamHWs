@@ -1,7 +1,5 @@
 package com.epam.java.se.unit07.rearchitecturing;
 
-import com.epam.java.se.unit07.synchronizedTask.Account;
-
 import java.util.List;
 import java.util.Optional;
 

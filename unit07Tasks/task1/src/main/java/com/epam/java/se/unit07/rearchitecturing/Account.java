@@ -1,4 +1,4 @@
-package com.epam.java.se.unit07.synchronizedTask;
+package com.epam.java.se.unit07.rearchitecturing;
 
 import java.util.Objects;
 
