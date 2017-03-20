@@ -34,46 +34,8 @@ public class OperationSaver extends Thread {
 
                 storeOperation(node);
             }
-
-          /*  synchronized (accounts) {
-                proceedOperation(operation);
-            }*/
         }
     }
-
- /*   private void proceedOperation(Operation operation) {
-        if (operation != null) {
-
-            Optional<Account> optionalAccount = accounts
-                    .stream()
-                    .filter(accountInList -> accountInList.equals(operation.getAccount()))
-                    .findFirst();
-
-            if (optionalAccount.isPresent()) {
-
-                proceedOperationByType(operation, optionalAccount.get());
-
-            } else {
-
-                Account newAccountInList = operation.getAccount();
-
-                proceedOperationByType(operation, newAccountInList);
-
-                accounts.add(newAccountInList);
-            }
-        }
-    }
-
-    private void proceedOperationByType(Operation operation, Account currentAccount) {
-        switch (operationType) {
-            case FROM:
-                currentAccount.withdraw(operation.getAmount());
-                break;
-            case TO:
-                currentAccount.deposit(operation.getAmount());
-                break;
-        }
-    }*/
 
     private void storeOperation(Node node) {
 
@@ -86,7 +48,10 @@ public class OperationSaver extends Thread {
                     = Math.round(100 * Double.valueOf(currentOperation.getElementsByTagName("amount").item(0).getTextContent()));
 
             if (amount > 0) {
-                operationStorage.add(new Operation(accountOwner, amount, operationType));
+                synchronized (operationStorage) {
+                    operationStorage.add(new Operation(accountOwner, amount, operationType));
+                    operationStorage.notify();
+                }
             }
         }
     }
