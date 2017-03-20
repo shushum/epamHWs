@@ -17,15 +17,17 @@ public class OperationHandler extends Thread {
     private List<Account> accounts;
     private final NodeList operations;
     private final OperationType operationType;
+    private final int amountOfOperations;
 
     public OperationHandler(ArrayList<Account> accounts, NodeList operations, OperationType operationType) {
         this.accounts = accounts;
         this.operations = operations;
         this.operationType = operationType;
+        amountOfOperations = operations.getLength();
     }
 
     public void run() {
-        for (int i = 0; i < operations.getLength(); i++) {
+        for (int i = 0; i < amountOfOperations; i++) {
             Operation operation = null;
 
             synchronized (operations) {
