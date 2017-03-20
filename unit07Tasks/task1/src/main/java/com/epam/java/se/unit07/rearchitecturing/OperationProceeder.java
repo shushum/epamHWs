@@ -44,7 +44,7 @@ public class OperationProceeder extends Thread {
         for (int i = 0; i < 10 && currentOperation == null; i++) {
             try {
 
-                operationsStorage.wait(100);
+                operationsStorage.wait(10);
                 currentOperation = getOperation();
 
             } catch (InterruptedException e) {
