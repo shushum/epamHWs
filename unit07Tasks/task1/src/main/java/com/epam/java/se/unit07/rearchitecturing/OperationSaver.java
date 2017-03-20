@@ -5,7 +5,6 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,14 +12,14 @@ import java.util.Optional;
 /**
  * Created by Yegor on 20.03.2017.
  */
-public class OperationHandler extends Thread {
-    private List<Account> accounts;
+public class OperationSaver extends Thread {
+    private List<Operation> operationStorage;
     private final NodeList operations;
     private final OperationType operationType;
     private final int amountOfOperations;
 
-    public OperationHandler(ArrayList<Account> accounts, NodeList operations, OperationType operationType) {
-        this.accounts = accounts;
+    public OperationSaver(List<Operation> operationStorage, NodeList operations, OperationType operationType) {
+        this.operationStorage = operationStorage;
         this.operations = operations;
         this.operationType = operationType;
         amountOfOperations = operations.getLength();
@@ -33,20 +32,16 @@ public class OperationHandler extends Thread {
             synchronized (operations) {
                 Node node = operations.item(i);
 
-                try {
-                    operation = ejectOperation(node);
-                } catch (IllegalArgumentException e) {
-                    //might be logged
-                }
+                storeOperation(node);
             }
 
-            synchronized (accounts) {
+          /*  synchronized (accounts) {
                 proceedOperation(operation);
-            }
+            }*/
         }
     }
 
-    private void proceedOperation(Operation operation) {
+ /*   private void proceedOperation(Operation operation) {
         if (operation != null) {
 
             Optional<Account> optionalAccount = accounts
@@ -78,9 +73,9 @@ public class OperationHandler extends Thread {
                 currentAccount.deposit(operation.getAmount());
                 break;
         }
-    }
+    }*/
 
-    private Operation ejectOperation(Node node) {
+    private void storeOperation(Node node) {
 
         if (node.getNodeType() == Node.ELEMENT_NODE) {
             Element currentOperation = (Element) node;
@@ -90,13 +85,9 @@ public class OperationHandler extends Thread {
             long amount
                     = Math.round(100 * Double.valueOf(currentOperation.getElementsByTagName("amount").item(0).getTextContent()));
 
-            if (amount <= 0) {
-                throw new IllegalArgumentException();
+            if (amount > 0) {
+                operationStorage.add(new Operation(accountOwner, amount, operationType));
             }
-            return new Operation(accountOwner, amount, operationType);
-
-        } else {
-            throw new IllegalArgumentException();  //todo pass return on not ELEMENT_NOD
         }
     }
 }
