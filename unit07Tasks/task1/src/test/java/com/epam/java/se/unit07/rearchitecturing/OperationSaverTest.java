@@ -1,5 +1,6 @@
 package com.epam.java.se.unit07.rearchitecturing;
 
+import com.epam.java.se.unit07.XMLOperationsReader;
 import org.junit.Test;
 import org.w3c.dom.NodeList;
 

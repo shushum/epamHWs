@@ -1,4 +1,4 @@
-package com.epam.java.se.unit07.rearchitecturing;
+package com.epam.java.se.unit07;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
