@@ -1,25 +1,27 @@
 package com.epam.java.se.unit07.concurrentTask;
 
+import com.epam.java.se.unit07.OperationType;
+
 /**
  * Created by Yegor on 18.03.2017.
  */
 public class OperationConcurrent {
-    private final AccountConcurrent from;
-    private final AccountConcurrent to;
+    private final AccountConcurrent account;
     private final long amount;
+    private OperationType operationType;
 
-    public OperationConcurrent(String from, String to, long amount) {
-        this.from = new AccountConcurrent(from);
-        this.to = new AccountConcurrent(to);
+    public OperationConcurrent(String ownerName, long amount, OperationType operationType) {
+        account = new AccountConcurrent(ownerName);
         this.amount = amount;
+        this.operationType = operationType;
     }
 
-    public AccountConcurrent getFromWho() {
-        return from;
+    public AccountConcurrent getAccount() {
+        return account;
     }
 
-    public AccountConcurrent getToWhom() {
-        return to;
+    public OperationType getOperationType() {
+        return operationType;
     }
 
     public long getAmount() {
