@@ -11,12 +11,30 @@ import java.util.List;
 /**
  * Created by Yegor on 20.03.2017.
  */
+
+/**
+ * A thread class, designed to process bank operations from {@code NodeList} by its {@code OperationType} and save them in
+ * {@code List<Operation>}.
+ */
 public class OperationSaver extends Thread {
+    /**
+     * Storage for processed bank operations.
+     */
     private List<Operation> operationStorage;
     private final NodeList operations;
     private final OperationType operationType;
+    /**
+     * Amount of bank operations read in NodeList.
+     */
     private final int amountOfOperations;
 
+    /**
+     * Creates a thread, that processes bank operations from this {@code NodeList} by required {@code OperationType} and save them in
+     * specific {@code List<Operation>}
+     * @param operationStorage {@code List<Operation>} for storing bank operations.
+     * @param operations {@code NodeList} of bank operations.
+     * @param operationType required {@code OperationType}.
+     */
     public OperationSaver(List<Operation> operationStorage, NodeList operations, OperationType operationType) {
         this.operationStorage = operationStorage;
         this.operations = operations;

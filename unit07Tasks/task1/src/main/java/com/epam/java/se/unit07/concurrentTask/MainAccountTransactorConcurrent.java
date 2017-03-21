@@ -14,6 +14,11 @@ import java.util.concurrent.*;
 /**
  * Created by Yegor on 18.03.2017.
  */
+
+/**
+ * This thread class does same task as the MainAccountTransactor, but with java.util.concurrent.
+ * @see com.epam.java.se.unit07.synchronizeTask.MainAccountTransactor
+ */
 public class MainAccountTransactorConcurrent {
     private AccountStorage clientAccounts;
 

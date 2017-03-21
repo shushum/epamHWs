@@ -8,6 +8,11 @@ import java.util.concurrent.locks.ReentrantLock;
 /**
  * Created by Yegor on 18.03.2017.
  */
+
+/**
+ * This thread class does same task as the Account, but with java.util.concurrent.
+ * @see Account
+ */
 public class AccountConcurrent extends Account {
     private Lock lock = new ReentrantLock(true);
 

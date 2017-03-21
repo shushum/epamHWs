@@ -6,11 +6,27 @@ import java.util.Optional;
 /**
  * Created by Yegor on 20.03.2017.
  */
+
+/**
+ * A thread class designed to handle bank operations to update state of the clients' Accounts.
+ */
 public class OperationProceeder extends Thread {
+    /**
+     * A list of known clients' Accounts. 'Known' in this case means the Account, that was involved in at least one operation
+     * or was received from out source.
+     */
     private List<Account> accounts;
+    /**
+     * A list of operations to handle.
+     */
     private List<Operation> operationsStorage;
     private boolean run;
 
+    /**
+     * Creates a thread, that updates state of required {@code List<Account>} with this {@code List<Operation>}.
+     * @param accounts {@code List<Account>} for updating.
+     * @param operationsStorage {@code List<Operation>} to update {@code List<Account>} with.
+     */
     public OperationProceeder(List<Account> accounts, List<Operation> operationsStorage) {
         this.accounts = accounts;
         this.operationsStorage = operationsStorage;

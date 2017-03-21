@@ -14,8 +14,20 @@ import java.io.IOException;
 /**
  * Created by Yegor on 20.03.2017.
  */
+
+/**
+ * A class designed to parse information about bank operations from .xml file into NodeList.
+ */
 public class XMLOperationsReader {
 
+    /**
+     * Parses information about bank operations into NodeList.
+     * @param path String path to .xml file.
+     * @return NodeList of operations
+     * @throws ParserConfigurationException
+     * @throws IOException
+     * @throws SAXException
+     */
     public static NodeList readXML(String path) throws ParserConfigurationException, IOException, SAXException {
         File fileToParse = new File(path);
 

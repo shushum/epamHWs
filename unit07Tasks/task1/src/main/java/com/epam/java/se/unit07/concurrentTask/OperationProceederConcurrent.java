@@ -6,6 +6,11 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by Yegor on 21.03.2017.
  */
+
+/**
+ * This thread class does same task as the OperationProceeder, but with java.util.concurrent.
+ * @see com.epam.java.se.unit07.synchronizeTask.OperationProceeder
+ */
 public class OperationProceederConcurrent extends Thread{
     private AccountStorage accounts;
     private BlockingQueue<OperationConcurrent> operationsStorage;

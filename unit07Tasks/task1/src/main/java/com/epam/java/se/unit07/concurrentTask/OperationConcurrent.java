@@ -5,6 +5,11 @@ import com.epam.java.se.unit07.OperationType;
 /**
  * Created by Yegor on 18.03.2017.
  */
+
+/**
+ * This thread class does same task as the Operation, but with java.util.concurrent.
+ * @see com.epam.java.se.unit07.synchronizeTask.Operation
+ */
 public class OperationConcurrent {
     private final AccountConcurrent account;
     private final long amount;

@@ -10,6 +10,11 @@ import java.util.concurrent.BlockingQueue;
 /**
  * Created by Yegor on 17.03.2017.
  */
+
+/**
+ * This thread class does same task as the OperationSaver, but with java.util.concurrent.
+ * @see com.epam.java.se.unit07.synchronizeTask.OperationSaver
+ */
 public class OperationsSaverConcurrent implements Runnable {
     private BlockingQueue<OperationConcurrent> operationStorage;
     private final NodeList operations;

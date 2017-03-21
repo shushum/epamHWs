@@ -13,17 +13,39 @@ import java.util.List;
 /**
  * Created by Yegor on 20.03.2017.
  */
+
+/**
+ * Assembling the threads, that will handle bank operations from .xml file to {@code List<Account>}.
+ */
 public class MainAccountTransactor {
+    /**
+     * A list of known clients' Accounts. 'Known' in this case means the Account, that was involved in at least one operation
+     * or was received from out source.
+     */
     private List<Account> accountsStorage;
 
+    /**
+     * Creates an empty {@code List<Account>} as storage.
+     */
     public MainAccountTransactor() {
         accountsStorage = new ArrayList<>();
     }
 
+    /**
+     * Sets premade {@code List<Account>} as storage.
+     */
     public MainAccountTransactor(List<Account> initialAccounts) {
         accountsStorage = initialAccounts;
     }
 
+    /**
+     * Handles bank operations in multi threads.
+     * @param pathToXMLFile .xml file of bank operations
+     * @throws IOException
+     * @throws SAXException
+     * @throws ParserConfigurationException
+     * @throws InterruptedException
+     */
     public void processAllOperationsFromXMLToAccountStorage(String pathToXMLFile)
             throws IOException, SAXException, ParserConfigurationException, InterruptedException {
 
