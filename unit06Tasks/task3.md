@@ -17,7 +17,7 @@ class HeadDoctor extends Doctor{}
 | ```Object object2 = new Nurse();``` | [x] | [ ] | Object capabilities narrows. It's fine.  |
 |   |   |   |   |
 | ```List<Doctor> list1= new ArrayList<Doctor>();``` | [x] | [ ] | ArrayList implements List. Argument type is same. So, it is legal.  |
-| ```List<MedicalStaff> list2 = new ArrayList<Doctor>();``` | [ ] | [x] | List of MedicalStaff has no relationship to ArrayList of Doctor. |
-| ```List<Doctor> list3 = new ArrayList<MedicalStaff>();``` | [ ] | [x] | List of MedicalStaff has no relationship to ArrayList of Doctor. |
-| ```List<Object> list4 = new ArrayList<Doctor>();``` | [ ] | [x] | List of MedicalStaff has no relationship to ArrayList of Doctor. |
+| ```List<MedicalStaff> list2 = new ArrayList<Doctor>();``` | [ ] | [x] | List&lt;MedicalStaff> has no relationship to ArrayList&lt;Doctor>. |
+| ```List<Doctor> list3 = new ArrayList<MedicalStaff>();``` | [ ] | [x] | List&lt;MedicalStaff> has no relationship to ArrayList&lt;Doctor>. |
+| ```List<Object> list4 = new ArrayList<Doctor>();``` | [ ] | [x] | List&lt;MedicalStaff> has no relationship to ArrayList&lt;Doctor>. |
 | ```List<Object> list5 = new ArrayList<Object>();``` | [x] | [ ] | ArrayList implements List. Argument type is same. So, it is legal. |
