@@ -6,7 +6,7 @@ class HeadDoctor extends Doctor{}
 ```
 
 |   | correct | incorrect | explanation |
-|---|---|---|---|
+|:-----:|:---:|:---:|---|
 | Doctor doctor1 = new Doctor(); | [x] | [ ] | Nothing illegal here. |
 | Doctor doctor2 = new MedicalStaff(); | [ ] | [x] | Doctor capabilities expands. Can be casted to Doctor thought. |
 | Doctor doctor3 = new HeadDoctor(); | [x] | [ ] | Doctor capabilities narrows. It's fine. |
