@@ -2,8 +2,10 @@ package com.epam.java.se.unit99;
 
 import org.junit.Before;
 import org.junit.Test;
+import sun.reflect.generics.tree.Tree;
 
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.stream.IntStream;
 
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -32,7 +34,6 @@ public class CustomTreeMapTest {
     @Test
     public void newMapIsEmptyTest() {
         assertThat(m.isEmpty(), is(true));
-
     }
 
     @Test
@@ -49,7 +50,7 @@ public class CustomTreeMapTest {
     public void possibleToPutKeyValuePairTest() {
         m.put(1, "abc");
         assertThat(m.containsKey(1), is(true));
-        //TODO assertThat(m.containsValue("abc"), is(true));
+        assertThat(m.containsValue("abc"), is(true));
     }
 
     @Test(expected = NullPointerException.class)
@@ -86,9 +87,9 @@ public class CustomTreeMapTest {
         m.containsKey(null);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = ClassCastException.class)
     public void containsKeyThrowsExceptionWithWrongKeyTypeAsArgumentTest() {
-        m.put(1, ""); //TODO need to remove
+        m.put(1, ""); 
         m.containsKey(new String(""));
     }
 

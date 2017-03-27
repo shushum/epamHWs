@@ -11,6 +11,7 @@ import java.util.Set;
 public class CustomTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
 
     private Node<K, V> root;
+    private V previousValue; //TODO get rid of it
 
     @Override
     public int size() {
@@ -25,8 +26,11 @@ public class CustomTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
     @Override
     public boolean containsKey(Object key) {
         Objects.requireNonNull(key);
+
         if (root == null) return false;
+
         root.key.compareTo((K) key);
+
         return root.key.equals(key);
     }
 
@@ -50,13 +54,15 @@ public class CustomTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
     public V put(K key, V value) {
         Objects.requireNonNull(key);
 
+        previousValue = null;
         root = put(root, key, value);
-        return value;
+        return previousValue;
     }
 
     private Node<K, V> put(Node<K, V> node, K key, V value) {
         if (node == null) return new Node<>(key, value);
         if (node.key.equals(key)) {
+            previousValue = node.value;
             node.value = value;
         } else if (node.key.compareTo(key) > 0) {
             node.left = put(node.left, key, value);
