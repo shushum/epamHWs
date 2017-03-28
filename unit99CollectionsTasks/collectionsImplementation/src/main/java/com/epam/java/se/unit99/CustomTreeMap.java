@@ -24,14 +24,12 @@ public class CustomTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public boolean containsKey(Object key) {
         Objects.requireNonNull(key);
 
-        if (root == null) return false;
+        return root != null && find(root, (K) key) != null;
 
-        root.key.compareTo((K) key);
-
-        return root.key.equals(key);
     }
 
     @Override
@@ -57,19 +55,6 @@ public class CustomTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
         previousValue = null;
         root = put(root, key, value);
         return previousValue;
-    }
-
-    private Node<K, V> put(Node<K, V> node, K key, V value) {
-        if (node == null) return new Node<>(key, value);
-        if (node.key.equals(key)) {
-            previousValue = node.value;
-            node.value = value;
-        } else if (node.key.compareTo(key) > 0) {
-            node.left = put(node.left, key, value);
-        } else {
-            node.right = put(node.right, key, value);
-        }
-        return node;
     }
 
     @Override
@@ -101,6 +86,45 @@ public class CustomTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
     public Set<Entry<K, V>> entrySet() {
         return null;
     }
+
+    private Node<K, V> find(Node<K, V> node, K key) {
+        if (node == null) {
+            return null;
+        }
+        if (node.key.equals(key)) {
+            return node;
+        } else if (node.key.compareTo(key) > 0) {
+            return find(node.left, key);
+        } else {
+            return find(node.right, key);
+        }
+    }
+
+    private Node<K, V> put(Node<K, V> node, K key, V value) {
+        if (node == null) return new Node<>(key, value);
+        if (node.key.equals(key)) {
+            previousValue = node.value;
+            node.value = value;
+        } else if (node.key.compareTo(key) > 0) {
+            node.left = put(node.left, key, value);
+        } else {
+            node.right = put(node.right, key, value);
+        }
+        return node;
+    }
+
+//    private Node<K, V> bypassTreeMap(Node node) {
+//        if (node == null) return null;
+//
+//        if (node.left != null) {
+//            node.left = bypassTreeMap(node.left);
+//        }
+//
+//        if (node.right != null){
+//            node.right = bypassTreeMap(node.right);
+//        }
+//
+//    }
 
     private class Node<K extends Comparable<K>, V> {
         private final K key;

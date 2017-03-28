@@ -2,7 +2,6 @@ package com.epam.java.se.unit99;
 
 import org.junit.Before;
 import org.junit.Test;
-import sun.reflect.generics.tree.Tree;
 
 import java.util.Map;
 import java.util.TreeMap;
@@ -89,20 +88,14 @@ public class CustomTreeMapTest {
 
     @Test(expected = ClassCastException.class)
     public void containsKeyThrowsExceptionWithWrongKeyTypeAsArgumentTest() {
-        m.put(1, ""); 
+        m.put(1, "");
         m.containsKey(new String(""));
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void containsValueThrowsExceptionWithWrongValueTypeAsArgumentTest() {
-
     }
 
     @Test
     public void containsValueWorksProperlyWithNullAsArgumentTest() {
         m.put(1, null);
-
-        assertThat(m.containsValue(null), is(false));
+        assertThat(m.containsValue(null), is(true));
     }
 
     @Test
@@ -115,6 +108,77 @@ public class CustomTreeMapTest {
     }
 
     @Test
+    public void getExistingKeyReturnsMappedToKeyValueTest(){
+        m.put(1, "mappedText");
+        assertThat(m.get(1), is(equalTo("mappedText")));
+    }
+
+    @Test
+    public void getNotExistingKeyReturnsNullTest(){
+        assertThat(m.get(1), is(equalTo(null)));
+    }
+
+    @Test
+    public void getKeyMappedWithNullReturnsNullTest(){
+        m.put(1, null);
+        assertThat(m.containsKey(1), is(true));
+        assertThat(m.get(1), is(equalTo(null)));
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void getNullKeyThrowsExceptionTest(){
+        m.get(null);
+    }
+
+    @Test(expected = ClassCastException.class)
+    public void getWrongTypeKeyThrowsExceptionTest(){
+        m.put(1, "mappedKey");
+        m.get("");
+    }
+
+    @Test
+    public void removeExistingKeyTest(){
+        m.put(1, "mappedKey");
+        m.remove(1);
+        assertThat(m.containsKey(1), is(false));
+    }
+
+    @Test
+    public void removeExistingKeyReturnsMappedToKeyValueTest(){
+        m.put(1, "mappedKey");
+        assertThat(m.remove(1), is(equalTo("mappedKey")));
+    }
+
+    @Test
+    public void removeNotExistingKeyReturnsNullTest(){
+        assertThat(m.remove(1), is(equalTo(null)));
+    }
+
+    @Test
+    public void removeKeyMappedToNullReturnsNullTest(){
+        m.put(1, null);
+        assertThat(m.remove(1), is(equalTo(null)));
+        assertThat(m.containsKey(1), is(false));
+
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void removeNullKeyThrowsExceptionTest(){
+        m.remove(null);
+    }
+
+    @Test
+    public void clearTest(){
+        m.put(1, "mappedKey");
+        m.put(2, "mappedKey");
+        m.put(3, "mappedKey");
+
+        m.clear();
+
+        assertThat(m.isEmpty(), is(true));
+    }
+
+    @Test
     public void containsValueWorksProperlyIfValuePresentedInMapTest() {
 
     }
@@ -122,6 +186,12 @@ public class CustomTreeMapTest {
     @Test
     public void containsValueWorksProperlyIfValueDoesNotPresentedInMapTest() {
 
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void containsValueThrowsExceptionWithWrongValueTypeAsArgumentTest() {
+        m.put(1, "");
+        m.containsValue(new Integer(1));
     }
 
 }
