@@ -40,8 +40,16 @@ public class CustomTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public V get(Object key) {
-        return null;
+        Objects.requireNonNull(key);
+
+        Node<K,V> nodeByKey = find(root, (K) key);
+
+        if (nodeByKey == null){
+            return null;
+        }
+        return nodeByKey.value;
     }
 
     @Override
