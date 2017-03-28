@@ -44,9 +44,9 @@ public class CustomTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
     public V get(Object key) {
         Objects.requireNonNull(key);
 
-        Node<K,V> nodeByKey = find(root, (K) key);
+        Node<K, V> nodeByKey = find(root, (K) key);
 
-        if (nodeByKey == null){
+        if (nodeByKey == null) {
             return null;
         }
         return nodeByKey.value;
@@ -62,8 +62,13 @@ public class CustomTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public V remove(Object key) {
-        return null;
+        Objects.requireNonNull(key);
+
+        previousValue = null;
+        root = remove(root, (K) key);
+        return previousValue;
     }
 
     @Override
@@ -122,13 +127,44 @@ public class CustomTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
 
         if (node.value.equals(value)) {
             return true;
-        } else if (findValue(node.left, value)){
+        } else if (findValue(node.left, value)) {
             return true;
-        } else if (findValue(node.right, value)){
+        } else if (findValue(node.right, value)) {
             return true;
         }
 
         return false;
+    }
+
+    private Node<K, V> remove(Node<K, V> node, K key) {
+        if (node == null) return null;
+
+        if (node.key.compareTo(key) > 0) {
+            node.left = remove(node.left, key);
+        } else if (node.key.compareTo(key) < 0) {
+            node.right = remove(node.right, key);
+        } else {
+            previousValue = node.value;
+            if (node.right == null) return node.left;
+            if (node.left == null) return node.right;
+            Node<K, V> buff = node;
+            node = min(buff.right);
+            node.right = deleteMin(buff.right);
+            node.left = buff.left;
+        }
+        return node;
+    }
+
+    private Node<K,V> deleteMin(Node<K, V> node) {
+        if (node.left == null) return node.right;
+        node.left = deleteMin(node.left);
+        return node;
+
+    }
+
+    private Node<K, V> min(Node<K, V> node) {
+        if (node.left == null) return node;
+        else return min(node);
     }
 
     private class Node<K extends Comparable<K>, V> {

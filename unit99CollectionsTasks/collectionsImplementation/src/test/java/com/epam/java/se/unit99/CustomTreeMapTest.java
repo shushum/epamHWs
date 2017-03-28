@@ -157,6 +157,7 @@ public class CustomTreeMapTest {
     @Test
     public void removeKeyMappedToNullReturnsNullTest() {
         m.put(1, null);
+        assertThat(m.containsKey(1), is(true));
         assertThat(m.remove(1), is(equalTo(null)));
         assertThat(m.containsKey(1), is(false));
 
