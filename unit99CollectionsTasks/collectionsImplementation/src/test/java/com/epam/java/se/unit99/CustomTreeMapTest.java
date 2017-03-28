@@ -197,12 +197,6 @@ public class CustomTreeMapTest {
     @Test
     public void containsValueWorksProperlyIfValueDoesNotPresentedInMapTest() {
         m.put(4, "4");
-        m.put(2, "2");
-        m.put(1, "1");
-        m.put(3, "3");
-        m.put(6, "6");
-        m.put(5, "5");
-        m.put(8, "8");
 
         assertThat(m.containsValue("notExistingValue"), is(false));
     }
