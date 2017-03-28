@@ -108,54 +108,54 @@ public class CustomTreeMapTest {
     }
 
     @Test
-    public void getExistingKeyReturnsMappedToKeyValueTest(){
+    public void getExistingKeyReturnsMappedToKeyValueTest() {
         m.put(1, "mappedText");
         assertThat(m.get(1), is(equalTo("mappedText")));
     }
 
     @Test
-    public void getNotExistingKeyReturnsNullTest(){
+    public void getNotExistingKeyReturnsNullTest() {
         assertThat(m.get(1), is(equalTo(null)));
     }
 
     @Test
-    public void getKeyMappedWithNullReturnsNullTest(){
+    public void getKeyMappedWithNullReturnsNullTest() {
         m.put(1, null);
         assertThat(m.containsKey(1), is(true));
         assertThat(m.get(1), is(equalTo(null)));
     }
 
     @Test(expected = NullPointerException.class)
-    public void getNullKeyThrowsExceptionTest(){
+    public void getNullKeyThrowsExceptionTest() {
         m.get(null);
     }
 
     @Test(expected = ClassCastException.class)
-    public void getWrongTypeKeyThrowsExceptionTest(){
+    public void getWrongTypeKeyThrowsExceptionTest() {
         m.put(1, "mappedKey");
         m.get("");
     }
 
     @Test
-    public void removeExistingKeyTest(){
+    public void removeExistingKeyTest() {
         m.put(1, "mappedKey");
         m.remove(1);
         assertThat(m.containsKey(1), is(false));
     }
 
     @Test
-    public void removeExistingKeyReturnsMappedToKeyValueTest(){
+    public void removeExistingKeyReturnsMappedToKeyValueTest() {
         m.put(1, "mappedKey");
         assertThat(m.remove(1), is(equalTo("mappedKey")));
     }
 
     @Test
-    public void removeNotExistingKeyReturnsNullTest(){
+    public void removeNotExistingKeyReturnsNullTest() {
         assertThat(m.remove(1), is(equalTo(null)));
     }
 
     @Test
-    public void removeKeyMappedToNullReturnsNullTest(){
+    public void removeKeyMappedToNullReturnsNullTest() {
         m.put(1, null);
         assertThat(m.remove(1), is(equalTo(null)));
         assertThat(m.containsKey(1), is(false));
@@ -163,12 +163,12 @@ public class CustomTreeMapTest {
     }
 
     @Test(expected = NullPointerException.class)
-    public void removeNullKeyThrowsExceptionTest(){
+    public void removeNullKeyThrowsExceptionTest() {
         m.remove(null);
     }
 
     @Test
-    public void clearTest(){
+    public void clearTest() {
         m.put(1, "mappedKey");
         m.put(2, "mappedKey");
         m.put(3, "mappedKey");
@@ -180,15 +180,34 @@ public class CustomTreeMapTest {
 
     @Test
     public void containsValueWorksProperlyIfValuePresentedInMapTest() {
+        m.put(4, "4");
+        m.put(2, "2");
+        m.put(1, "1");
+        m.put(3, "3");
+        m.put(6, "6");
+        m.put(5, "5");
+        m.put(8, "8");
 
+        assertThat(m.containsValue("1"), is(true));
+        assertThat(m.containsValue("3"), is(true));
+        assertThat(m.containsValue("5"), is(true));
+        assertThat(m.containsValue("8"), is(true));
     }
 
     @Test
     public void containsValueWorksProperlyIfValueDoesNotPresentedInMapTest() {
+        m.put(4, "4");
+        m.put(2, "2");
+        m.put(1, "1");
+        m.put(3, "3");
+        m.put(6, "6");
+        m.put(5, "5");
+        m.put(8, "8");
 
+        assertThat(m.containsValue("notExistingValue"), is(false));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = ClassCastException.class)
     public void containsValueThrowsExceptionWithWrongValueTypeAsArgumentTest() {
         m.put(1, "");
         m.containsValue(new Integer(1));

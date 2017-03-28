@@ -33,14 +33,11 @@ public class CustomTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public boolean containsValue(Object value) {
         if (root == null) return false;
 
-        if (root.value == null) {
-            return value == null;
-        } else {
-            return root.value.equals(value);
-        }
+        return nodeValueEqualsValue(root, (V)value);
     }
 
     @Override
@@ -113,18 +110,26 @@ public class CustomTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
         return node;
     }
 
-//    private Node<K, V> bypassTreeMap(Node node) {
-//        if (node == null) return null;
-//
-//        if (node.left != null) {
-//            node.left = bypassTreeMap(node.left);
+    private boolean nodeValueEqualsValue(Node node, V value) {
+//        if (node != null){
+//            //equals
+//            bypassTreeMap(node.left, value);
+//            bypassTreeMap(node.right, value);
 //        }
-//
-//        if (node.right != null){
-//            node.right = bypassTreeMap(node.right);
-//        }
-//
-//    }
+
+
+        if (node == null) return false;
+
+        if (node.value.equals(value)) {
+            return true;
+        } else if (nodeValueEqualsValue(node.left, value)){
+            return true;
+        } else if (nodeValueEqualsValue(node.right, value)){
+            return true;
+        }
+
+        return false;
+    }
 
     private class Node<K extends Comparable<K>, V> {
         private final K key;
