@@ -52,6 +52,13 @@ public class CustomTreeMapTest {
         assertThat(m.containsValue("abc"), is(true));
     }
 
+    @Test
+    public void filledCustomMapIsNotEmptyTest() {
+        m.put(1, "keyToFillIn");
+
+        assertThat(m.isEmpty(), is(false));
+    }
+
     @Test(expected = NullPointerException.class)
     public void impossibleToPutNullKeyTest() {
         m.put(null, "abc");
@@ -99,12 +106,49 @@ public class CustomTreeMapTest {
     }
 
     @Test
+    public void containsValueWorksProperlyIfValuePresentedInMapTest() {
+        m.put(4, "4");
+        m.put(2, "2");
+        m.put(1, "1");
+        m.put(3, "3");
+        m.put(6, "6");
+        m.put(5, "5");
+        m.put(8, "8");
+
+        assertThat(m.containsValue("1"), is(true));
+        assertThat(m.containsValue("3"), is(true));
+        assertThat(m.containsValue("5"), is(true));
+        assertThat(m.containsValue("8"), is(true));
+    }
+
+    @Test
+    public void containsValueWorksProperlyIfValueDoesNotPresentedInMapTest() {
+        m.put(4, "4");
+
+        assertThat(m.containsValue("notExistingValue"), is(false));
+    }
+
+    @Test(expected = ClassCastException.class)
+    public void containsValueThrowsExceptionWithWrongValueTypeAsArgumentTest() {
+        m.put(1, "");
+        m.containsValue(new Integer(1));
+    }
+
+    @Test
     public void possibleToPut10DifferentKeysInMapTest() {
         IntStream.range(1, 10).forEach(
                 i -> m.put(i, String.valueOf(i)));
 
         IntStream.range(1, 10).forEach(
                 i -> assertThat(m.containsKey(i), is(true)));
+    }
+
+    @Test
+    public void sizeOfCustomTreeMapCalculatesCorrectlyOnPuttingTest() {
+        IntStream.range(1, 10).forEach(
+                i -> m.put(i, String.valueOf(i)));
+
+        assertThat(m.size(), is(10));
     }
 
     @Test
@@ -169,6 +213,18 @@ public class CustomTreeMapTest {
     }
 
     @Test
+    public void sizeOfCustomTreeMapCalculatesCorrectlyOnRemovingTest() {
+        IntStream.range(1, 10).forEach(
+                i -> m.put(i, String.valueOf(i)));
+
+        IntStream.range(1, 5).forEach(
+                i -> m.remove(i));
+
+
+        assertThat(m.size(), is(5));
+    }
+
+    @Test
     public void clearTest() {
         m.put(1, "mappedKey");
         m.put(2, "mappedKey");
@@ -178,34 +234,4 @@ public class CustomTreeMapTest {
 
         assertThat(m.isEmpty(), is(true));
     }
-
-    @Test
-    public void containsValueWorksProperlyIfValuePresentedInMapTest() {
-        m.put(4, "4");
-        m.put(2, "2");
-        m.put(1, "1");
-        m.put(3, "3");
-        m.put(6, "6");
-        m.put(5, "5");
-        m.put(8, "8");
-
-        assertThat(m.containsValue("1"), is(true));
-        assertThat(m.containsValue("3"), is(true));
-        assertThat(m.containsValue("5"), is(true));
-        assertThat(m.containsValue("8"), is(true));
-    }
-
-    @Test
-    public void containsValueWorksProperlyIfValueDoesNotPresentedInMapTest() {
-        m.put(4, "4");
-
-        assertThat(m.containsValue("notExistingValue"), is(false));
-    }
-
-    @Test(expected = ClassCastException.class)
-    public void containsValueThrowsExceptionWithWrongValueTypeAsArgumentTest() {
-        m.put(1, "");
-        m.containsValue(new Integer(1));
-    }
-
 }
