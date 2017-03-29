@@ -12,15 +12,16 @@ public class CustomTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
 
     private Node<K, V> root;
     private V previousValue; //TODO get rid of it
+    private int size = 0;
 
     @Override
     public int size() {
-        return 0;
+        return size;
     }
 
     @Override
     public boolean isEmpty() {
-        return true;
+        return size == 0;
     }
 
     @Override
@@ -78,7 +79,8 @@ public class CustomTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
 
     @Override
     public void clear() {
-
+        root = null;
+        size = 0;
     }
 
     @Override
@@ -110,7 +112,10 @@ public class CustomTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
     }
 
     private Node<K, V> put(Node<K, V> node, K key, V value) {
-        if (node == null) return new Node<>(key, value);
+        if (node == null) {
+            size++;
+            return new Node<>(key, value);
+        }
         if (node.key.equals(key)) {
             previousValue = node.value;
             node.value = value;
@@ -146,6 +151,7 @@ public class CustomTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
         } else if (node.key.compareTo(key) < 0) {
             node.right = remove(node.right, key);
         } else {
+            size--;
             previousValue = node.value;
             if (node.right == null) return node.left;
             if (node.left == null) return node.right;

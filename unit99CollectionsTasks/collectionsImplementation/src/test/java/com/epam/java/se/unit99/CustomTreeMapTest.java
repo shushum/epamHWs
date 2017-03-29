@@ -148,7 +148,7 @@ public class CustomTreeMapTest {
         IntStream.range(1, 10).forEach(
                 i -> m.put(i, String.valueOf(i)));
 
-        assertThat(m.size(), is(10));
+        assertThat(m.size(), is(9));
     }
 
     @Test
