@@ -1,9 +1,6 @@
 package com.epam.java.se.unit99;
 
-import java.util.Collection;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by Yegor on 28.03.2017.
@@ -85,17 +82,47 @@ public class CustomTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
 
     @Override
     public Set<K> keySet() {
-        return null;
+        Set<K> keys = new HashSet<>();
+        collectKeysStartingFrom(root, keys);
+        return keys;
     }
 
     @Override
     public Collection<V> values() {
-        return null;
+        Collection<V> values = new ArrayList<>();
+        collectValuesStartingFrom(root, values);
+        return values;
     }
 
     @Override
     public Set<Entry<K, V>> entrySet() {
-        return null;
+        Set<Entry<K, V>> entries = new HashSet<>();
+        collectEntriesStartingFrom(root, entries);
+        return entries;
+    }
+
+    private void collectKeysStartingFrom(Node<K, V> node, Set<K> keys) {
+        if (node != null) {
+            keys.add(node.key);
+            collectKeysStartingFrom(node.left, keys);
+            collectKeysStartingFrom(node.right, keys);
+        }
+    }
+
+    private void collectValuesStartingFrom(Node<K, V> node, Collection<V> values) {
+        if (node != null) {
+            values.add(node.value);
+            collectValuesStartingFrom(node.left, values);
+            collectValuesStartingFrom(node.right, values);
+        }
+    }
+
+    private void collectEntriesStartingFrom(Node<K, V> node, Set<Entry<K, V>> entries) {
+        if (node != null) {
+            entries.add(node);
+            collectEntriesStartingFrom(node.left, entries);
+            collectEntriesStartingFrom(node.right, entries);
+        }
     }
 
     private Node<K, V> find(Node<K, V> node, K key) {
@@ -175,7 +202,7 @@ public class CustomTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
         else return min(node);
     }
 
-    private class Node<K extends Comparable<K>, V> {
+    private class Node<K extends Comparable<K>, V> implements Entry<K, V> {
         private final K key;
         private V value;
         private Node<K, V> left;
@@ -184,6 +211,21 @@ public class CustomTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
         Node(K key, V value) {
             this.key = key;
             this.value = value;
+        }
+
+        @Override
+        public K getKey() {
+            return key;
+        }
+
+        @Override
+        public V getValue() {
+            return value;
+        }
+
+        @Override
+        public V setValue(V value) {
+            return null;
         }
     }
 }
