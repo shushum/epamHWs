@@ -3,8 +3,7 @@ package com.epam.java.se.unit99;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.stream.IntStream;
 
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -233,5 +232,66 @@ public class CustomTreeMapTest {
         m.clear();
 
         assertThat(m.isEmpty(), is(true));
+    }
+
+    @Test
+    public void entrySetCreatesSetOfAllCustomTreeMapEntriesTest() {
+        IntStream.range(1, 10).forEach(
+                i -> m.put(i, String.valueOf(i)));
+        Set<Map.Entry<Integer, String>> set = m.entrySet();
+
+        Iterator<Map.Entry<Integer, String>> iterator = set.iterator();
+        Map<Integer, String> checkingMap = new HashMap<>();
+
+        while (iterator.hasNext()) {
+            Map.Entry currEntry = iterator.next();
+            checkingMap.put((Integer) currEntry.getKey(), (String) currEntry.getValue());
+        }
+
+        IntStream.range(1, 10).forEach(
+                i -> assertTrue(checkingMap.containsKey(i)));
+        IntStream.range(1, 10).forEach(
+                i -> assertTrue(checkingMap.containsValue(String.valueOf(i))));
+        assertThat(set.size(), is(9));
+    }
+
+    @Test
+    public void entrySetCreatesEmptySetOfEmptyCustomTreeMapTest() {
+        Set<Map.Entry<Integer, String>> set = m.entrySet();
+        assertThat(set.isEmpty(), is(true));
+    }
+
+    @Test
+    public void keySetCreatesSetOfAllCustomTreeMapKeysTest() {
+        IntStream.range(1, 10).forEach(
+                i -> m.put(i, String.valueOf(i)));
+        Set<Integer> set = m.keySet();
+
+        IntStream.range(1, 10).forEach(
+                i -> assertTrue(set.contains(i)));
+        assertThat(set.size(), is(9));
+    }
+
+    @Test
+    public void keySetCreatesEmptySetOfEmptyCustomTreeMapTest() {
+        Set<Integer> set = m.keySet();
+        assertThat(set.isEmpty(), is(true));
+    }
+
+    @Test
+    public void valuesCreatesCollectionOfAllCustomTreeMapValuesTest() {
+        IntStream.range(1, 10).forEach(
+                i -> m.put(i, String.valueOf(i)));
+        Collection<String> collection = m.values();
+
+        IntStream.range(1, 10).forEach(
+                i -> assertTrue(collection.contains(String.valueOf(i))));
+        assertThat(collection.size(), is(9));
+    }
+
+    @Test
+    public void valuesCreatesEmptyCollectionOfEmptyCustomTreeMapTest() {
+        Collection<String> collection = m.values();
+        assertThat(collection.isEmpty(), is(true));
     }
 }
