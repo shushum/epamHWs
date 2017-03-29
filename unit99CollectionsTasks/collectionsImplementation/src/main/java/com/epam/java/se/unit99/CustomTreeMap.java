@@ -225,7 +225,9 @@ public class CustomTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
 
         @Override
         public V setValue(V value) {
-            return null;
+            V previousValue = this.value;
+            this.value = value;
+            return previousValue;
         }
     }
 }

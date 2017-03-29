@@ -294,4 +294,41 @@ public class CustomTreeMapTest {
         Collection<String> collection = m.values();
         assertThat(collection.isEmpty(), is(true));
     }
+
+    @Test
+    public void putAllAddsAllElementsFromRequiredMapToCustomTreeMap(){
+        Map<Integer, String> testMap = new TreeMap<>();
+        IntStream.range(1, 10).forEach(
+                i -> testMap.put(i, String.valueOf(i)));
+
+        m.putAll(testMap);
+
+        IntStream.range(1, 10).forEach(
+                i -> assertThat(m.containsKey(i), is(true)));
+        IntStream.range(1, 10).forEach(
+                i -> assertThat(m.containsValue(String.valueOf(i)), is(true)));
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void putAllWithNullKeysInRequiredMapThrowsException(){
+        Map<Integer, String> testMap = new HashMap<>();
+        testMap.put(null, "");
+        m.putAll(testMap);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void putAllWithNullAsRequiredMapThrowsException(){
+        m.putAll(null);
+    }
+
+    @Test
+    public void putAllWithEmptyRequiredMapChangesNothing(){
+        Map<Integer, String> testMap = new TreeMap<>();
+
+        assertThat(testMap.isEmpty(), is(true));
+
+        m.putAll(testMap);
+
+        assertThat(m.isEmpty(), is(true));
+    }
 }
