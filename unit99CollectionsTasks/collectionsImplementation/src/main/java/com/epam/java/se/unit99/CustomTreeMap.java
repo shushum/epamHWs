@@ -125,7 +125,9 @@ public class CustomTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
     private boolean findValue(Node node, V value) {
         if (node == null) return false;
 
-        if (node.value.equals(value)) {
+        if (node.value == null) {
+            return value == null;
+        } else if (node.value.equals(value)) {
             return true;
         } else if (findValue(node.left, value)) {
             return true;
@@ -155,7 +157,7 @@ public class CustomTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
         return node;
     }
 
-    private Node<K,V> deleteMin(Node<K, V> node) {
+    private Node<K, V> deleteMin(Node<K, V> node) {
         if (node.left == null) return node.right;
         node.left = deleteMin(node.left);
         return node;
