@@ -71,7 +71,7 @@ public class CustomTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
 
     @Override
     public void putAll(Map<? extends K, ? extends V> m) {
-        for (Map.Entry < ? extends K, ? extends V > e: m.entrySet()){
+        for (Map.Entry<? extends K, ? extends V> e : m.entrySet()) {
             put(e.getKey(), e.getValue());
         }
     }
@@ -230,6 +230,28 @@ public class CustomTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
             V previousValue = this.value;
             this.value = value;
             return previousValue;
+        }
+    }
+
+    private abstract class EntryIterator implements Iterator<Node<K, V>> {
+        protected Node<K, V>[] entries = new Node[size];
+        protected int entryIndex = 0;
+
+        EntryIterator() {
+            collectEntriesStartingFrom(root, entryIndex);
+            entryIndex = 0;
+        }
+
+        public boolean hasNext() {
+            return entryIndex < entries.length - 1;
+        }
+
+        private void collectEntriesStartingFrom(Node<K, V> node, int entryIndex) {
+            if (node != null) {
+                entries[entryIndex] = node;
+                collectEntriesStartingFrom(node.left, ++entryIndex);
+                collectEntriesStartingFrom(node.right, ++entryIndex);
+            }
         }
     }
 }
