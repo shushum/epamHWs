@@ -84,47 +84,17 @@ public class CustomTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
 
     @Override
     public Set<K> keySet() {
-        Set<K> keys = new HashSet<>();
-        collectKeysStartingFrom(root, keys);
-        return keys;
+        return new KeySet();
     }
 
     @Override
     public Collection<V> values() {
-        Collection<V> values = new ArrayList<>();
-        collectValuesStartingFrom(root, values);
-        return values;
+        return new ValueCollection();
     }
 
     @Override
     public Set<Entry<K, V>> entrySet() {
-        Set<Entry<K, V>> entries = new HashSet<>();
-        collectEntriesStartingFrom(root, entries);
-        return entries;
-    }
-
-    private void collectKeysStartingFrom(Node<K, V> node, Set<K> keys) {
-        if (node != null) {
-            keys.add(node.key);
-            collectKeysStartingFrom(node.left, keys);
-            collectKeysStartingFrom(node.right, keys);
-        }
-    }
-
-    private void collectValuesStartingFrom(Node<K, V> node, Collection<V> values) {
-        if (node != null) {
-            values.add(node.value);
-            collectValuesStartingFrom(node.left, values);
-            collectValuesStartingFrom(node.right, values);
-        }
-    }
-
-    private void collectEntriesStartingFrom(Node<K, V> node, Set<Entry<K, V>> entries) {
-        if (node != null) {
-            entries.add(node);
-            collectEntriesStartingFrom(node.left, entries);
-            collectEntriesStartingFrom(node.right, entries);
-        }
+        return new EntrySet();
     }
 
     private Node<K, V> find(Node<K, V> node, K key) {
@@ -233,24 +203,85 @@ public class CustomTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
         }
     }
 
-    private abstract class EntryIterator implements Iterator<Node<K, V>> {
-        protected Node<K, V>[] entries = new Node[size];
-        protected int entryIndex = 0;
+    private class EntrySet extends AbstractSet<Entry<K, V>>{
 
-        EntryIterator() {
+        @Override
+        public Iterator<Entry<K, V>> iterator() {
+            return new EntryIterator();
+        }
+
+        @Override
+        public int size() {
+            return size;
+        }
+    }
+
+    private class KeySet extends AbstractSet<K>{
+
+        @Override
+        public Iterator<K> iterator() {
+            return new KeyIterator();
+        }
+
+        @Override
+        public int size() {
+            return size;
+        }
+    }
+
+    private class ValueCollection extends AbstractCollection<V>{
+
+        @Override
+        public Iterator<V> iterator() {
+            return new ValueIterator();
+        }
+
+        @Override
+        public int size() {
+            return size;
+        }
+    }
+
+    private class EntryIterator<T> extends CommonEntryIterator {
+        @Override
+        public Node<K, V> next() {
+            return entries[entryIndex++];
+        }
+    }
+
+    private class KeyIterator extends CommonEntryIterator {
+        @Override
+        public Object next() {
+            return entries[entryIndex++].key;
+        }
+    }
+
+    private class ValueIterator extends CommonEntryIterator {
+        @Override
+        public Object next() {
+            return entries[entryIndex++].value;
+        }
+    }
+
+    private abstract class CommonEntryIterator implements Iterator {
+        Node<K, V>[] entries = new Node[size];
+        int entryIndex = 0;
+
+        CommonEntryIterator() {
             collectEntriesStartingFrom(root, entryIndex);
             entryIndex = 0;
         }
 
         public boolean hasNext() {
-            return entryIndex < entries.length - 1;
+            return entryIndex < entries.length;
         }
 
         private void collectEntriesStartingFrom(Node<K, V> node, int entryIndex) {
             if (node != null) {
                 entries[entryIndex] = node;
-                collectEntriesStartingFrom(node.left, ++entryIndex);
-                collectEntriesStartingFrom(node.right, ++entryIndex);
+                entryIndex++;
+                collectEntriesStartingFrom(node.left, entryIndex);
+                collectEntriesStartingFrom(node.right, entryIndex);
             }
         }
     }
