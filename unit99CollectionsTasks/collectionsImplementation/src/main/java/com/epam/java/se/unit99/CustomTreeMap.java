@@ -203,7 +203,7 @@ public class CustomTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
         }
     }
 
-    private class EntrySet extends AbstractSet<Entry<K, V>>{
+    private class EntrySet extends AbstractSet<Entry<K, V>> {
 
         @Override
         public Iterator<Entry<K, V>> iterator() {
@@ -216,7 +216,7 @@ public class CustomTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
         }
     }
 
-    private class KeySet extends AbstractSet<K>{
+    private class KeySet extends AbstractSet<K> {
 
         @Override
         public Iterator<K> iterator() {
@@ -229,7 +229,7 @@ public class CustomTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
         }
     }
 
-    private class ValueCollection extends AbstractCollection<V>{
+    private class ValueCollection extends AbstractCollection<V> {
 
         @Override
         public Iterator<V> iterator() {
