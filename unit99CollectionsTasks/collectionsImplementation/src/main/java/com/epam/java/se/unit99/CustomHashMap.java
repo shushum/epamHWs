@@ -55,9 +55,11 @@ public class CustomHashMap<K, V> implements Map<K, V> {
 
     @Override
     public V get(Object key) {
-        return null;
-    }
 
+        CustomEntry<K, V> requiredEntry = inspectEntriesInBucketOnKeyOverlapping(getBucketNumber((K) key), (K) key);
+
+        return requiredEntry == null ? null : requiredEntry.value;
+    }
     @Override
     public V put(K key, V value) {
         Objects.requireNonNull(key);
@@ -68,10 +70,10 @@ public class CustomHashMap<K, V> implements Map<K, V> {
             buckets[entries] = new CustomEntry<>(key, value);
             size++;
         } else {
-            CustomEntry overlappingEntry = inspectEntriesInBucketOnKeyOverlapping(entries, key);
+            CustomEntry<K,V> overlappingEntry = inspectEntriesInBucketOnKeyOverlapping(entries, key);
 
             if (overlappingEntry != null) {
-                V previousValue = (V) overlappingEntry.value;
+                V previousValue = overlappingEntry.value;
                 overlappingEntry.value = value;
                 return previousValue;
             } else {
@@ -82,23 +84,6 @@ public class CustomHashMap<K, V> implements Map<K, V> {
             }
         }
         return null;
-    }
-
-    private CustomEntry<K, V> inspectEntriesInBucketOnKeyOverlapping(int entries, K key) {
-        CustomEntry<K, V> currentEntry = buckets[entries];
-
-        while (currentEntry != null) {
-            if (currentEntry.key.equals(key)) {
-                return currentEntry;
-            }
-            currentEntry = currentEntry.next;
-        }
-
-        return null;
-    }
-
-    private int getBucketNumber(K key) {
-        return Math.abs(key.hashCode()) % capacity;
     }
 
     @Override
@@ -129,6 +114,23 @@ public class CustomHashMap<K, V> implements Map<K, V> {
     @Override
     public Set<Entry<K, V>> entrySet() {
         return null;
+    }
+
+    private CustomEntry<K, V> inspectEntriesInBucketOnKeyOverlapping(int entries, K key) {
+        CustomEntry<K, V> currentEntry = buckets[entries];
+
+        while (currentEntry != null) {
+            if (currentEntry.key.equals(key)) {
+                return currentEntry;
+            }
+            currentEntry = currentEntry.next;
+        }
+
+        return null;
+    }
+
+    private int getBucketNumber(K key) {
+        return Math.abs(key.hashCode()) % capacity;
     }
 
     private class CustomEntry<K, V> implements Map.Entry<K, V> {

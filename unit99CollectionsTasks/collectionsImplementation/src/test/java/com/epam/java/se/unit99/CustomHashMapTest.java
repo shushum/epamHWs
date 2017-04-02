@@ -109,7 +109,33 @@ public class CustomHashMapTest {
     }
 
     @Test
-    public void isEmptyWorksProperlyWithEmptyMapTest() {
+    public void isEmptyWorksProperlyWithEmptyMapTestTest() {
         assertThat(m.isEmpty(), is(true));
     }
+
+    @Test
+    public void getReturnsNullIfThereIsNoMappingForKeyTest() {
+        assertThat(m.get(1), equalTo(null));
+    }
+
+    @Test
+    public void getReturnsNullIfMappingForKeyIsNullTest() {
+        m.put(1,null);
+        assertThat(m.containsKey(1), is(true));
+        assertThat(m.get(1), equalTo(null));
+    }
+
+    @Test
+    public void getReturnsValueOfAKeyIfMappingForThisKeyExists() {
+        m.put(1,"value");
+        assertThat(m.containsKey(1), is(true));
+        assertThat(m.get(1), equalTo("value"));
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void getThrowsExceptionWithNullAsKeyArgumentTest() {
+        m.get(null);
+    }
+
+
 }
