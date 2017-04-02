@@ -6,18 +6,23 @@ import java.util.*;
  * Created by Yegor on 01.04.2017.
  */
 public class CustomHashMap<K, V> implements Map<K, V> {
-    private static final int DEFAULT_CAPACITY = 16;
+    private final int INITIAL_CAPACITY = 16;
+    private int capacity;
+    private CustomEntry<K, V>[] buckets = new CustomEntry[INITIAL_CAPACITY];
+    private int size;
 
-    private CustomEntry<K, V>[] buckets = new CustomEntry[DEFAULT_CAPACITY];
+    public CustomHashMap() {
+        this.capacity = INITIAL_CAPACITY;
+    }
 
     @Override
     public int size() {
-        return 0;
+        return size;
     }
 
     @Override
     public boolean isEmpty() {
-        return true;
+        return size == 0;
     }
 
     @Override
@@ -44,8 +49,43 @@ public class CustomHashMap<K, V> implements Map<K, V> {
     public V put(K key, V value) {
         Objects.requireNonNull(key);
 
-        buckets[0] = new CustomEntry<>(key, value);
-        return null; //TODO
+        int entries = getBucketNumber(key);
+
+        if (buckets[entries] == null) {
+            buckets[entries] = new CustomEntry<>(key, value);
+            size++;
+        } else {
+            CustomEntry overlappingEntry = inspectEntriesInBucketOnKeyOverlapping(entries, key);
+
+            if (overlappingEntry != null) {
+                V previousValue = (V) overlappingEntry.value;
+                overlappingEntry.value = value;
+                return previousValue;
+            } else {
+                CustomEntry<K, V> newEntry = new CustomEntry<>(key, value);
+                newEntry.next = buckets[entries];
+                buckets[entries] = newEntry;
+                size++;
+            }
+        }
+        return null;
+    }
+
+    private CustomEntry inspectEntriesInBucketOnKeyOverlapping(int entries, K key) {
+        CustomEntry currentEntry = buckets[entries];
+
+        while (currentEntry != null) {
+            if (currentEntry.key.equals(key)) {
+                return currentEntry;
+            }
+            currentEntry = currentEntry.next;
+        }
+
+        return null;
+    }
+
+    private int getBucketNumber(K key) {
+        return Math.abs(key.hashCode()) % capacity;
     }
 
     @Override
@@ -78,7 +118,7 @@ public class CustomHashMap<K, V> implements Map<K, V> {
         return null;
     }
 
-    private class CustomEntry<K, V> implements Iterator<CustomEntry<K, V>> {
+    private class CustomEntry<K, V> implements Map.Entry<K, V> {
 
         private final K key;
         private V value;
@@ -99,6 +139,21 @@ public class CustomHashMap<K, V> implements Map<K, V> {
 
         public CustomEntry<K, V> next() {
             return next;
+        }
+
+        @Override
+        public K getKey() {
+            return null;
+        }
+
+        @Override
+        public V getValue() {
+            return null;
+        }
+
+        @Override
+        public V setValue(V value) {
+            return null;
         }
     }
 }
