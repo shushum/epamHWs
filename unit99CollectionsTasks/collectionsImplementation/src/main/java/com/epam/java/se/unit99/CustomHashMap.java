@@ -27,12 +27,11 @@ public class CustomHashMap<K, V> implements Map<K, V> {
 
     @Override
     public boolean containsKey(Object key) {
+        Objects.requireNonNull(key);
 
-        CustomEntry<K, V> bucket = buckets[0];
-        if (bucket != null) {
-            return bucket.key.equals(key);
-        }
-        return false;
+        CustomEntry<K, V> possibleMatch = inspectEntriesInBucketOnKeyOverlapping(getBucketNumber((K) key), (K) key);
+
+        return possibleMatch != null;
     }
 
     @Override
@@ -71,8 +70,8 @@ public class CustomHashMap<K, V> implements Map<K, V> {
         return null;
     }
 
-    private CustomEntry inspectEntriesInBucketOnKeyOverlapping(int entries, K key) {
-        CustomEntry currentEntry = buckets[entries];
+    private CustomEntry<K, V> inspectEntriesInBucketOnKeyOverlapping(int entries, K key) {
+        CustomEntry<K, V> currentEntry = buckets[entries];
 
         while (currentEntry != null) {
             if (currentEntry.key.equals(key)) {
