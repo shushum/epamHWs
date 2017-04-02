@@ -102,6 +102,14 @@ public class CustomHashMapTest {
         assertThat(m.containsValue("notPresentedValue"), is(false));
     }
 
-    
+    @Test
+    public void isEmptyWorksProperlyWithNotEmptyMapTest() {
+        m.put(1, "presentedValue");
+        assertThat(m.isEmpty(), is(false));
+    }
 
+    @Test
+    public void isEmptyWorksProperlyWithEmptyMapTest() {
+        assertThat(m.isEmpty(), is(true));
+    }
 }
