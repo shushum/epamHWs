@@ -36,6 +36,16 @@ public class CustomHashMap<K, V> implements Map<K, V> {
 
     @Override
     public boolean containsValue(Object value) {
+
+        for (int i = 0; i < capacity; i++) {
+            CustomEntry<K, V> currentEntry = buckets[i];
+            while (currentEntry != null) {
+                if (currentEntry.value.equals(value)) {
+                    return true;
+                }
+                currentEntry = currentEntry.next;
+            }
+        }
         return false;
     }
 
