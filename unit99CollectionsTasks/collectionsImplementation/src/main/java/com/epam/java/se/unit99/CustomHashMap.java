@@ -40,8 +40,12 @@ public class CustomHashMap<K, V> implements Map<K, V> {
         for (int i = 0; i < capacity; i++) {
             CustomEntry<K, V> currentEntry = buckets[i];
             while (currentEntry != null) {
-                if (currentEntry.value.equals(value)) {
-                    return true;
+                if (currentEntry.value == null) {
+                    if (value == null) {
+                        return true;
+                    }
+                } else {
+                    return currentEntry.value.equals(value);
                 }
                 currentEntry = currentEntry.next;
             }
