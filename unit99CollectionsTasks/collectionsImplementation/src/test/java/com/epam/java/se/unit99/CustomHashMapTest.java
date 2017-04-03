@@ -170,7 +170,7 @@ public class CustomHashMapTest {
     }
 
     @Test
-    public void removeTest() {
+    public void removeFromBigMapTest() {
         IntStream.range(1, 100).forEach(
                 i -> m.put(i, String.valueOf(i)));
 
@@ -184,5 +184,33 @@ public class CustomHashMapTest {
                 i -> m.put(i, String.valueOf(i)));
 
         assertThat(m.remove(101), equalTo(null));
+    }
+
+    @Test
+    public void sizeCalculatesCorrectlyAfterRemovingExistingKeyValuePairTest() {
+        IntStream.range(1, 100).forEach(
+                i -> m.put(i, String.valueOf(i)));
+
+        m.remove(20);
+        assertThat(m.size(), equalTo(98));
+    }
+
+    @Test
+    public void sizeCalculatesCorrectlyAfterRemovingNonExistingKeyValuePairTest() {
+        IntStream.range(1, 100).forEach(
+                i -> m.put(i, String.valueOf(i)));
+
+        m.remove(101);
+        assertThat(m.size(), equalTo(99));
+    }
+
+    @Test
+    public void clearTest() {
+        IntStream.range(1, 100).forEach(
+                i -> m.put(i, String.valueOf(i)));
+
+        m.clear();
+        assertThat(m.size(), equalTo(0));
+        assertThat(m.isEmpty(),is(true));
     }
 }

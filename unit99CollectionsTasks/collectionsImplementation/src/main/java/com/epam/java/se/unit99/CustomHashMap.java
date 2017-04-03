@@ -110,9 +110,8 @@ public class CustomHashMap<K, V> implements Map<K, V> {
         } else {
             previousEntry.next = currentEntry.next;
         }
+        size--;
         return currentEntry.value;
-
-
     }
 
     @Override
@@ -122,7 +121,8 @@ public class CustomHashMap<K, V> implements Map<K, V> {
 
     @Override
     public void clear() {
-
+        buckets = new CustomEntry[capacity];
+        size = 0;
     }
 
     @Override
