@@ -120,14 +120,14 @@ public class CustomHashMapTest {
 
     @Test
     public void getReturnsNullIfMappingForKeyIsNullTest() {
-        m.put(1,null);
+        m.put(1, null);
         assertThat(m.containsKey(1), is(true));
         assertThat(m.get(1), equalTo(null));
     }
 
     @Test
     public void getReturnsValueOfAKeyIfMappingForThisKeyExistsTest() {
-        m.put(1,"value");
+        m.put(1, "value");
         assertThat(m.containsKey(1), is(true));
         assertThat(m.get(1), equalTo("value"));
     }
@@ -139,36 +139,50 @@ public class CustomHashMapTest {
 
     @Test
     public void removeRemovesKeyValuePairFromMapTest() {
-        m.put(1,"value");
+        m.put(1, "value");
         m.remove(1);
         assertThat(m.containsKey(1), is(false));
     }
 
     @Test
     public void removeReturnsValueMappedToKeyIfSuchKeyWasPresentedInMapTest() {
-        m.put(1,"value");
-        assertThat(m.containsKey(1), is(true));
-        assertThat(m.get(1), equalTo("value"));
+        m.put(1, "value");
+        assertThat(m.remove(1), equalTo("value"));
+        assertThat(m.containsKey(1), is(false));
     }
 
     @Test
     public void removeReturnsNullIfKeyWasNotPresentedInMapTest() {
-        m.put(1,"value");
-        assertThat(m.containsKey(1), is(true));
-        assertThat(m.get(1), equalTo("value"));
+        assertThat(m.remove(1), equalTo(null));
     }
 
     @Test
     public void removeReturnsNullIfItWasMappedToPresentedInMapKeyTest() {
-        m.put(1,"value");
-        assertThat(m.containsKey(1), is(true));
-        assertThat(m.get(1), equalTo("value"));
+        m.put(1, null);
+        assertThat(m.remove(1), equalTo(null));
+        assertThat(m.containsKey(1), is(false));
     }
 
     @Test(expected = NullPointerException.class)
     public void removeThrowsExceptionWithNullAsAnArgumentTest() {
-        m.put(1,"value");
-        assertThat(m.containsKey(1), is(true));
-        assertThat(m.get(1), equalTo("value"));
+        m.put(1, "value");
+        m.remove(null);
+    }
+
+    @Test
+    public void removeTest() {
+        IntStream.range(1, 100).forEach(
+                i -> m.put(i, String.valueOf(i)));
+
+        assertThat(m.remove(50), equalTo("50"));
+        assertThat(m.containsKey(50), is(false));
+    }
+
+    @Test
+    public void removeNonExistingKeyReturnsNullTest() {
+        IntStream.range(1, 100).forEach(
+                i -> m.put(i, String.valueOf(i)));
+
+        assertThat(m.remove(101), equalTo(null));
     }
 }

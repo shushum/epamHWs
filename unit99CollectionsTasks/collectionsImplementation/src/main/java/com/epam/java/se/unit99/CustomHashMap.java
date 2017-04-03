@@ -29,7 +29,7 @@ public class CustomHashMap<K, V> implements Map<K, V> {
     public boolean containsKey(Object key) {
         Objects.requireNonNull(key);
 
-        CustomEntry<K, V> possibleMatch = inspectEntriesInBucketOnKeyOverlapping(getBucketNumber((K) key), (K) key);
+        CustomEntry<K, V> possibleMatch = getEntryFromBucketByKey(getBucketNumber((K) key), (K) key);
 
         return possibleMatch != null;
     }
@@ -56,7 +56,7 @@ public class CustomHashMap<K, V> implements Map<K, V> {
     @Override
     public V get(Object key) {
 
-        CustomEntry<K, V> requiredEntry = inspectEntriesInBucketOnKeyOverlapping(getBucketNumber((K) key), (K) key);
+        CustomEntry<K, V> requiredEntry = getEntryFromBucketByKey(getBucketNumber((K) key), (K) key);
 
         return requiredEntry == null ? null : requiredEntry.value;
     }
@@ -65,13 +65,13 @@ public class CustomHashMap<K, V> implements Map<K, V> {
     public V put(K key, V value) {
         Objects.requireNonNull(key);
 
-        int entries = getBucketNumber(key);
+        int bucket = getBucketNumber(key);
 
-        if (buckets[entries] == null) {
-            buckets[entries] = new CustomEntry<>(key, value);
+        if (buckets[bucket] == null) {
+            buckets[bucket] = new CustomEntry<>(key, value);
             size++;
         } else {
-            CustomEntry<K, V> overlappingEntry = inspectEntriesInBucketOnKeyOverlapping(entries, key);
+            CustomEntry<K, V> overlappingEntry = getEntryFromBucketByKey(bucket, key);
 
             if (overlappingEntry != null) {
                 V previousValue = overlappingEntry.value;
@@ -79,8 +79,8 @@ public class CustomHashMap<K, V> implements Map<K, V> {
                 return previousValue;
             } else {
                 CustomEntry<K, V> newEntry = new CustomEntry<>(key, value);
-                newEntry.next = buckets[entries];
-                buckets[entries] = newEntry;
+                newEntry.next = buckets[bucket];
+                buckets[bucket] = newEntry;
                 size++;
             }
         }
@@ -92,10 +92,8 @@ public class CustomHashMap<K, V> implements Map<K, V> {
         Objects.requireNonNull(key);
 
         int bucket = getBucketNumber((K) key);
-
         CustomEntry<K, V> previousEntry = buckets[bucket];
         CustomEntry<K, V> currentEntry = previousEntry;
-
 
         while (currentEntry != null) {
             if (currentEntry.key.equals(key)) {
@@ -105,12 +103,14 @@ public class CustomHashMap<K, V> implements Map<K, V> {
             currentEntry = currentEntry.next;
         }
 
-        if (previousEntry == currentEntry) {
+        if (currentEntry == null) {
+            return null;
+        } else if (previousEntry == currentEntry) {
             buckets[bucket] = currentEntry.next;
         } else {
             previousEntry.next = currentEntry.next;
         }
-        return null;
+        return currentEntry.value;
 
 
     }
@@ -140,7 +140,7 @@ public class CustomHashMap<K, V> implements Map<K, V> {
         return null;
     }
 
-    private CustomEntry<K, V> inspectEntriesInBucketOnKeyOverlapping(int bucket, K key) {
+    private CustomEntry<K, V> getEntryFromBucketByKey(int bucket, K key) {
         CustomEntry<K, V> currentEntry = buckets[bucket];
 
         while (currentEntry != null) {
