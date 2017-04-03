@@ -129,17 +129,17 @@ public class CustomHashMap<K, V> implements Map<K, V> {
 
     @Override
     public Set<K> keySet() {
-        return null;
+        return new KeySet();
     }
 
     @Override
     public Collection<V> values() {
-        return null;
+        return new ValueCollection();
     }
 
     @Override
     public Set<Entry<K, V>> entrySet() {
-        return null;
+        return new EntrySet();
     }
 
     private CustomEntry<K, V> getEntryFromBucketByKey(int bucket, K key) {
@@ -197,6 +197,94 @@ public class CustomHashMap<K, V> implements Map<K, V> {
             V previousValue = this.value;
             this.value = value;
             return previousValue;
+        }
+    }
+
+    private class EntrySet extends AbstractSet<Entry<K, V>> {
+
+        @Override
+        public Iterator<Entry<K, V>> iterator() {
+            return new EntryIterator();
+        }
+
+        @Override
+        public int size() {
+            return size;
+        }
+    }
+
+    private class KeySet extends AbstractSet<K> {
+
+        @Override
+        public Iterator<K> iterator() {
+            return new KeyIterator();
+        }
+
+        @Override
+        public int size() {
+            return size;
+        }
+    }
+
+    private class ValueCollection extends AbstractCollection<V> {
+
+        @Override
+        public Iterator<V> iterator() {
+            return new ValueIterator();
+        }
+
+        @Override
+        public int size() {
+            return size;
+        }
+    }
+
+    private class KeyIterator extends CommonEntryIterator {
+        @Override
+        public K next() {
+            return entries[entryIndex++].key;
+        }
+    }
+
+    private class ValueIterator extends CommonEntryIterator {
+        @Override
+        public V next() {
+            return entries[entryIndex++].value;
+        }
+    }
+
+    private class EntryIterator extends CommonEntryIterator {
+        @Override
+        public CustomEntry<K, V> next() {
+            return entries[entryIndex++];
+        }
+    }
+
+    private abstract class CommonEntryIterator implements Iterator {
+        CustomEntry<K, V>[] entries = new CustomEntry[size];
+        int entryIndex = 0;
+
+        CommonEntryIterator() {
+            collectEntries();
+            entryIndex = 0;
+        }
+
+        public boolean hasNext() {
+            return entryIndex < entries.length;
+        }
+
+        public abstract Object next();
+
+        private void collectEntries() {
+            for (int i = 0; i < capacity; i++) {
+                CustomEntry<K, V> currentEntry = buckets[i];
+
+                while (currentEntry != null) {
+                    entries[entryIndex] = currentEntry;
+                    entryIndex++;
+                    currentEntry = currentEntry.next;
+                }
+            }
         }
     }
 }

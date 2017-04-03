@@ -4,8 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.IntStream;
 
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -69,6 +68,22 @@ public class CustomHashMapTest {
     public void puttingKeyThatAlreadyPresentedInMapReturnsItsPreviousValueTest() {
         m.put(1, "previous value");
         assertThat(m.put(1, "new value"), equalTo("previous value"));
+    }
+
+    @Test
+    public void isPossibleToStoreDifferentKeysWithEqualsHashCodesInMap() {
+        Object key1 = "";
+        Object key2 = 0;
+
+        assertThat(key1.hashCode(), equalTo(key2.hashCode()));
+
+        CustomHashMap<Object, String> map = new CustomHashMap<>();
+
+        map.put(key1, String.valueOf(key1));
+        map.put(key2, String.valueOf(key2));
+
+        assertThat(map.containsKey(key1), is(true));
+        assertThat(map.containsKey(key2), is(true));
     }
 
     @Test
@@ -252,4 +267,64 @@ public class CustomHashMapTest {
         assertThat(m.isEmpty(), is(true));
     }
 
+    @Test
+    public void entrySetCreatesSetOfAllCustomTreeMapEntriesTest() {
+        IntStream.range(1, 10).forEach(
+                i -> m.put(i, String.valueOf(i)));
+        Set<Map.Entry<Integer, String>> set = m.entrySet();
+
+        Iterator<Map.Entry<Integer, String>> iterator = set.iterator();
+        Map<Integer, String> checkingMap = new HashMap<>();
+
+        while (iterator.hasNext()) {
+            Map.Entry currEntry = iterator.next();
+            checkingMap.put((Integer) currEntry.getKey(), (String) currEntry.getValue());
+        }
+
+        IntStream.range(1, 10).forEach(
+                i -> assertTrue(checkingMap.containsKey(i)));
+        IntStream.range(1, 10).forEach(
+                i -> assertTrue(checkingMap.containsValue(String.valueOf(i))));
+        assertThat(set.size(), is(9));
+    }
+
+    @Test
+    public void entrySetCreatesEmptySetOfEmptyCustomTreeMapTest() {
+        Set<Map.Entry<Integer, String>> set = m.entrySet();
+        assertThat(set.isEmpty(), is(true));
+    }
+
+    @Test
+    public void keySetCreatesSetOfAllCustomTreeMapKeysTest() {
+        IntStream.range(1, 10).forEach(
+                i -> m.put(i, String.valueOf(i)));
+        Set<Integer> set = m.keySet();
+
+        IntStream.range(1, 10).forEach(
+                i -> assertTrue(set.contains(i)));
+        assertThat(set.size(), is(9));
+    }
+
+    @Test
+    public void keySetCreatesEmptySetOfEmptyCustomTreeMapTest() {
+        Set<Integer> set = m.keySet();
+        assertThat(set.isEmpty(), is(true));
+    }
+
+    @Test
+    public void valuesCreatesCollectionOfAllCustomTreeMapValuesTest() {
+        IntStream.range(1, 10).forEach(
+                i -> m.put(i, String.valueOf(i)));
+        Collection<String> collection = m.values();
+
+        IntStream.range(1, 10).forEach(
+                i -> assertTrue(collection.contains(String.valueOf(i))));
+        assertThat(collection.size(), is(9));
+    }
+
+    @Test
+    public void valuesCreatesEmptyCollectionOfEmptyCustomTreeMapTest() {
+        Collection<String> collection = m.values();
+        assertThat(collection.isEmpty(), is(true));
+    }
 }
