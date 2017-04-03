@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.IntStream;
 
@@ -213,4 +214,42 @@ public class CustomHashMapTest {
         assertThat(m.size(), equalTo(0));
         assertThat(m.isEmpty(),is(true));
     }
+
+    @Test
+    public void putAllPutsAllElementsFromRequiredMapIntoThisMapTest() {
+        Map<Integer, String> map = new HashMap<>();
+
+        IntStream.range(1, 100).forEach(
+                i -> map.put(i, String.valueOf(i)));
+
+        m.putAll(map);
+
+
+        IntStream.range(1, 100).forEach(
+                i -> assertThat(map.containsKey(i), is(true)));
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void putAllWithNullKeysInRequiredMapThrowsException(){
+        Map<Integer, String> testMap = new HashMap<>();
+        testMap.put(null, "");
+        m.putAll(testMap);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void putAllWithNullAsRequiredMapThrowsException(){
+        m.putAll(null);
+    }
+
+    @Test
+    public void putAllWithEmptyArgumentMapChangesNothing(){
+        Map<Integer, String> testMap = new HashMap<>();
+
+        assertThat(testMap.isEmpty(), is(true));
+
+        m.putAll(testMap);
+
+        assertThat(m.isEmpty(), is(true));
+    }
+
 }

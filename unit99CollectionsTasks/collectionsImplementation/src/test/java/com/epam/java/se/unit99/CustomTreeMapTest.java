@@ -322,7 +322,7 @@ public class CustomTreeMapTest {
     }
 
     @Test
-    public void putAllWithEmptyRequiredMapChangesNothing(){
+    public void putAllWithEmptyArgumentMapChangesNothing(){
         Map<Integer, String> testMap = new TreeMap<>();
 
         assertThat(testMap.isEmpty(), is(true));
