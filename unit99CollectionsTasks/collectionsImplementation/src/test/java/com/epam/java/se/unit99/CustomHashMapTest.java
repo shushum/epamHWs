@@ -3,7 +3,6 @@ package com.epam.java.se.unit99;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.InputStream;
 import java.util.*;
 import java.util.stream.IntStream;
 
