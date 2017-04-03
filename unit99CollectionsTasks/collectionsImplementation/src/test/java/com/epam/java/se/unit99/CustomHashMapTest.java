@@ -126,7 +126,7 @@ public class CustomHashMapTest {
     }
 
     @Test
-    public void getReturnsValueOfAKeyIfMappingForThisKeyExists() {
+    public void getReturnsValueOfAKeyIfMappingForThisKeyExistsTest() {
         m.put(1,"value");
         assertThat(m.containsKey(1), is(true));
         assertThat(m.get(1), equalTo("value"));
@@ -137,5 +137,38 @@ public class CustomHashMapTest {
         m.get(null);
     }
 
+    @Test
+    public void removeRemovesKeyValuePairFromMapTest() {
+        m.put(1,"value");
+        m.remove(1);
+        assertThat(m.containsKey(1), is(false));
+    }
 
+    @Test
+    public void removeReturnsValueMappedToKeyIfSuchKeyWasPresentedInMapTest() {
+        m.put(1,"value");
+        assertThat(m.containsKey(1), is(true));
+        assertThat(m.get(1), equalTo("value"));
+    }
+
+    @Test
+    public void removeReturnsNullIfKeyWasNotPresentedInMapTest() {
+        m.put(1,"value");
+        assertThat(m.containsKey(1), is(true));
+        assertThat(m.get(1), equalTo("value"));
+    }
+
+    @Test
+    public void removeReturnsNullIfItWasMappedToPresentedInMapKeyTest() {
+        m.put(1,"value");
+        assertThat(m.containsKey(1), is(true));
+        assertThat(m.get(1), equalTo("value"));
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void removeThrowsExceptionWithNullAsAnArgumentTest() {
+        m.put(1,"value");
+        assertThat(m.containsKey(1), is(true));
+        assertThat(m.get(1), equalTo("value"));
+    }
 }

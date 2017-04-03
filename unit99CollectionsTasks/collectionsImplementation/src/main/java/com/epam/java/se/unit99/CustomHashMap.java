@@ -60,6 +60,7 @@ public class CustomHashMap<K, V> implements Map<K, V> {
 
         return requiredEntry == null ? null : requiredEntry.value;
     }
+
     @Override
     public V put(K key, V value) {
         Objects.requireNonNull(key);
@@ -70,7 +71,7 @@ public class CustomHashMap<K, V> implements Map<K, V> {
             buckets[entries] = new CustomEntry<>(key, value);
             size++;
         } else {
-            CustomEntry<K,V> overlappingEntry = inspectEntriesInBucketOnKeyOverlapping(entries, key);
+            CustomEntry<K, V> overlappingEntry = inspectEntriesInBucketOnKeyOverlapping(entries, key);
 
             if (overlappingEntry != null) {
                 V previousValue = overlappingEntry.value;
@@ -88,7 +89,30 @@ public class CustomHashMap<K, V> implements Map<K, V> {
 
     @Override
     public V remove(Object key) {
+        Objects.requireNonNull(key);
+
+        int bucket = getBucketNumber((K) key);
+
+        CustomEntry<K, V> previousEntry = buckets[bucket];
+        CustomEntry<K, V> currentEntry = previousEntry;
+
+
+        while (currentEntry != null) {
+            if (currentEntry.key.equals(key)) {
+                break;
+            }
+            previousEntry = currentEntry;
+            currentEntry = currentEntry.next;
+        }
+
+        if (previousEntry == currentEntry) {
+            buckets[bucket] = currentEntry.next;
+        } else {
+            previousEntry.next = currentEntry.next;
+        }
         return null;
+
+
     }
 
     @Override
@@ -116,8 +140,8 @@ public class CustomHashMap<K, V> implements Map<K, V> {
         return null;
     }
 
-    private CustomEntry<K, V> inspectEntriesInBucketOnKeyOverlapping(int entries, K key) {
-        CustomEntry<K, V> currentEntry = buckets[entries];
+    private CustomEntry<K, V> inspectEntriesInBucketOnKeyOverlapping(int bucket, K key) {
+        CustomEntry<K, V> currentEntry = buckets[bucket];
 
         while (currentEntry != null) {
             if (currentEntry.key.equals(key)) {
@@ -158,17 +182,19 @@ public class CustomHashMap<K, V> implements Map<K, V> {
 
         @Override
         public K getKey() {
-            return null;
+            return key;
         }
 
         @Override
         public V getValue() {
-            return null;
+            return value;
         }
 
         @Override
         public V setValue(V value) {
-            return null;
+            V previousValue = this.value;
+            this.value = value;
+            return previousValue;
         }
     }
 }
