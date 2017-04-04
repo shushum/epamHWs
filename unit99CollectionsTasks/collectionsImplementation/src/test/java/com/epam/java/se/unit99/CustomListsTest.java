@@ -314,6 +314,42 @@ public class CustomListsTest {
         iterator.next();
     }
 
+    @Test
+    public void containsAllReturnsTrueIfAllElementsOfCollectionAreStoredInListTest() throws Exception {
+        fillListWithSixStrings();
+
+        List<String> storedList = new ArrayList<>();
+        storedList.add("element0");
+        storedList.add("element3");
+        storedList.add("element5");
+
+        assertThat(list.containsAll(storedList), is(true));
+    }
+
+    @Test
+    public void containsAllReturnsFalseIfOneOrMoreElementsOfCollectionAreNotStoredInListTest() throws Exception {
+        fillListWithSixStrings();
+
+        List<String> wrongList = new ArrayList<>();
+        wrongList.add("element0");
+        wrongList.add("element3");
+        wrongList.add("wrong item");
+
+        assertThat(list.containsAll(wrongList), is(false));
+    }
+
+    @Test
+    public void containsAllWorksProperlyIfCollectionContainsNullTest() throws Exception {
+        fillListWithSixStrings();
+
+        List<String> wrongList = new ArrayList<>();
+        wrongList.add("element0");
+        wrongList.add("element3");
+        wrongList.add(null);
+
+        assertThat(list.containsAll(wrongList), is(false));
+    }
+
     private void fillListWithSixStrings() {
         list.add("element0");
         list.add("element1");
