@@ -638,6 +638,7 @@ public class CustomListsTest {
     @Test
     public void addWithIndexDoesNotBreakListElementsSequenceTest() throws Exception {
         fillListWithSixStrings();
+        fillListWithSixStrings();
 
         list.add(3, "newElement");
 
@@ -650,6 +651,54 @@ public class CustomListsTest {
         IntStream.range(4, 7).forEach(
                 i -> assertThat(list.get(i), equalTo("element" + (i - 1)))
         );
+    }
+
+    @Test
+    public void indexOfReturnsIndexOfFirstElementThatMatchesIfItPresentedInListTest() throws Exception {
+        fillListWithSixStrings();
+        fillListWithSixStrings();
+
+        assertThat(list.indexOf("element4"), equalTo(4));
+    }
+
+    @Test
+    public void indexOfReturnsMinusOneIfSuchElementIsNotPresentedInListTest() throws Exception {
+        fillListWithSixStrings();
+        fillListWithSixStrings();
+
+        assertThat(list.indexOf("notPresented"), equalTo(-1));
+    }
+
+    @Test
+    public void indexOfWorksProperlyWithNullAsArgumentTest() throws Exception {
+        fillListWithSixStrings();
+        fillListWithSixStrings();
+
+        assertThat(list.indexOf(null), equalTo(-1));
+    }
+
+    @Test
+    public void lastIndexOfReturnsIndexOfLastElementThatMatchesIfItPresentedInListTest() throws Exception {
+        fillListWithSixStrings();
+        fillListWithSixStrings();
+
+        assertThat(list.lastIndexOf("element4"), equalTo(10));
+    }
+
+    @Test
+    public void lastIndexOfReturnsMinusOneIfSuchElementIsNotPresentedInListTest() throws Exception {
+        fillListWithSixStrings();
+        fillListWithSixStrings();
+
+        assertThat(list.lastIndexOf("notPresented"), equalTo(-1));
+    }
+
+    @Test
+    public void lastIndexOfWorksProperlyWithNullAsArgumentTest() throws Exception {
+        fillListWithSixStrings();
+        fillListWithSixStrings();
+
+        assertThat(list.lastIndexOf(null), equalTo(-1));
     }
 
     private void fillListWithSixStrings() {

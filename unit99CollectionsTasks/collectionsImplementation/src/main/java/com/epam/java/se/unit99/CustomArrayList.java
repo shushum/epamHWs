@@ -26,11 +26,7 @@ public class CustomArrayList<T> implements List<T> {
     @Override
     public boolean contains(Object o) {
         for (int i = 0; i < size; i++) {
-            if (data[i] == null) {
-                if (o == null) {
-                    return true;
-                }
-            } else if (data[i].equals(o)) {
+            if (equals(o, data[i])) {
                 return true;
             }
         }
@@ -192,12 +188,22 @@ public class CustomArrayList<T> implements List<T> {
 
     @Override
     public int indexOf(Object o) {
-        return 0;
+        for (int i = 0; i < size; i++) {
+            if (equals(o, data[i])) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     @Override
     public int lastIndexOf(Object o) {
-        return 0;
+        for (int i = size - 1; i >= 0; i--) {
+            if (equals(o, data[i])) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     @Override
@@ -236,6 +242,17 @@ public class CustomArrayList<T> implements List<T> {
         if (index < 0 || index >= size) {
             throw new IndexOutOfBoundsException();
         }
+    }
+
+    private boolean equals(Object o, Object data) {
+        if (data == null) {
+            if (o == null) {
+                return true;
+            }
+        } else if (data.equals(o)) {
+            return true;
+        }
+        return false;
     }
 
     private class ArrayListIterator implements Iterator<T> {

@@ -25,11 +25,8 @@ public class CustomLinkedList<T> implements List<T> {
         Node<T> node = head;
         while (node.hasNext()) {
             node = node.next;
-            if (node.value == null) {
-                if (o == null) {
-                    return true;
-                }
-            } else if (node.value.equals(o)) {
+
+            if (equals(o, node.value)) {
                 return true;
             }
         }
@@ -207,12 +204,33 @@ public class CustomLinkedList<T> implements List<T> {
 
     @Override
     public int indexOf(Object o) {
-        return 0;
+        Node<T> current = head;
+        int index = -1;
+
+        while(current.hasNext()){
+            current = current.next;
+            index++;
+            if (equals(o, current.value)) {
+                return index;
+            }
+        }
+        return -1;
     }
 
     @Override
     public int lastIndexOf(Object o) {
-        return 0;
+        Node<T> current = head;
+        int index = -1;
+        int lastOccurrence = -1;
+
+        while(current.hasNext()){
+            current = current.next;
+            index++;
+            if (equals(o, current.value)) {
+                lastOccurrence = index;
+            }
+        }
+        return lastOccurrence;
     }
 
     @Override
@@ -244,6 +262,17 @@ public class CustomLinkedList<T> implements List<T> {
         if (index < 0 || index >= size) {
             throw new IndexOutOfBoundsException();
         }
+    }
+
+    private boolean equals(Object o, Object value) {
+        if (value == null) {
+            if (o == null) {
+                return true;
+            }
+        } else if (value.equals(o)) {
+            return true;
+        }
+        return false;
     }
 
     private class Node<T> {
