@@ -181,6 +181,16 @@ public class CustomLinkedList<T> implements List<T> {
 
     @Override
     public void add(int index, T element) {
+        if (index == size) {
+            add(element);
+        } else {
+            boundsCheck(index);
+            Node<T> current = getNodeByIndex(index -1);
+            Node<T> nodeToAdd = new Node<>(element);
+            nodeToAdd.next = current.next;
+            current.next = nodeToAdd;
+            size++;
+        }
 
     }
 

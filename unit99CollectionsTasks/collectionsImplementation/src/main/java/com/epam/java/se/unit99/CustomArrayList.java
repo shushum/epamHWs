@@ -60,10 +60,7 @@ public class CustomArrayList<T> implements List<T> {
 
     @Override
     public boolean add(T t) {
-        if (size == data.length) {
-            int newLength = (data.length * 3) / 2 + 1;
-            data = Arrays.copyOf(data, newLength);
-        }
+        ensureCapacity();
         data[size++] = t;
         return true;
     }
@@ -171,7 +168,15 @@ public class CustomArrayList<T> implements List<T> {
 
     @Override
     public void add(int index, T element) {
-
+        if (index == size) {
+            add(element);
+        } else {
+            boundsCheck(index);
+            ensureCapacity();
+            shiftElementsToTheRight(index);
+            data[index] = element;
+            size++;
+        }
     }
 
     @Override
@@ -210,9 +215,21 @@ public class CustomArrayList<T> implements List<T> {
         return null;
     }
 
+    private void ensureCapacity() {
+        if (size == data.length) {
+            int newLength = (data.length * 3) / 2 + 1;
+            data = Arrays.copyOf(data, newLength);
+        }
+    }
+
     private void shiftElementsToTheLeft(int index) {
         int length = data.length - index;
         System.arraycopy(data, index + 1, data, index, length - 1);
+    }
+
+    private void shiftElementsToTheRight(int index) {
+        int length = data.length - index;
+        System.arraycopy(data, index, data, index + 1, length - 1);
     }
 
     private void boundsCheck(int index) {

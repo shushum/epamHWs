@@ -556,7 +556,7 @@ public class CustomListsTest {
     }
 
     @Test
-    public void setChangesListElementInRequiredPositionToTheRequiredElementTest() throws Exception{
+    public void setChangesListElementInRequiredPositionToTheRequiredElementTest() throws Exception {
         fillListWithSixStrings();
 
         list.set(4, "newElement");
@@ -566,14 +566,14 @@ public class CustomListsTest {
     }
 
     @Test
-    public void setReturnsListElementOnRequiredPositionThatWasBeforeSettingTest() throws Exception{
+    public void setReturnsListElementOnRequiredPositionThatWasBeforeSettingTest() throws Exception {
         fillListWithSixStrings();
 
         assertThat(list.set(4, "newElement"), equalTo("element4"));
     }
 
     @Test
-    public void setWorksProperlyWithNullAsRequiredElementTest() throws Exception{
+    public void setWorksProperlyWithNullAsRequiredElementTest() throws Exception {
         fillListWithSixStrings();
 
         list.set(4, null);
@@ -582,10 +582,74 @@ public class CustomListsTest {
     }
 
     @Test(expected = IndexOutOfBoundsException.class)
-    public void setThrowsExceptionOnAttemptToChangeElementOutOfListSizeTest() throws Exception{
+    public void setThrowsExceptionOnAttemptToChangeElementOutOfListSizeTest() throws Exception {
         fillListWithSixStrings();
 
         list.set(list.size(), "newElement");
+    }
+
+    @Test
+    public void addWithIndexPutsNewRequiredElementInRequiredPositionTest() throws Exception {
+        fillListWithSixStrings();
+
+        list.add(4, "newElement");
+
+        assertThat(list.get(4), equalTo("newElement"));
+    }
+
+    @Test
+    public void addWithIndexIncrementsListSizeTest() throws Exception {
+        fillListWithSixStrings();
+
+        list.add(4, "newElement");
+
+        assertThat(list.size(), equalTo(7));
+    }
+
+    @Test
+    public void addWithIndexShiftsAllListElementWithIndexesEqualOrGreaterToTheRightTest() throws Exception {
+        fillListWithSixStrings();
+
+        list.add(4, "newElement");
+
+        IntStream.range(5, 7).forEach(
+                i -> assertThat(list.get(i), equalTo("element" + (i - 1)))
+        );
+
+    }
+
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void addThrowsExceptionOnAttemptToPutElementOnPositionGreaterThanListSizeTest() throws Exception {
+        fillListWithSixStrings();
+
+        list.add(list.size() + 1, "newElement");
+    }
+
+    @Test
+    public void addWithIndexEqualsToListSizeWorksLikeSimpleAddTest() throws Exception {
+        fillListWithSixStrings();
+
+        list.add(6, "newElement");
+
+        assertThat(list.size(), equalTo(7));
+        assertThat(list.get(6), equalTo("newElement"));
+    }
+
+    @Test
+    public void addWithIndexDoesNotBreakListElementsSequenceTest() throws Exception {
+        fillListWithSixStrings();
+
+        list.add(3, "newElement");
+
+        IntStream.range(0, 3).forEach(
+                i -> assertThat(list.get(i), equalTo("element" + i))
+        );
+
+        assertThat(list.get(3), equalTo("newElement"));
+
+        IntStream.range(4, 7).forEach(
+                i -> assertThat(list.get(i), equalTo("element" + (i - 1)))
+        );
     }
 
     private void fillListWithSixStrings() {
