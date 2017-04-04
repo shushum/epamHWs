@@ -99,7 +99,15 @@ public class CustomArrayList<T> implements List<T> {
 
     @Override
     public boolean addAll(int index, Collection<? extends T> c) {
-        return false;
+        Objects.requireNonNull(c);
+
+        int sizeFlag = size;
+
+        for (T element : c) {
+            add(index++, element);
+        }
+
+        return size > sizeFlag;
     }
 
     @Override

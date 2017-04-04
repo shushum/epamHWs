@@ -701,6 +701,97 @@ public class CustomListsTest {
         assertThat(list.lastIndexOf(null), equalTo(-1));
     }
 
+    @Test
+    public void addAllWithIndexReturnsTrueIfElementsFromCollectionWasAddedInListTest() throws Exception {
+        fillListWithSixStrings();
+
+        List<String> listToAdd = new ArrayList<>();
+        listToAdd.add("element0");
+        listToAdd.add("element3");
+
+        assertThat(list.addAll(3, listToAdd), is(true));
+    }
+
+    @Test
+    public void addAllWithIndexActuallyAddsElementsFromCollectionToSpecifiedIndexInListTest() throws Exception {
+        fillListWithSixStrings();
+
+        List<String> listToAdd = new ArrayList<>();
+        listToAdd.add("element0");
+        listToAdd.add("element3");
+
+        list.addAll(3, listToAdd);
+
+        assertThat(list.size(), equalTo(8));
+        assertThat(list.get(3), equalTo("element0"));
+        assertThat(list.get(4), equalTo("element3"));
+    }
+
+    @Test
+    public void addAllWithIndexReturnsFalseIfCollectionWasEmptyTest() throws Exception {
+        fillListWithSixStrings();
+
+        List<String> listToAdd = new ArrayList<>();
+
+        assertThat(list.addAll(3, listToAdd), is(false));
+    }
+
+    @Test
+    public void addAllWithIndexDoesNotModifyListIfCollectionWasEmptyTest() throws Exception {
+        fillListWithSixStrings();
+
+        List<String> listToAdd = new ArrayList<>();
+
+        list.addAll(3, listToAdd);
+
+        assertThat(list.size(), equalTo(6));
+        assertThat(list.get(3), equalTo("element3"));
+
+    }
+
+    @Test
+    public void addAllWithIndexWorksProperlyWithCollectionThatContainsNullTest() throws Exception {
+        fillListWithSixStrings();
+
+        List<String> listToAdd = new ArrayList<>();
+        listToAdd.add("element0");
+        listToAdd.add("element3");
+        listToAdd.add(null);
+
+        list.addAll(3, listToAdd);
+        assertThat(list.size(), equalTo(9));
+        assertThat(list.get(3), equalTo("element0"));
+        assertThat(list.get(4), equalTo("element3"));
+        assertThat(list.get(5), equalTo(null));
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void addAllWithIndexThrowsExceptionWithNullAsArgumentTest() throws Exception {
+        fillListWithSixStrings();
+
+        list.addAll(3,null);
+    }
+
+    @Test
+    public void addAllWithIndexWorksDoesNotBreakSequenceOfSubListsBeforeAndAfterInsertionElementsTest() throws Exception {
+        fillListWithSixStrings();
+
+        List<String> listToAdd = new ArrayList<>();
+        listToAdd.add("element0");
+        listToAdd.add("element3");
+        listToAdd.add(null);
+
+        list.addAll(3, listToAdd);
+
+        IntStream.range(0, 3).forEach(
+                i -> assertThat(list.get(i), equalTo("element" + i))
+        );
+
+        IntStream.range(6, 9).forEach(
+                i -> assertThat(list.get(i), equalTo("element" + (i - 3)))
+        );
+    }
+
     private void fillListWithSixStrings() {
         list.add("element0");
         list.add("element1");
