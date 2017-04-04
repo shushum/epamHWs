@@ -146,7 +146,18 @@ public class CustomLinkedList<T> implements List<T> {
 
     @Override
     public boolean retainAll(Collection<?> c) {
-        return false;
+        Objects.requireNonNull(c);
+        Object[] data = toArray();
+
+        int sizeFlag = size;
+
+        for (Object element : data) {
+            if (!c.contains(element)) {
+                remove(element);
+            }
+        }
+
+        return size < sizeFlag;
     }
 
     @Override

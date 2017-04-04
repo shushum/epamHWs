@@ -480,7 +480,79 @@ public class CustomListsTest {
     public void removeAllThrowsExceptionWithNullAsArgumentTest() throws Exception {
         fillListWithSixStrings();
 
-        list.addAll(null);
+        list.removeAll(null);
+    }
+
+    @Test
+    public void retainAllReturnsTrueIfElementsOutOfCollectionWasRemovedFromListTest() throws Exception {
+        fillListWithSixStrings();
+
+        List<String> listToRetain = new ArrayList<>();
+        listToRetain.add("element0");
+        listToRetain.add("element3");
+
+        assertThat(list.retainAll(listToRetain), is(true));
+    }
+
+    @Test
+    public void retainAllActuallyRemovesElementsOutOfCollectionFromListTest() throws Exception {
+        fillListWithSixStrings();
+
+        List<String> listToRetain = new ArrayList<>();
+        listToRetain.add("element0");
+        listToRetain.add("element3");
+
+        list.retainAll(listToRetain);
+
+        assertThat(list.size(), equalTo(2));
+        assertThat(list.contains("element0"), is(true));
+        assertThat(list.contains("element3"), is(true));
+        assertThat(list.contains("element1"), is(false));
+    }
+
+    @Test
+    public void retainAllReturnsFalseIfElementsFromCollectionTotallyMatchWithListElementsTest() throws Exception {
+        fillListWithSixStrings();
+
+        List<String> listToRetain = new ArrayList<>();
+        listToRetain.addAll(list);
+
+        assertThat(list.retainAll(listToRetain), is(false));
+    }
+
+    @Test
+    public void retainAllDoesNotChangeListIfElementsFromCollectionTotallyMatchWithListElementsTest() throws Exception {
+        fillListWithSixStrings();
+
+        List<String> listToRetain = new ArrayList<>();
+        listToRetain.addAll(list);
+
+        list.retainAll(listToRetain);
+
+        assertThat(list.size(), equalTo(6));
+    }
+
+    @Test
+    public void retainAllWorksProperlyWithCollectionThatContainsNullTest() throws Exception {
+        fillListWithSixStrings();
+
+        list.add(null);
+
+        List<String> listToRemove = new ArrayList<>();
+        listToRemove.add("element0");
+        listToRemove.add("element3");
+        listToRemove.add(null);
+
+        list.retainAll(listToRemove);
+
+        assertThat(list.size(), equalTo(3));
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void retainAllThrowsExceptionWithNullAsArgumentTest() throws Exception {
+        fillListWithSixStrings();
+
+        list.retainAll(null);
     }
 
     private void fillListWithSixStrings() {
