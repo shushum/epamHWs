@@ -23,6 +23,7 @@ public class CustomArrayList<T> implements List<T> {
      * Array storage for CustomArrayList elements.
      */
     private Object[] data = new Object[CAPACITY];
+
     /**
      * The size of the CustomArrayList (the number of elements it contains).
      */
@@ -45,7 +46,7 @@ public class CustomArrayList<T> implements List<T> {
     }
 
     /**
-     * @param o element whose presence in this list need to be tested/
+     * @param o element whose presence in this list need to be tested.
      * @return <tt>true</tt> if this list contains at least one copy of specified element.
      */
     @Override
