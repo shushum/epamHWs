@@ -70,10 +70,22 @@ public class CustomArrayList<T> implements List<T> {
 
     @Override
     public boolean remove(Object o) {
-        for (int i = 0; i < size; i++) {
-            if (o.equals(data[i])) {
-                remove(i);
-                return true;
+
+        if (o == null) {
+            for (int i = 0; i < size; i++) {
+                if (data[i] == null) {
+                    shiftElementsToTheLeft(i);
+                    size--;
+                    return true;
+                }
+            }
+        } else {
+            for (int i = 0; i < size; i++) {
+                if (o.equals(data[i])) {
+                    shiftElementsToTheLeft(i);
+                    size--;
+                    return true;
+                }
             }
         }
         return false;
@@ -82,7 +94,7 @@ public class CustomArrayList<T> implements List<T> {
     @Override
     public boolean containsAll(Collection<?> c) {
         for (Object element : c) {
-            if (!contains(element)){
+            if (!contains(element)) {
                 return false;
             }
         }
@@ -91,7 +103,15 @@ public class CustomArrayList<T> implements List<T> {
 
     @Override
     public boolean addAll(Collection<? extends T> c) {
-        return false;
+        Objects.requireNonNull(c);
+
+        int sizeFlag = size;
+
+        for (T element : c) {
+            add(element);
+        }
+
+        return size > sizeFlag;
     }
 
     @Override
@@ -101,7 +121,15 @@ public class CustomArrayList<T> implements List<T> {
 
     @Override
     public boolean removeAll(Collection<?> c) {
-        return false;
+        Objects.requireNonNull(c);
+
+        int sizeFlag = size;
+
+        for (Object element : c) {
+            remove(element);
+        }
+
+        return size < sizeFlag;
     }
 
     @Override
@@ -139,10 +167,10 @@ public class CustomArrayList<T> implements List<T> {
             throw new IndexOutOfBoundsException();
         }
 
-        int length = data.length - index;
         T value = (T) data[index];
-        System.arraycopy(data, index + 1, data, index, length - 1);
+        shiftElementsToTheLeft(index);
         size--;
+
         return value;
     }
 
@@ -169,6 +197,11 @@ public class CustomArrayList<T> implements List<T> {
     @Override
     public List<T> subList(int fromIndex, int toIndex) {
         return null;
+    }
+
+    private void shiftElementsToTheLeft(int index) {
+        int length = data.length - index;
+        System.arraycopy(data, index + 1, data, index, length - 1);
     }
 
     private class ArrayListIterator implements Iterator<T> {

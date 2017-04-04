@@ -79,14 +79,26 @@ public class CustomLinkedList<T> implements List<T> {
     public boolean remove(Object o) {
         Node<T> current = head.next;
         Node<T> prev = head;
-        while (current != null) {
-            if (o.equals(current.value)) {
-                prev.next = current.next;
-                size--;
-                return true;
+        if (o == null) {
+            while (current != null) {
+                if (current.value == null) {
+                    prev.next = current.next;
+                    size--;
+                    return true;
+                }
+                prev = current;
+                current = current.next;
             }
-            prev = current;
-            current = current.next;
+        } else {
+            while (current != null) {
+                if (o.equals(current.value)) {
+                    prev.next = current.next;
+                    size--;
+                    return true;
+                }
+                prev = current;
+                current = current.next;
+            }
         }
         return false;
     }
@@ -94,7 +106,7 @@ public class CustomLinkedList<T> implements List<T> {
     @Override
     public boolean containsAll(Collection<?> c) {
         for (Object element : c) {
-            if (!contains(element)){
+            if (!contains(element)) {
                 return false;
             }
         }
@@ -103,7 +115,15 @@ public class CustomLinkedList<T> implements List<T> {
 
     @Override
     public boolean addAll(Collection<? extends T> c) {
-        return false;
+        Objects.requireNonNull(c);
+
+        int sizeFlag = size;
+
+        for (T element : c) {
+            add(element);
+        }
+
+        return size > sizeFlag;
     }
 
     @Override
@@ -113,7 +133,15 @@ public class CustomLinkedList<T> implements List<T> {
 
     @Override
     public boolean removeAll(Collection<?> c) {
-        return false;
+        Objects.requireNonNull(c);
+
+        int sizeFlag = size;
+
+        for (Object element : c) {
+            remove(element);
+        }
+
+        return size < sizeFlag;
     }
 
     @Override

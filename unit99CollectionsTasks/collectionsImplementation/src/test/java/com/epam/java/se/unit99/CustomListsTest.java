@@ -280,7 +280,7 @@ public class CustomListsTest {
 
         int iteratorSize = 0;
 
-        while(iterator.hasNext()){
+        while (iterator.hasNext()) {
             iteratorSize++;
             iterator.next();
         }
@@ -296,7 +296,7 @@ public class CustomListsTest {
 
         int iteratorSize = 0;
 
-        while(iterator.hasNext()){
+        while (iterator.hasNext()) {
             assertThat(iterator.next(), equalTo(list.get(iteratorSize++)));
         }
     }
@@ -307,7 +307,7 @@ public class CustomListsTest {
 
         Iterator iterator = list.iterator();
 
-        while(iterator.hasNext()){
+        while (iterator.hasNext()) {
             iterator.next();
         }
 
@@ -403,11 +403,81 @@ public class CustomListsTest {
         listToAdd.add("element3");
         listToAdd.add(null);
 
-        assertThat(list.addAll(listToAdd), equalTo(9));
+        list.addAll(listToAdd);
+        assertThat(list.size(), equalTo(9));
     }
 
     @Test(expected = NullPointerException.class)
     public void addAllThrowsExceptionWithNullAsArgumentTest() throws Exception {
+        fillListWithSixStrings();
+
+        list.addAll(null);
+    }
+
+    @Test
+    public void removeAllReturnsTrueIfElementsFromCollectionWasRemovedFromListTest() throws Exception {
+        fillListWithSixStrings();
+
+        List<String> listToRemove = new ArrayList<>();
+        listToRemove.add("element0");
+        listToRemove.add("element3");
+
+        assertThat(list.removeAll(listToRemove), is(true));
+    }
+
+    @Test
+    public void removeAllActuallyRemovesElementsOfCollectionFromListTest() throws Exception {
+        fillListWithSixStrings();
+
+        List<String> listToRemove = new ArrayList<>();
+        listToRemove.add("element0");
+        listToRemove.add("element3");
+
+        list.removeAll(listToRemove);
+
+        assertThat(list.size(), equalTo(4));
+        assertThat(list.contains("element0"), is(false));
+        assertThat(list.contains("element3"), is(false));
+    }
+
+    @Test
+    public void removeAllReturnsFalseIfElementsFromCollectionWasNotPresentedInListTest() throws Exception {
+        fillListWithSixStrings();
+
+        List<String> listToRemove = new ArrayList<>();
+        listToRemove.add("notPresented1");
+        listToRemove.add("notPresented2");
+
+        assertThat(list.removeAll(listToRemove), is(false));
+    }
+
+    @Test
+    public void removeAllDoesNotChangeListIfElementsFromCollectionWasNotPresentedInListTest() throws Exception {
+        fillListWithSixStrings();
+
+        List<String> listToRemove = new ArrayList<>();
+        listToRemove.add("notPresented1");
+        listToRemove.add("notPresented2");
+
+        list.removeAll(listToRemove);
+
+        assertThat(list.size(), equalTo(6));
+    }
+
+    @Test
+    public void removeAllWorksProperlyWithCollectionThatContainsNullTest() throws Exception {
+        fillListWithSixStrings();
+
+        List<String> listToRemove = new ArrayList<>();
+        listToRemove.add("element0");
+        listToRemove.add("element3");
+        listToRemove.add(null);
+
+        assertThat(list.removeAll(listToRemove), is(true));
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void removeAllThrowsExceptionWithNullAsArgumentTest() throws Exception {
         fillListWithSixStrings();
 
         list.addAll(null);
