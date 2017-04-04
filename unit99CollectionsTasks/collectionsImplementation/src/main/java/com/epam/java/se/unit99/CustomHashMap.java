@@ -84,12 +84,8 @@ public class CustomHashMap<K, V> implements Map<K, V> {
         for (int i = 0; i < capacity; i++) {
             CustomEntry<K, V> currentEntry = buckets[i];
             while (currentEntry != null) {
-                if (currentEntry.value == null) {
-                    if (value == null) {
-                        return true;
-                    }
-                } else {
-                    return currentEntry.value.equals(value);
+                if (valuesEqual(value, currentEntry.value)) {
+                    return true;
                 }
                 currentEntry = currentEntry.next;
             }
@@ -261,6 +257,17 @@ public class CustomHashMap<K, V> implements Map<K, V> {
 
     private int getBucketNumber(K key) {
         return Math.abs(key.hashCode()) % capacity;
+    }
+
+    private boolean valuesEqual(Object value, Object currentEntry) {
+        if (currentEntry == null) {
+            if (value == null) {
+                return true;
+            }
+        } else if (currentEntry.equals(value)) {
+            return true;
+        }
+        return false;
     }
 
     /**
