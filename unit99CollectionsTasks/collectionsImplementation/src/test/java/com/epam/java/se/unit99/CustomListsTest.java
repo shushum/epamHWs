@@ -8,6 +8,7 @@ import org.junit.runners.Parameterized;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.IntStream;
 
 import static junit.framework.TestCase.assertFalse;
 import static org.hamcrest.CoreMatchers.is;
@@ -100,7 +101,7 @@ public class CustomListsTest {
     @Test
     public void getWorksProperlyWithPresentedInListElementTest() {
 
-        fillList();
+        fillListWithSixStrings();
 
         assertThat(list.get(1), is(equalTo("element1")));
     }
@@ -108,14 +109,14 @@ public class CustomListsTest {
     @Test(expected = IndexOutOfBoundsException.class)
     public void getThrowsExceptionWithArgumentGreaterThanItsSizeTest() throws Exception {
 
-        fillList();
+        fillListWithSixStrings();
 
         list.get(list.size());
     }
 
     @Test
     public void removePresentedElementByValueWorksProperlyTest() throws Exception {
-        fillList();
+        fillListWithSixStrings();
 
         assertThat(list.remove("element4"), is(true));
         assertFalse(list.contains("element4"));
@@ -123,7 +124,7 @@ public class CustomListsTest {
 
     @Test
     public void removePresentedElementByValueDecreasesSizeTest() throws Exception {
-        fillList();
+        fillListWithSixStrings();
 
         assertThat(list.size(), is(6));
 
@@ -134,14 +135,14 @@ public class CustomListsTest {
 
     @Test
     public void removeNotPresentedElementByValueWorksProperlyTest() throws Exception {
-        fillList();
+        fillListWithSixStrings();
 
         assertThat(list.remove("notPresented"), is(false));
     }
 
     @Test
     public void removeElementByIndexWorksProperlyTest() throws Exception {
-        fillList();
+        fillListWithSixStrings();
 
         String removed = list.remove(2);
 
@@ -151,7 +152,7 @@ public class CustomListsTest {
 
     @Test
     public void removeElementByIndexDecreasesSizeTest() throws Exception {
-        fillList();
+        fillListWithSixStrings();
 
         assertThat(list.size(), is(6));
 
@@ -162,12 +163,118 @@ public class CustomListsTest {
 
     @Test(expected = IndexOutOfBoundsException.class)
     public void removeByIndexThrowsExceptionWithArgumentGreaterThanItsSizeTest() throws Exception {
-        fillList();
+        fillListWithSixStrings();
 
         list.remove(list.size());
     }
 
-    private void fillList() {
+    @Test
+    public void toArrayOnNotEmptyListReturnsArrayOfAllListElementsTest() throws Exception {
+        fillListWithSixStrings();
+
+        Object[] array = list.toArray();
+
+        IntStream.range(0, 6).forEach(
+                i -> assertThat(array[i], equalTo("element" + i))
+        );
+    }
+
+    @Test
+    public void toArrayOnEmptyListReturnsEmptyArrayTest() throws Exception {
+        Object[] array = list.toArray();
+        assertThat(array.length, is(0));
+    }
+
+    @Test
+    public void toArrayWithTypeOnNotEmptyListReturnsArrayWithAllListElementsWhenArraySizeIsLesserOrEqualThenListSizeTest() throws Exception {
+        fillListWithSixStrings();
+
+        String[] array = list.toArray(new String[0]);
+
+        IntStream.range(0, 6).forEach(
+                i -> assertThat(array[i], equalTo("element" + i))
+        );
+    }
+
+    @Test
+    public void toArrayWithTypeOnNotEmptyListReturnsArrayWithSameSizeAsListWhenArraySizeIsLesserOrEqualThenListSizeTest() throws Exception {
+        fillListWithSixStrings();
+
+        String[] array = list.toArray(new String[0]);
+
+        assertThat(array.length, is(6));
+    }
+
+    @Test
+    public void toArrayWithTypeOnEmptyListReturnsEmptyArrayTest() throws Exception {
+        String[] array = list.toArray(new String[0]);
+
+        assertThat(array.length, is(0));
+    }
+
+    @Test
+    public void toArrayWithTypeOnNotEmptyListReturnsArrayWithAllListElementsWhenArraySizeIsGreaterThenListSizeTest() throws Exception {
+        fillListWithSixStrings();
+
+        String[] baseArray = new String[10];
+        IntStream.range(0, 10).forEach(
+                i -> baseArray[i] = String.valueOf(i)
+        );
+
+        String[] array = list.toArray(baseArray);
+
+        IntStream.range(0, 6).forEach(
+                i -> assertThat(array[i], equalTo("element" + i))
+        );
+    }
+
+    @Test
+    public void toArrayWithTypeOnNotEmptyListDoesNotChangeInitialSizeOfArrayWhenArraySizeIsGreaterThenListSizeTest() throws Exception {
+        fillListWithSixStrings();
+
+        String[] array = list.toArray(new String[10]);
+
+        assertThat(array.length, is(10));
+    }
+
+    @Test
+    public void toArrayWithTypeOnNotEmptyListSetsNullInListSizePositionOfArrayWhenArraySizeIsGreaterThenListSizeTest() throws Exception {
+        fillListWithSixStrings();
+
+        String[] baseArray = new String[10];
+        IntStream.range(0, 10).forEach(
+                i -> baseArray[i] = String.valueOf(i)
+        );
+
+        String[] array = list.toArray(baseArray);
+
+        assertThat(array[6], equalTo(null));
+    }
+
+    @Test
+    public void toArrayWithTypeOnNotEmptyListDoesNotChangeArrayElementsWithIndexesGreaterThenListSizeTest() throws Exception {
+        fillListWithSixStrings();
+
+        String[] baseArray = new String[10];
+        IntStream.range(0, 10).forEach(
+                i -> baseArray[i] = String.valueOf(i)
+        );
+
+        String[] array = list.toArray(baseArray);
+
+        IntStream.range(7, 10).forEach(
+                i -> assertThat(array[i], equalTo(String.valueOf(i)))
+        );
+    }
+
+    @Test(expected = ArrayStoreException.class)
+    public void toArrayWithTypeThrowsExceptionOnInappropriateArrayTypeTest() {
+        fillListWithSixStrings();
+
+        Double[] array = list.toArray(new Double[15]);
+    }
+
+    private void fillListWithSixStrings() {
         list.add("element0");
         list.add("element1");
         list.add("element2");

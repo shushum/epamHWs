@@ -43,12 +43,25 @@ public class CustomLinkedList<T> implements List<T> {
 
     @Override
     public Object[] toArray() {
-        return new Object[0];
+        Object[] result = new Object[size];
+        Node<T> node = head.next;
+        for (int i = 0; i < size; i++) {
+            result[i] = node.value;
+            node = node.next;
+        }
+        return result;
     }
 
     @Override
     public <T1> T1[] toArray(T1[] a) {
-        return null;
+        Object[] listArray = this.toArray();
+        if (a.length<=size){
+            return (T1[]) Arrays.copyOf(listArray, size, a.getClass());
+        } else{
+            System.arraycopy(listArray, 0, a, 0, size);
+            a[size] = null;
+            return a;
+        }
     }
 
     @Override

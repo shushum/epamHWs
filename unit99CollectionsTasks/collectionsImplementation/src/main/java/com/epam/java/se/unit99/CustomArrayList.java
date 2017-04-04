@@ -1,6 +1,7 @@
 package com.epam.java.se.unit99;
 
 import java.util.*;
+
 /**
  * Created by Yegor on 03.04.2017.
  */
@@ -43,12 +44,18 @@ public class CustomArrayList<T> implements List<T> {
 
     @Override
     public Object[] toArray() {
-        return new Object[0];
+        return Arrays.copyOf(data, size);
     }
 
     @Override
     public <T1> T1[] toArray(T1[] a) {
-        return null;
+        if (a.length <= size) {
+            return (T1[]) Arrays.copyOf(data, size, a.getClass());
+        } else {
+            System.arraycopy(data, 0, a, 0, size);
+            a[size] = null;
+            return a;
+        }
     }
 
     @Override
