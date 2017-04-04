@@ -81,7 +81,12 @@ public class CustomArrayList<T> implements List<T> {
 
     @Override
     public boolean containsAll(Collection<?> c) {
-        return false;
+        for (Object element : c) {
+            if (!contains(element)){
+                return false;
+            }
+        }
+        return true;
     }
 
     @Override

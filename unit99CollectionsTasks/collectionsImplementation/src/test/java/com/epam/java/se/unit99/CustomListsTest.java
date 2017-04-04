@@ -350,6 +350,69 @@ public class CustomListsTest {
         assertThat(list.containsAll(wrongList), is(false));
     }
 
+    @Test
+    public void addAllReturnsTrueIfElementsFromCollectionWasAddedInListTest() throws Exception {
+        fillListWithSixStrings();
+
+        List<String> listToAdd = new ArrayList<>();
+        listToAdd.add("element0");
+        listToAdd.add("element3");
+
+        assertThat(list.addAll(listToAdd), is(true));
+    }
+
+    @Test
+    public void addAllActuallyAddsElementsFromCollectionToListTest() throws Exception {
+        fillListWithSixStrings();
+
+        List<String> listToAdd = new ArrayList<>();
+        listToAdd.add("element0");
+        listToAdd.add("element3");
+
+        list.addAll(listToAdd);
+
+        assertThat(list.size(), equalTo(8));
+    }
+
+    @Test
+    public void addAllReturnsFalseIfCollectionWasEmptyTest() throws Exception {
+        fillListWithSixStrings();
+
+        List<String> listToAdd = new ArrayList<>();
+
+        assertThat(list.addAll(listToAdd), is(false));
+    }
+
+    @Test
+    public void addAllDoesNotModifyListIfCollectionWasEmptyTest() throws Exception {
+        fillListWithSixStrings();
+
+        List<String> listToAdd = new ArrayList<>();
+
+        list.addAll(listToAdd);
+
+        assertThat(list.size(), equalTo(6));
+    }
+
+    @Test
+    public void addAllWorksProperlyWithCollectionThatContainsNullTest() throws Exception {
+        fillListWithSixStrings();
+
+        List<String> listToAdd = new ArrayList<>();
+        listToAdd.add("element0");
+        listToAdd.add("element3");
+        listToAdd.add(null);
+
+        assertThat(list.addAll(listToAdd), equalTo(9));
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void addAllThrowsExceptionWithNullAsArgumentTest() throws Exception {
+        fillListWithSixStrings();
+
+        list.addAll(null);
+    }
+
     private void fillListWithSixStrings() {
         list.add("element0");
         list.add("element1");
