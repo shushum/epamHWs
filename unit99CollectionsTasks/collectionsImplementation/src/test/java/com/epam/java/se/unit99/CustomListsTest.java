@@ -5,9 +5,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 import java.util.stream.IntStream;
 
 import static junit.framework.TestCase.assertFalse;
@@ -272,6 +270,48 @@ public class CustomListsTest {
         fillListWithSixStrings();
 
         Double[] array = list.toArray(new Double[15]);
+    }
+
+    @Test
+    public void iteratorConsidersAllElementsOfListTest() throws Exception {
+        fillListWithSixStrings();
+
+        Iterator iterator = list.iterator();
+
+        int iteratorSize = 0;
+
+        while(iterator.hasNext()){
+            iteratorSize++;
+            iterator.next();
+        }
+
+        assertThat(iteratorSize, equalTo(list.size()));
+    }
+
+    @Test
+    public void iteratorReturnsElementsOfListInRightOrderTest() throws Exception {
+        fillListWithSixStrings();
+
+        Iterator iterator = list.iterator();
+
+        int iteratorSize = 0;
+
+        while(iterator.hasNext()){
+            assertThat(iterator.next(), equalTo(list.get(iteratorSize++)));
+        }
+    }
+
+    @Test(expected = NoSuchElementException.class)
+    public void iteratorThrowsExceptionWhileTryingToReturnElementOutOfListBoundsTest() throws Exception {
+        fillListWithSixStrings();
+
+        Iterator iterator = list.iterator();
+
+        while(iterator.hasNext()){
+            iterator.next();
+        }
+
+        iterator.next();
     }
 
     private void fillListWithSixStrings() {

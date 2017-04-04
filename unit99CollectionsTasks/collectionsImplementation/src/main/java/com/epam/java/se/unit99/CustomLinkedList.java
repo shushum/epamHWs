@@ -38,7 +38,7 @@ public class CustomLinkedList<T> implements List<T> {
 
     @Override
     public Iterator<T> iterator() {
-        return null;
+        return new LinkedListIterator();
     }
 
     @Override
@@ -54,10 +54,10 @@ public class CustomLinkedList<T> implements List<T> {
 
     @Override
     public <T1> T1[] toArray(T1[] a) {
-        Object[] listArray = this.toArray();
-        if (a.length<=size){
+        Object[] listArray = toArray();
+        if (a.length <= size) {
             return (T1[]) Arrays.copyOf(listArray, size, a.getClass());
-        } else{
+        } else {
             System.arraycopy(listArray, 0, a, 0, size);
             a[size] = null;
             return a;
@@ -201,5 +201,23 @@ public class CustomLinkedList<T> implements List<T> {
             return next != null;
         }
 
+    }
+
+    private class LinkedListIterator implements Iterator<T> {
+        private Node<T> currentNode = head;
+
+        @Override
+        public boolean hasNext() {
+            return currentNode.hasNext();
+        }
+
+        @Override
+        public T next() {
+            if (!hasNext())
+                throw new NoSuchElementException();
+
+            currentNode = currentNode.next;
+            return currentNode.value;
+        }
     }
 }

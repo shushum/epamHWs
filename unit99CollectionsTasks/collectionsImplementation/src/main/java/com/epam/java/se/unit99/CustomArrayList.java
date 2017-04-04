@@ -39,7 +39,7 @@ public class CustomArrayList<T> implements List<T> {
 
     @Override
     public Iterator<T> iterator() {
-        return null;
+        return new ArrayListIterator();
     }
 
     @Override
@@ -164,5 +164,26 @@ public class CustomArrayList<T> implements List<T> {
     @Override
     public List<T> subList(int fromIndex, int toIndex) {
         return null;
+    }
+
+    private class ArrayListIterator implements Iterator<T> {
+        private int cursor = 0;
+
+        @Override
+        public boolean hasNext() {
+            return cursor != size;
+        }
+
+        @Override
+        public T next() {
+            try {
+                int i = cursor;
+                T next = get(i);
+                cursor = i + 1;
+                return next;
+            } catch (IndexOutOfBoundsException e) {
+                throw new NoSuchElementException();
+            }
+        }
     }
 }
