@@ -555,6 +555,39 @@ public class CustomListsTest {
         list.retainAll(null);
     }
 
+    @Test
+    public void setChangesListElementInRequiredPositionToTheRequiredElementTest() throws Exception{
+        fillListWithSixStrings();
+
+        list.set(4, "newElement");
+
+        assertThat(list.get(4), equalTo("newElement"));
+        assertThat(list.contains("element4"), is(false));
+    }
+
+    @Test
+    public void setReturnsListElementOnRequiredPositionThatWasBeforeSettingTest() throws Exception{
+        fillListWithSixStrings();
+
+        assertThat(list.set(4, "newElement"), equalTo("element4"));
+    }
+
+    @Test
+    public void setWorksProperlyWithNullAsRequiredElementTest() throws Exception{
+        fillListWithSixStrings();
+
+        list.set(4, null);
+
+        assertThat(list.get(4), equalTo(null));
+    }
+
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void setThrowsExceptionOnAttemptToChangeElementOutOfListSizeTest() throws Exception{
+        fillListWithSixStrings();
+
+        list.set(list.size(), "newElement");
+    }
+
     private void fillListWithSixStrings() {
         list.add("element0");
         list.add("element1");

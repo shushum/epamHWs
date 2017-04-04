@@ -156,15 +156,17 @@ public class CustomArrayList<T> implements List<T> {
 
     @Override
     public T get(int index) {
-        if (index < 0 || index >= size) {
-            throw new IndexOutOfBoundsException();
-        }
+        boundsCheck(index);
         return (T) data[index];
     }
 
     @Override
     public T set(int index, T element) {
-        return null;
+        boundsCheck(index);
+
+        T previousValue = (T) data[index];
+        data[index] = element;
+        return previousValue;
     }
 
     @Override
@@ -174,9 +176,7 @@ public class CustomArrayList<T> implements List<T> {
 
     @Override
     public T remove(int index) {
-        if (index < 0 || index >= size) {
-            throw new IndexOutOfBoundsException();
-        }
+        boundsCheck(index);
 
         T value = (T) data[index];
         shiftElementsToTheLeft(index);
@@ -213,6 +213,12 @@ public class CustomArrayList<T> implements List<T> {
     private void shiftElementsToTheLeft(int index) {
         int length = data.length - index;
         System.arraycopy(data, index + 1, data, index, length - 1);
+    }
+
+    private void boundsCheck(int index) {
+        if (index < 0 || index >= size) {
+            throw new IndexOutOfBoundsException();
+        }
     }
 
     private class ArrayListIterator implements Iterator<T> {

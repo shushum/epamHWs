@@ -173,7 +173,10 @@ public class CustomLinkedList<T> implements List<T> {
 
     @Override
     public T set(int index, T element) {
-        return null;
+        Node<T> nodeToSet = getNodeByIndex(index);
+        T previousValue = nodeToSet.value;
+        nodeToSet.value = element;
+        return previousValue;
     }
 
     @Override
@@ -183,9 +186,7 @@ public class CustomLinkedList<T> implements List<T> {
 
     @Override
     public T remove(int index) {
-        if (index < 0 || index >= size) {
-            throw new IndexOutOfBoundsException();
-        }
+        boundsCheck(index);
 
         Node<T> current = getNodeByIndex(index - 1);
         size--;
@@ -220,16 +221,19 @@ public class CustomLinkedList<T> implements List<T> {
     }
 
     private Node<T> getNodeByIndex(int index) {
-
-        if (index < 0 || index >= size) {
-            throw new IndexOutOfBoundsException();
-        }
+        boundsCheck(index);
 
         Node<T> current = head.next;
         for (int i = 0; i < index; i++) {
             current = current.next;
         }
         return current;
+    }
+
+    private void boundsCheck(int index) {
+        if (index < 0 || index >= size) {
+            throw new IndexOutOfBoundsException();
+        }
     }
 
     private class Node<T> {
