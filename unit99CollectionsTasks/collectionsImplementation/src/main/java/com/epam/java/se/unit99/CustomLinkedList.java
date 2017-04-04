@@ -41,7 +41,9 @@ public class CustomLinkedList<T> implements List<T> {
     @Override
     public Object[] toArray() {
         Object[] result = new Object[size];
+
         Node<T> node = head.next;
+
         for (int i = 0; i < size; i++) {
             result[i] = node.value;
             node = node.next;
@@ -64,38 +66,30 @@ public class CustomLinkedList<T> implements List<T> {
     @Override
     public boolean add(T t) {
         Node<T> iterator = head;
+
         while (iterator.hasNext()) {
             iterator = iterator.next;
         }
+
         iterator.next = new Node<>(t);
         size++;
-        return false;
+
+        return true;
     }
 
     @Override
     public boolean remove(Object o) {
         Node<T> current = head.next;
         Node<T> prev = head;
-        if (o == null) {
-            while (current != null) {
-                if (current.value == null) {
-                    prev.next = current.next;
-                    size--;
-                    return true;
-                }
-                prev = current;
-                current = current.next;
+
+        while (current != null) {
+            if (equals(o, current.value)) {
+                prev.next = current.next;
+                size--;
+                return true;
             }
-        } else {
-            while (current != null) {
-                if (o.equals(current.value)) {
-                    prev.next = current.next;
-                    size--;
-                    return true;
-                }
-                prev = current;
-                current = current.next;
-            }
+            prev = current;
+            current = current.next;
         }
         return false;
     }
@@ -171,6 +165,7 @@ public class CustomLinkedList<T> implements List<T> {
     @Override
     public T set(int index, T element) {
         Node<T> nodeToSet = getNodeByIndex(index);
+
         T previousValue = nodeToSet.value;
         nodeToSet.value = element;
         return previousValue;
@@ -182,8 +177,10 @@ public class CustomLinkedList<T> implements List<T> {
             add(element);
         } else {
             boundsCheck(index);
-            Node<T> current = getNodeByIndex(index -1);
+
+            Node<T> current = getNodeByIndex(index - 1);
             Node<T> nodeToAdd = new Node<>(element);
+
             nodeToAdd.next = current.next;
             current.next = nodeToAdd;
             size++;
@@ -196,9 +193,11 @@ public class CustomLinkedList<T> implements List<T> {
         boundsCheck(index);
 
         Node<T> current = getNodeByIndex(index - 1);
-        size--;
+
         T value = current.next.value;
         current.next = current.next.next;
+        size--;
+
         return value;
     }
 
@@ -207,7 +206,7 @@ public class CustomLinkedList<T> implements List<T> {
         Node<T> current = head;
         int index = -1;
 
-        while(current.hasNext()){
+        while (current.hasNext()) {
             current = current.next;
             index++;
             if (equals(o, current.value)) {
@@ -223,7 +222,7 @@ public class CustomLinkedList<T> implements List<T> {
         int index = -1;
         int lastOccurrence = -1;
 
-        while(current.hasNext()){
+        while (current.hasNext()) {
             current = current.next;
             index++;
             if (equals(o, current.value)) {

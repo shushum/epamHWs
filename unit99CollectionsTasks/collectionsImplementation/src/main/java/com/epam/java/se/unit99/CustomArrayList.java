@@ -64,21 +64,11 @@ public class CustomArrayList<T> implements List<T> {
     @Override
     public boolean remove(Object o) {
 
-        if (o == null) {
-            for (int i = 0; i < size; i++) {
-                if (data[i] == null) {
-                    shiftElementsToTheLeft(i);
-                    size--;
-                    return true;
-                }
-            }
-        } else {
-            for (int i = 0; i < size; i++) {
-                if (o.equals(data[i])) {
-                    shiftElementsToTheLeft(i);
-                    size--;
-                    return true;
-                }
+        for (int i = 0; i < size; i++) {
+            if (equals(o, data[i])) {
+                shiftElementsToTheLeft(i);
+                size--;
+                return true;
             }
         }
         return false;
